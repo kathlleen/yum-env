@@ -1,0 +1,18 @@
+[
+  {
+    "model": "restaurans.cuisine",
+    "pk": 1,
+    "fields": {
+      "name": "Итальянская",
+      "slug": "italyanskaya"
+    }
+  },
+  {
+    "model": "restaurans.cuisine",
+    "pk": 2,
+    "fields": {
+      "name": "Грузинская",
+      "slug": "gruzinskaya"
+    }
+  }
+]
