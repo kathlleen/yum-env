@@ -10,5 +10,13 @@
 <body>
 <h1>Hello, world!</h1>
 <a href="{% url 'main:about' %}">О нас</a>
+<a href="{% url 'users:login' %}">Войти</a>
+<!--<a href="{% url 'users:login' %}">Войти как админ ресторана</a>-->
+<!--<a href="{% url 'users:login' %}">Войти как курьер</a>-->
+<a href="{% url 'users:register_customer' %}">Зарегестрироваться</a>
+<a href="{% url 'users:register_courier' %}">Зарегестровать курьера</a>
+<a href="{% url 'users:register_restaurant_admin' %}">Зарегестровать админа ресторана</a>
+
+
 </body>
 </html>
