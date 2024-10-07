@@ -8,6 +8,7 @@ class Restaurans(models.Model):
     name = models.CharField(max_length=60, verbose_name="Название")
     slug = models.SlugField(max_length=100, unique=True, blank=True, null=True, verbose_name='URL')
     address = models.TextField(null=True, blank=True, verbose_name="Адрес")
+    description = models.TextField(null=True, blank=True, verbose_name="Описание")
     phone_number = models.CharField(null=True, blank=True, max_length=20, verbose_name="Контактный телефон")
     image = models.ImageField(upload_to='users_images', blank=True, null=True, verbose_name='Изображение')
     owner = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE, related_name='restaurant', verbose_name='Админ')
