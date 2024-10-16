@@ -1,0 +1,36 @@
+{% load static %}
+
+
+<h3>Корзина</h3>
+<div class="cart-item">
+    <div class="image-container">
+        <img src="{% static 'images/dish1.jpg' %}" alt="Dish">
+    </div>
+    <div class="cart-item-info">
+        <p>Морепродукты в кисло-сладком соусе с ...</p>
+        <span>16.50 р.</span>
+        <div class="quantity">
+            <button>-</button>
+            <input value="1">
+            <button>+</button>
+        </div>
+    </div>
+</div>
+<div class="cart-item">
+    <div class="image-container">
+        <img src="{% static 'images/dish4.jpg' %}" alt="Dish">
+    </div>
+        <div class="cart-item-info">
+        <p>Морепродукты в кисло-сладком соусе с ...</p>
+        <span>16.50 р.</span>
+        <div class="quantity">
+            <button>-</button>
+            <input value="1">
+            <button>+</button>
+        </div>
+    </div>
+</div>
+<div class="cart-summary">
+    <p>Работа сервиса: 0.89 р.</p>
+    <button>Верно, к оплате: 17.39 р.</button>
+</div>

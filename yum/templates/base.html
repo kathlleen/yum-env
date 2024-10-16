@@ -10,29 +10,31 @@
 </head>
 <body>
 
-    <div class="background">
+<div class="background">
 
-        <div class="overlay"></div>
+    <div class="overlay"></div>
 
 
-        <div class="content">
-            <header>
-                <nav>
-                    <div class="nav-left">
-                        <h1>YUM</h1>
-                        <input type="text" placeholder="Найти рестораны, блюдо">
-                        <input type="text" placeholder="Укажите адрес доставки">
-                    </div>
+    <div class="content">
+        <header>
+            <nav>
+                <div class="nav-left">
+                    <h1>YUM</h1>
+                    <input type="text" placeholder="Найти рестораны, блюдо">
+                    <input type="text" placeholder="Укажите адрес доставки">
+                </div>
 
+                <a href="{% url 'main:about' %}">
                     <button>Войти</button>
-                </nav>
-                <hr class="line">
+                </a>
+            </nav>
+            <hr class="line">
 
-            </header>
+        </header>
 
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
 
     <footer>
 

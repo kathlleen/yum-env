@@ -7,29 +7,29 @@
 
 {% block content %}
 
-    <div class="container">
-        <!-- Меню категорий -->
-        <aside class="sidebar">
-            <a href="{% url 'main:index' %}">
-                <button class="back-button">&lt; Все рестораны</button>
-            </a>
-            <nav class="category-menu">
-                <ul>
-                    <li><a href="#">Фирменные блюда</a></li>
-                    <li><a href="#">Стир-фрай</a></li>
-                    <li><a href="#">Закуски</a></li>
-                    <li><a href="#">Супы</a></li>
-                    <li><a href="#">Вок</a></li>
-                    <li><a href="#">Детское меню</a></li>
-                    <li><a href="#">Десерты</a></li>
-                    <li><a href="#">Напитки</a></li>
-                </ul>
-            </nav>
-        </aside>
+<div class="container">
+    <!-- Меню категорий -->
+    <aside class="sidebar">
+        <a href="{% url 'main:index' %}">
+            <button class="back-button">&lt; Все рестораны</button>
+        </a>
+        <nav class="category-menu">
+            <ul>
+                <li><a href="#">Фирменные блюда</a></li>
+                <li><a href="#">Стир-фрай</a></li>
+                <li><a href="#">Закуски</a></li>
+                <li><a href="#">Супы</a></li>
+                <li><a href="#">Вок</a></li>
+                <li><a href="#">Детское меню</a></li>
+                <li><a href="#">Десерты</a></li>
+                <li><a href="#">Напитки</a></li>
+            </ul>
+        </nav>
+    </aside>
 
-        <!-- Центральная часть с меню ресторана -->
-        <main class="content">
-            <div class="rest">
+    <!-- Центральная часть с меню ресторана -->
+    <main class="content">
+        <div class="rest">
             <div class="rest-overlay"></div>
             <img src="{% static 'images/dish4.jpg' %}" alt="Завтрак" class="rest-img">
             <div class="rest-content">
@@ -44,55 +44,31 @@
             </div>
         </div>
 
-            <h2>Фирменные блюда</h2>
-            <div class="dish-cards">
+        <h2>Фирменные блюда</h2>
+        <div class="dish-cards">
 
-                {% for dish in dishes %}
-                <div class="card">
-                    <img src="{% static 'images/dish1.jpg' %}">
-                    <div class="card-content">
-                        <h3>{{ dish.name }}</h3>
-                        <p>{{ dish.price }} р.</p>
-                        <button>+ Добавить</button>
-                    </div>
-                </div>
-                {% endfor %}
+            {% for dish in dishes %}
+            <div class="card">
+                <img src="{% static 'images/dish1.jpg' %}">
+                <div class="card-content">
+                    <h3>{{ dish.name }}</h3>
+                    <p>{{ dish.price }} р.</p>
+                    <a href="{% url 'cart:cart_add' %}" class="add-to-cart" data-dish-id="{{ dish.id }}">
+                        {% csrf_token %}
+                        <button class="btn">+ Добавить</button>
+                    </a>
 
-            </div>
-        </main>
-
-        <!-- Корзина -->
-        <aside class="cart">
-            <h3>Корзина</h3>
-            <div class="cart-item">
-                <img src="images/dish1.jpg" alt="Dish">
-                <div class="cart-item-info">
-                    <p>Морепродукты в кисло-сладком соусе с ...</p>
-                    <span>16.50 р.</span>
-                    <div class="quantity">
-                        <button>-</button>
-                        <input value="1">
-                        <button>+</button>
-                    </div>
                 </div>
             </div>
-            <div class="cart-item">
-                <img src="images/dish4.jpg" alt="Dish">
-                <div class="cart-item-info">
-                    <p>Морепродукты в кисло-сладком соусе с ...</p>
-                    <span>16.50 р.</span>
-                    <div class="quantity">
-                        <button>-</button>
-                        <input value="1">
-                        <button>+</button>
-                    </div>
-                </div>
-            </div>
-            <div class="cart-summary">
-                <p>Работа сервиса: 0.89 р.</p>
-                <button>Верно, к оплате: 17.39 р.</button>
-            </div>
-        </aside>
-    </div>
+            {% endfor %}
+
+        </div>
+    </main>
+
+    <!-- Корзина -->
+    <aside class="cart">
+        {% include "includes/included_cart.html" %}
+    </aside>
+</div>
 
 {% endblock %}
