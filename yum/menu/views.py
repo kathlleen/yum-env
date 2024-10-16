@@ -11,7 +11,6 @@ def menu(request, restaurant_slug):
 
     context = {
         "title": restaurant.name,
-        'page_title' : restaurant.name,
         'page_description' : restaurant.description,
         "dishes" : dishes,
 

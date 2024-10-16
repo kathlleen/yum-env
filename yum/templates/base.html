@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block static_css %}
+    {% endblock %}
+    <title>{{ title }}</title>
+</head>
+<body>
+
+    <div class="background">
+
+        <div class="overlay"></div>
+
+
+        <div class="content">
+            <header>
+                <nav>
+                    <div class="nav-left">
+                        <h1>YUM</h1>
+                        <input type="text" placeholder="Найти рестораны, блюдо">
+                        <input type="text" placeholder="Укажите адрес доставки">
+                    </div>
+
+                    <button>Войти</button>
+                </nav>
+                <hr class="line">
+
+            </header>
+
+            {% block content %}
+            {% endblock %}
+        </div>
+
+    <footer>
+
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block static_css %}
+<link rel="stylesheet" href="{% static 'css/rest-style.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <!-- Меню категорий -->
+        <aside class="sidebar">
+            <a href="{% url 'main:index' %}">
+                <button class="back-button">&lt; Все рестораны</button>
+            </a>
+            <nav class="category-menu">
+                <ul>
+                    <li><a href="#">Фирменные блюда</a></li>
+                    <li><a href="#">Стир-фрай</a></li>
+                    <li><a href="#">Закуски</a></li>
+                    <li><a href="#">Супы</a></li>
+                    <li><a href="#">Вок</a></li>
+                    <li><a href="#">Детское меню</a></li>
+                    <li><a href="#">Десерты</a></li>
+                    <li><a href="#">Напитки</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Центральная часть с меню ресторана -->
+        <main class="content">
+            <div class="rest">
+            <div class="rest-overlay"></div>
+            <img src="{% static 'images/dish4.jpg' %}" alt="Завтрак" class="rest-img">
+            <div class="rest-content">
+                <h1>{{ title }}</h1>
+                <div class="rating">
+                    <h3>4.9</h3>
+                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.71989 21.5021L8.35095 14.6577L2.88062 10.0542L10.1075 9.44524L12.9179 2.99057L15.7284 9.44524L22.9552 10.0542L17.4849 14.6577L19.116 21.5021L12.9179 17.8729L6.71989 21.5021Z"
+                              fill="#FFE976"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+            <h2>Фирменные блюда</h2>
+            <div class="dish-cards">
+
+                {% for dish in dishes %}
+                <div class="card">
+                    <img src="{% static 'images/dish1.jpg' %}">
+                    <div class="card-content">
+                        <h3>{{ dish.name }}</h3>
+                        <p>{{ dish.price }} р.</p>
+                        <button>+ Добавить</button>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </main>
+
+        <!-- Корзина -->
+        <aside class="cart">
+            <h3>Корзина</h3>
+            <div class="cart-item">
+                <img src="images/dish1.jpg" alt="Dish">
+                <div class="cart-item-info">
+                    <p>Морепродукты в кисло-сладком соусе с ...</p>
+                    <span>16.50 р.</span>
+                    <div class="quantity">
+                        <button>-</button>
+                        <input value="1">
+                        <button>+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-item">
+                <img src="images/dish4.jpg" alt="Dish">
+                <div class="cart-item-info">
+                    <p>Морепродукты в кисло-сладком соусе с ...</p>
+                    <span>16.50 р.</span>
+                    <div class="quantity">
+                        <button>-</button>
+                        <input value="1">
+                        <button>+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-summary">
+                <p>Работа сервиса: 0.89 р.</p>
+                <button>Верно, к оплате: 17.39 р.</button>
+            </div>
+        </aside>
+    </div>
+
+{% endblock %}
