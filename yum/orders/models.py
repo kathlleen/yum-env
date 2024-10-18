@@ -18,13 +18,16 @@ class OrderitemQueryset(models.QuerySet):
 
 # Create your models here.
 class Order(models.Model):
-    user = models.ForeignKey(to=CustomUser, on_delete=models.SET_DEFAULT, blank=True, null=True, verbose_name="Покупатель", default=None)
+    customer = models.ForeignKey(to=CustomUser, on_delete=models.SET_DEFAULT, blank=True, null=True,
+                             verbose_name="Покупатель", default=None, related_name = "customer")
+    courier = models.ForeignKey(to=CustomUser, on_delete=models.SET_DEFAULT, blank=True, null=True,
+                                verbose_name="Курьер", default=None, related_name = "courier")
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата заказа")
     phone_number = models.CharField(max_length=20, verbose_name="Номер телефона")
     delivery_address = models.TextField(null=True, blank=True, verbose_name="Адрес")
-    payment_on_get = models.BooleanField(default=False, verbose_name="Доставка")
     is_paid = models.BooleanField(default=False, verbose_name="Оплачено")
     status = models.CharField(max_length=50, default='Процесс', verbose_name="Статус")
+    total_price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Сумма заказа", null=True, blank=True)
 
     class Meta:
         db_table = "order"

@@ -53,7 +53,7 @@
                 <div class="card-content">
                     <h3>{{ dish.name }}</h3>
                     <p>{{ dish.price }} р.</p>
-                    <a href="{% url 'cart:cart_add' %}" class="add-to-cart" data-dish-id="{{ dish.id }}">
+                    <a href="{% url 'cart:cart_add' dish.id %}" class="add-to-cart" data-dish-id="{{ dish.id }}">
                         {% csrf_token %}
                         <button class="btn">+ Добавить</button>
                     </a>

@@ -31,7 +31,7 @@ class Cart(models.Model):
     objects = CartQueryset().as_manager()
     def __str__(self): # перегружаем для отображения названия в бд
         if self.user:
-            return f'Корзина {self.user.username} | Блюдо {self.product.name} | Количество {self.quantity}'
-        return f'Корзина | Продукт {self.product.name} | Количество {self.quantity}'
+            return f'Корзина {self.user.username} | Блюдо {self.dish.name} | Количество {self.quantity}'
+        return f'Корзина | Продукт {self.dish.name} | Количество {self.quantity}'
     def product_price(self):
-        return self.product.price * self.quantity
+        return self.dish.price * self.quantity
