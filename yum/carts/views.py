@@ -12,7 +12,7 @@ from menu.models import Dish
 
 def cart_add(request, dish_id):
     # dish_id = request.POST.get("dish_id")
-    print(dish_id)
+    # print(dish_id)
     dish = Dish.objects.get(id=dish_id)
     # dish = get_object_or_404(Dish, pk=dish_id)
 
@@ -37,16 +37,17 @@ def cart_add(request, dish_id):
     #     else:
     #         Cart.objects.create(
     #             session_key=request.session.session_key, dish=dish, quantity=1)
-
-
+    #
+    #
     # user_cart = get_user_carts(request)
     # cart_items_html = render_to_string("includes/included_cart.html", {"carts": user_cart}, request=request)
-
+    #
     # response_data = {
     #     "cart_items_html": cart_items_html,
     # }
 
     return redirect(request.META['HTTP_REFERER'])
+    # return JsonResponse(response_data)
 
 
 def cart_change(request):
@@ -79,18 +80,19 @@ def cart_change(request):
     return JsonResponse(response_data)
 
 
-def cart_remove(request):
-    cart_id = request.POST.get("cart_id")
+def cart_remove(request, cart_id):
+    # cart_id = request.POST.get("cart_id")
     cart = Cart.objects.get(id=cart_id)
-    quantity = cart.quantity
+    # quantity = cart.quantity
     cart.delete()
 
-    user_cart = get_user_carts(request)
-    cart_items_html = render_to_string("includes/included_cart.html", {"carts": user_cart}, request=request)
+    # user_cart = get_user_carts(request)
+    # cart_items_html = render_to_string("includes/included_cart.html", {"carts": user_cart}, request=request)
+    #
+    # response_data = {
+    #     "cart_items_html": cart_items_html,
+    #     "quantity_deleted": quantity,
+    # }
 
-    response_data = {
-        "cart_items_html": cart_items_html,
-        "quantity_deleted": quantity,
-    }
-
-    return JsonResponse(response_data)
+    # return JsonResponse(response_data)
+    return redirect(request.META['HTTP_REFERER'])

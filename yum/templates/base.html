@@ -23,10 +23,14 @@
                     <input type="text" placeholder="Найти рестораны, блюдо">
                     <input type="text" placeholder="Укажите адрес доставки">
                 </div>
+                <div>
+                    <button style="margin-right: 20px;">Корзина</button>
+                    <a href="{% url 'main:about' %}">
+                        <button>Войти</button>
+                    </a>
+                </div>
 
-                <a href="{% url 'main:about' %}">
-                    <button>Войти</button>
-                </a>
+
             </nav>
             <hr class="line">
 

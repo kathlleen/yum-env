@@ -1,36 +1,34 @@
 {% load static %}
+{% load carts_tags %}
 
+{% user_carts request as carts %}
 
 <h3>Корзина</h3>
-<div class="cart-item">
-    <div class="image-container">
-        <img src="{% static 'images/dish1.jpg' %}" alt="Dish">
-    </div>
-    <div class="cart-item-info">
-        <p>Морепродукты в кисло-сладком соусе с ...</p>
-        <span>16.50 р.</span>
-        <div class="quantity">
-            <button>-</button>
-            <input value="1">
-            <button>+</button>
+<div class="cart-items">
+
+    {% for cart in carts %}
+    <div class="cart-item">
+        <div class="image-container">
+            <img src="{% static 'images/dish1.jpg' %}" alt="Dish">
         </div>
-    </div>
-</div>
-<div class="cart-item">
-    <div class="image-container">
-        <img src="{% static 'images/dish4.jpg' %}" alt="Dish">
-    </div>
         <div class="cart-item-info">
-        <p>Морепродукты в кисло-сладком соусе с ...</p>
-        <span>16.50 р.</span>
-        <div class="quantity">
-            <button>-</button>
-            <input value="1">
-            <button>+</button>
+            <p>{{ cart.dish.name }}</p>
+            <span>{{ cart.dish.price }} р.</span>
+
+            <div class="quantity">
+                <button>-</button>
+                <input value="{{ cart.quantity }}">
+                <button>+</button>
+            </div>
         </div>
+
+         <a href="{% url 'cart:cart_remove' cart.id %}" class = 'remove-from-cart'
+            style="color: white;" data-cart-id="{{ cart.id }}">×</a>
     </div>
-</div>
-<div class="cart-summary">
-    <p>Работа сервиса: 0.89 р.</p>
-    <button>Верно, к оплате: 17.39 р.</button>
+    {% endfor %}
+    <div class="cart-summary">
+        <p>Работа сервиса: {{ carts.courier_price }} р.</p>
+        <button>Верно, к оплате: {{ carts.total_price }} р.</button>
+    </div>
+
 </div>
