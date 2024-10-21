@@ -36,7 +36,7 @@ a {
 .background {
     position: relative;
     /* height: 110%; */
-    background-image: url('images/image.jpg'); /* Подставьте нужное изображение */
+    background-image: url('../images/image.jpg'); /* Подставьте нужное изображение */
     background-size: cover;
     background-position: top;
     background-repeat: no-repeat;
