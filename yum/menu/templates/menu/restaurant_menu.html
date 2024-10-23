@@ -15,20 +15,22 @@
         </a>
         <nav class="category-menu">
             <ul>
-                <li><a href="#">Фирменные блюда</a></li>
-                <li><a href="#">Стир-фрай</a></li>
-                <li><a href="#">Закуски</a></li>
-                <li><a href="#">Супы</a></li>
-                <li><a href="#">Вок</a></li>
-                <li><a href="#">Детское меню</a></li>
-                <li><a href="#">Десерты</a></li>
-                <li><a href="#">Напитки</a></li>
+                {% for category in categories %}
+                <li><a href="#{{ category.slug }}">{{ category.name }}</a></li>
+                {% endfor %}
+                <!--                <li><a href="#">Стир-фрай</a></li>-->
+                <!--                <li><a href="#">Закуски</a></li>-->
+                <!--                <li><a href="#">Супы</a></li>-->
+                <!--                <li><a href="#">Вок</a></li>-->
+                <!--                <li><a href="#">Детское меню</a></li>-->
+                <!--                <li><a href="#">Десерты</a></li>-->
+                <!--                <li><a href="#">Напитки</a></li>-->
             </ul>
         </nav>
     </aside>
 
     <!-- Центральная часть с меню ресторана -->
-    <main class="content">
+    <main class="main-rest-content">
         <div class="rest">
             <div class="rest-overlay"></div>
             <img src="{% static 'images/dish4.jpg' %}" alt="Завтрак" class="rest-img">
@@ -44,9 +46,9 @@
             </div>
         </div>
 
-        <h2>Фирменные блюда</h2>
+        {% for category, dishes in dishes_by_category.items %}
+        <h2 id="{{ category.slug }}">{{ category.name }}</h2>
         <div class="dish-cards">
-
             {% for dish in dishes %}
             <div class="card">
                 <img src="{% static 'images/dish1.jpg' %}">
@@ -61,14 +63,17 @@
                 </div>
             </div>
             {% endfor %}
-
         </div>
-    </main>
+        {% endfor %}
 
-    <!-- Корзина -->
-    <aside class="cart">
+</main>
+
+<!-- Корзина -->
+<aside class="cart">
+    <div id="cart-items-container">
         {% include "includes/included_cart.html" %}
-    </aside>
+    </div>
+</aside>
 </div>
 
 {% endblock %}

@@ -9,6 +9,8 @@ body, html {
     font-family: Arial, sans-serif;
     color: white;
     background-color: rgba(25, 25, 25, 1);
+
+    grid-template-rows: auto 1fr auto;
 }
 
 h1 {
@@ -17,6 +19,7 @@ h1 {
 
 h2 {
     margin-bottom: 20px;
+    margin-top: 20px;
     font-size: 32px;
 }
 
@@ -61,11 +64,21 @@ header h1 {
 }
 
 header input[type="text"] {
-    padding: 10px;
+    padding: 10px 20px 10px 20px;
     border-radius: 5px;
     border: none;
     margin: 0 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #666;
+    color: white;
 }
+
+header input[type="text"]::placeholder {
+    color: #aaa; /* Задайте желаемый цвет */
+    opacity: 1; /* Опционально: чтобы цвет был полностью видимым */
+}
+
 
 header button {
     padding: 10px 20px;
@@ -94,9 +107,10 @@ header button {
     grid-template-columns: 250px 1fr 300px;
     gap: 20px;
     padding: 20px;
+
 }
 
-aside, .content {
+aside, .main-rest-content {
     color: #fff;
     border-radius: 10px;
 }
@@ -104,10 +118,10 @@ aside, .content {
 aside {
     background-color: #2b2b2b;
     padding: 20px;
+    position: sticky;
 }
 
 .sidebar {
-    position: sticky;
     top: 20px;
     height: max-content;
 }
@@ -149,10 +163,7 @@ aside {
 }
 
 /* Контентная часть */
-.content {
-    overflow-y: auto; /* Делаем контентную часть прокручиваемой */
 
-}
 
 .dish-highlight {
     display: flex;
@@ -270,7 +281,6 @@ aside {
 
 /* Корзина */
 .cart {
-    position: sticky;
     top: 20px;
     height: max-content;
     padding: 20px;
@@ -351,6 +361,7 @@ aside {
 footer {
     background-color: #434242;
     height: 500px;
+
 }
 
 footer h2 {

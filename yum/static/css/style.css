@@ -81,16 +81,26 @@ header h1 {
 }
 
 header input[type="text"] {
-    padding: 10px;
+    padding: 10px 20px 10px 20px;
     border-radius: 5px;
     border: none;
     margin: 0 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #666;
+    color: white;
 }
+
+header input[type="text"]::placeholder {
+    color: #aaa; /* Задайте желаемый цвет */
+    opacity: 1; /* Опционально: чтобы цвет был полностью видимым */
+}
+
 
 header button {
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #666;
     color: white;
     cursor: pointer;
@@ -261,7 +271,7 @@ section {
     align-items: center;
 }
 
-.filters a:focus, a:active {
+.filters a:hover {
     background-color: #191919;
     padding: 10px;
     border-radius: 12px;

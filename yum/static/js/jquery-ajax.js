@@ -4,13 +4,11 @@ $(document).ready(function () {
         // Блокируем его базовое действие
         e.preventDefault();
         // Берем элемент счетчика в значке корзины и берем оттуда значение
-        var goodsInCartCount = $("#cart-count");
-        var cartCount = parseInt(goodsInCartCount.text() || 0);
+//        var goodsInCartCount = $("#cart-count");
+//        var cartCount = parseInt(goodsInCartCount.text() || 0);
 
         // Получаем id товара из атрибута data-product-id
-        var product_id = $(this).data("product-id");
-
-//        var product_id = 7;
+        var dish_id = $(this).data("dish-id");
 
         // Из атрибута href берем ссылку на контроллер django
         var add_to_cart_url = $(this).attr("href");
@@ -21,14 +19,14 @@ $(document).ready(function () {
             type: "POST",
             url: add_to_cart_url,
             data: {
-                product_id: product_id,
+                dish_id: dish_id,
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
             },
             success: function (data) {
 
                 // Увеличиваем количество товаров в корзине (отрисовка в шаблоне)
-                cartCount++;
-                goodsInCartCount.text(cartCount);
+//                cartCount++;
+//                goodsInCartCount.text(cartCount);
 
                 // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
                 var cartItemsContainer = $("#cart-items-container");
@@ -38,6 +36,8 @@ $(document).ready(function () {
         });
     });
 })
+
+
 
  // Ловим собыитие клика по кнопке удалить товар из корзины
 $(document).on("click", ".remove-from-cart", function (e) {
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
     document.addEventListener('DOMContentLoaded', function() {
-        const cartBtn = document.getElementById('cart-btn');
+        const cartBtn = document.getElementById('cart');
         const cartModal = document.getElementById('cartModal');
         const closeModal = document.getElementById('closeModal');
         const body = document.querySelector('body');

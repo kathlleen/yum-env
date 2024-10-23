@@ -12,6 +12,7 @@ from menu.models import Dish
 
 def cart_add(request, dish_id):
     # dish_id = request.POST.get("dish_id")
+    # dish_id = 5
     # print(dish_id)
     dish = Dish.objects.get(id=dish_id)
     # dish = get_object_or_404(Dish, pk=dish_id)
@@ -37,8 +38,8 @@ def cart_add(request, dish_id):
     #     else:
     #         Cart.objects.create(
     #             session_key=request.session.session_key, dish=dish, quantity=1)
-    #
-    #
+
+
     # user_cart = get_user_carts(request)
     # cart_items_html = render_to_string("includes/included_cart.html", {"carts": user_cart}, request=request)
     #
