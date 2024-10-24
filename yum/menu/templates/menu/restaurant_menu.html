@@ -56,8 +56,9 @@
                 <img src="{% static 'images/no-photo.jpg' %}" alt="Not found image">
                 {% endif %}
                 <div class="card-content">
-                    <h3>{{ dish.name }}</h3>
-                    <p>{{ dish.price }} р.</p>
+                    <h3>{{ dish.price }} p.</h3>
+                    <p class="truncate">{{ dish.name }}</p>
+                    <p>{{ dish.weight }} г</p>
                     <a href="{% url 'cart:cart_add' dish.id %}" class="add-to-cart" data-dish-id="{{ dish.id }}">
                         {% csrf_token %}
                         <button class="btn">+ Добавить</button>
