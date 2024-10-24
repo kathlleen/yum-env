@@ -30,6 +30,8 @@ class Dish(models.Model):
     category = models.ForeignKey(to=Categories, on_delete=models.CASCADE, verbose_name='Категория')
     restaurant = models.ForeignKey(to=Restaurans, blank=True, null=True, on_delete=models.CASCADE, related_name='restaurant', verbose_name='Ресторан')
 
+
+
     # on_delete бывает:
     # - PROTECT (самый безопастный, не дает удалять,
     # - CASCADE (удаляются и все товары, закрепленные за категорией (с предупреждением))

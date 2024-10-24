@@ -271,9 +271,9 @@
     <div class="rest-sect-title">
         <h2>Рестораны</h2>
         <div class="filters">
-            <a>Все</a>
+            <a href="{% url 'main:index' 'all' %}">Все</a>
             {% for category in sliced_categories %}
-            <a>{{ category.name }}</a>
+            <a href="{% url 'main:index' category.slug %}">{{ category.name }}</a>
             {% endfor %}
 
             <a>Сортировать </a>

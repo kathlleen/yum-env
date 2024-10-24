@@ -6,10 +6,15 @@ from menu.models import Categories
 
 
 # Create your views here.
-def index(request):
-	restaurans = Restaurans.objects.all()
+def index(request, category_slug='all'):
 	categories = Categories.objects.all()
 	sliced_categories = list(categories[:10])
+
+	if category_slug == 'all':
+		restaurans = Restaurans.objects.all()
+	else:
+		restaurans = Restaurans.objects.filter(restaurant__category__slug=category_slug).distinct()
+
 
 	context = {
 		'title' : "Главная страница | YUM",
