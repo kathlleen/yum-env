@@ -9,7 +9,11 @@
     {% for cart in carts %}
     <div class="cart-item">
         <div class="image-container">
-            <img src="{% static 'images/dish1.jpg' %}" alt="Dish">
+            {% if cart.dish.image %}
+            <img src="{{ cart.dish.image.url }}" alt="{{ cart.dish.name }}">
+            {% else %}
+            <img src="{% static 'images/no-photo.jpg' %}" alt="Not found image">
+            {% endif %}
         </div>
         <div class="cart-item-info">
             <p>{{ cart.dish.name }}</p>
@@ -22,8 +26,8 @@
             </div>
         </div>
 
-         <a href="{% url 'cart:cart_remove' cart.id %}" class = 'remove-from-cart'
-            style="color: white;" data-cart-id="{{ cart.id }}">×</a>
+        <a href="{% url 'cart:cart_remove' cart.id %}" class='remove-from-cart'
+           style="color: white;" data-cart-id="{{ cart.id }}">×</a>
     </div>
     {% endfor %}
     <div class="cart-summary">

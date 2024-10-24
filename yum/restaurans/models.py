@@ -22,7 +22,7 @@ class Restaurans(models.Model):
     address = models.TextField(null=True, blank=True, verbose_name="Адрес")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     phone_number = models.CharField(null=True, blank=True, max_length=20, verbose_name="Контактный телефон")
-    image = models.ImageField(upload_to='users_images', blank=True, null=True, verbose_name='Изображение')
+    image = models.ImageField(upload_to='restaurants_images', blank=True, null=True, verbose_name='Изображение')
     owner = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE, related_name='restaurant', verbose_name='Админ')
     cuisine = models.ForeignKey(to=Cuisine, blank=True, on_delete=models.SET_NULL, null=True, verbose_name="Кухня")
 

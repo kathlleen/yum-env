@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
     )
 
     role = models.CharField(max_length=20, choices=USER_ROLES, default='customer')
+    image = models.ImageField(upload_to='users_images', blank=True, null=True, verbose_name='Изображение')
 
     def is_customer(self):
         return self.role == 'customer'
