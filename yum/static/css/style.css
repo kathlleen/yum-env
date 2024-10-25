@@ -34,6 +34,10 @@ a {
     color: white;
 }
 
+button:hover {
+    background-color: #424242;
+}
+
 .background {
     position: relative;
     /* height: 110%; */

@@ -39,6 +39,10 @@ a {
     text-decoration: none;
 }
 
+button:hover {
+    background-color: #424242;
+}
+
 .truncate {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -389,6 +393,8 @@ aside {
     margin-left: auto;
     padding-left: 10px;
 }
+
+/* Footer */
 
 footer {
     background-color: #434242;
