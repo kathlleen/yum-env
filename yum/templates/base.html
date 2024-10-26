@@ -23,17 +23,23 @@
                     <input type="text" placeholder="Найти рестораны, блюдо">
                     <input type="text" placeholder="Укажите адрес доставки">
                 </div>
-                <div>
+                <div class="nav-right">
                     {% if user.is_authenticated %}
                     {% if user.is_superuser %}
-                    <button style="margin-right: 20px;" class="dropbtn">Зарегестрировать</button>
-<!--                    <ul class="dropdown-content">-->
-<!--                        <li><a href="{% url 'users:register_courier' %}">Курьера</a></li>-->
-<!--                        <li><a href="{% url 'users:register_restaurant_admin' %}">Администратора</a></li>-->
-<!--                    </ul>-->
+                    <div class="dropdown">
+
+                        <button class="dropbtn">Зарегестрировать</button>
+                        <ul class="dropdown-content">
+                            <li><a href="{% url 'users:register_courier' %}">Курьера</a></li>
+                            <hr>
+                            <li><a href="{% url 'users:register_restaurant_admin' %}">Администратора</a></li>
+                        </ul>
+                    </div>
                     {% endif %}
                     {% endif %}
-                    <button style="margin-right: 20px;">Корзина</button>
+
+
+                    <button>Корзина</button>
                     <a href="{% url 'users:login' %}">
                         <button>Войти</button>
                     </a>

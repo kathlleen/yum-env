@@ -54,7 +54,7 @@ def register_customer(request):
 
 
     context = {
-        'title' : "Registration",
+        'title' : "Регистрация",
         'form' : form,
         'url': 'users:register_customer'
     }
@@ -75,7 +75,7 @@ def register_restaurant_admin(request):
         form = RestaurantAdminRegistrationForm()
 
     context = {
-        'title': "Registration restaurant admin",
+        'title': "Регистрация администратора ресторана",
         'form': form,
         'url' : 'users:register_restaurant_admin'
     }
@@ -95,7 +95,7 @@ def register_courier(request):
         form = CourierRegistrationForm()
 
     context = {
-        'title': "Registration courier",
+        'title': "Регистрация курьера",
         'form': form,
         'url': 'users:register_courier'
     }
