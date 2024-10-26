@@ -1,42 +1,5 @@
 /* Основные стили */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-body, html {
-    height: 100%;
-    font-family: Arial, sans-serif;
-    color: white;
-    background-color: #191919;
-}
-
-h2 {
-    margin-bottom: 20px;
-    font-size: 32px;
-}
-
-h3 {
-    font-size: 20px;
-    z-index: 2;
-
-}
-
-h4 {
-    font-size: 16px;
-}
-
-a {
-    font-size: 15px;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
-}
-
-button:hover {
-    background-color: #424242;
-}
 
 .background {
     position: relative;
@@ -63,66 +26,10 @@ button:hover {
     color: white;
 }
 
-header {
-    padding: 20px;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-left {
-
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-header h1 {
-    font-size: 36px;
-    color: #64FF8F;
-}
-
-header input[type="text"] {
-    padding: 10px 20px 10px 20px;
-    border-radius: 5px;
-    border: none;
-    margin: 0 10px;
-    border: none;
-    border-radius: 10px;
-    background-color: #666;
-    color: white;
-}
-
-header input[type="text"]::placeholder {
-    color: #aaa; /* Задайте желаемый цвет */
-    opacity: 1; /* Опционально: чтобы цвет был полностью видимым */
-}
-
-
-header button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    background-color: #666;
-    color: white;
-    cursor: pointer;
-}
 
 /* Стили для остального контента */
 
-.line {
-    position: absolute;
-    left: 0;
-    right: 0;
-    border: none;
-    height: 1px; /* Толщина линии */
-    background-color: #737373; /* Цвет линии */
-    top: 85px; /* Положение сверху окна */
-    z-index: 1; /* Чтобы линия была видима поверх контента */
-}
+
 
 section {
     display: flex;
@@ -289,15 +196,5 @@ section {
     gap: 20px; /* Отступы между карточками */
     row-gap: 35px;
 }
-
-footer {
-    background-color: #434242;
-    height: 500px;
-}
-
-footer h2 {
-    color:#64FF8F;
-}
-
 
 

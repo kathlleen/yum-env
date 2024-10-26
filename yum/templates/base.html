@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     {% block static_css %}
     {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/main-styles.css' %}">
     <title>{{ title }}</title>
 </head>
 <body>
@@ -24,9 +25,13 @@
                 </div>
                 <div>
                     {% if user.is_authenticated %}
-                        {% if user.is_superuser %}
-                            <button style="margin-right: 20px;">Зарегестрировать</button>
-                        {% endif %}
+                    {% if user.is_superuser %}
+                    <button style="margin-right: 20px;" class="dropbtn">Зарегестрировать</button>
+<!--                    <ul class="dropdown-content">-->
+<!--                        <li><a href="{% url 'users:register_courier' %}">Курьера</a></li>-->
+<!--                        <li><a href="{% url 'users:register_restaurant_admin' %}">Администратора</a></li>-->
+<!--                    </ul>-->
+                    {% endif %}
                     {% endif %}
                     <button style="margin-right: 20px;">Корзина</button>
                     <a href="{% url 'users:login' %}">
