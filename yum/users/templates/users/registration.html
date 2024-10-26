@@ -44,7 +44,7 @@
                     <div class="form-group">
                         <label for="id_email">Почта</label>
                         <input type="email" id="email" name="email" placeholder="Enter your email"
-                               value="{% if form.email.value %}{{form.email.value}}{% endif %}" >
+                               value="{% if form.email.value %}{{form.email.value}}{% endif %}">
                         {% if form.email.errors %}
                         <p>{{form.email.errors}}</p>
                         {% endif %}

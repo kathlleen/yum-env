@@ -8,6 +8,8 @@ from users.forms import UserLoginForm, CustomerRegistrationForm, RestaurantAdmin
 
 from users.models import CustomUser
 
+from carts.models import Cart
+
 
 # Create your views here.
 def login(request):
@@ -18,6 +20,8 @@ def login(request):
             password = request.POST['password']
             user = auth.authenticate(username=username, password=password)
 
+            session_key = request.session.session_key
+
             if user:
                 auth.login(request, user)
 
@@ -25,6 +29,8 @@ def login(request):
                     restaurant = user.restaurant  # Получаем ресторан, которым управляет админ
                     return render(request, 'restaurans/restaurant_dashboard.html', {'restaurant': restaurant})
 
+                if session_key:
+                    Cart.objects.filter(session_key=session_key).update(user=user)
 
                 return HttpResponseRedirect(reverse('main:index'))
 
@@ -45,8 +51,13 @@ def register_customer(request):
         if form.is_valid():
             form.save()
 
+            session_key = request.session.session_key
+
             user = form.instance
             auth.login(request, user)
+
+            if session_key:
+                Cart.objects.filter(session_key=session_key).update(user=user)
 
             return HttpResponseRedirect(reverse('main:index'))
     else:
@@ -100,3 +111,8 @@ def register_courier(request):
         'url': 'users:register_courier'
     }
     return render(request, 'users/registration.html', context)
+
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect(reverse('main:index'))

@@ -27,17 +27,17 @@ def cart_add(request, dish_id):
         else:
             Cart.objects.create(user=request.user, dish=dish, quantity=1)
 
-    # else:
-    #     carts = Cart.objects.filter(
-    #         session_key=request.session.session_key, dish=dish)
-    #     if carts.exists():
-    #         cart = carts.first()
-    #         if cart:
-    #             cart.quantity += 1
-    #             cart.save()
-    #     else:
-    #         Cart.objects.create(
-    #             session_key=request.session.session_key, dish=dish, quantity=1)
+    else:
+        carts = Cart.objects.filter(
+            session_key=request.session.session_key, dish=dish)
+        if carts.exists():
+            cart = carts.first()
+            if cart:
+                cart.quantity += 1
+                cart.save()
+        else:
+            Cart.objects.create(
+                session_key=request.session.session_key, dish=dish, quantity=1)
 
 
     # user_cart = get_user_carts(request)

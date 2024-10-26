@@ -108,7 +108,5 @@ h2 {
 .register-links {
     display: flex;
     justify-content: flex-start;
-}
-
-
+    color: black;
 }
