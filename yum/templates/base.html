@@ -23,6 +23,11 @@
                     <input type="text" placeholder="Укажите адрес доставки">
                 </div>
                 <div>
+                    {% if user.is_authenticated %}
+                        {% if user.is_superuser %}
+                            <button style="margin-right: 20px;">Зарегестрировать</button>
+                        {% endif %}
+                    {% endif %}
                     <button style="margin-right: 20px;">Корзина</button>
                     <a href="{% url 'users:login' %}">
                         <button>Войти</button>

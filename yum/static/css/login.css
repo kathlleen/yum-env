@@ -133,9 +133,12 @@ header button {
 /* Стили для остального контента */
 
 .registration {
+    display: flex;
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
     width: 100%;
-    height: 90vh;
-    padding: 10%;
+    height: 90vh; /* Занимаем всю высоту окна */
+    padding: 0; /* Убираем отступы, если они мешают центрированию */
 }
 
 .registration-container {
@@ -143,13 +146,8 @@ header button {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
     width: 100%;
-    max-width: 400px;
-
-    margin-right: auto;
-    margin-left: auto;
-
+    max-width: 500px;
     color: #434242;
 }
 
@@ -160,6 +158,12 @@ h2 {
 
 .registration-form .form-group {
     margin-bottom: 15px;
+}
+
+.form-big-group {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 
 
