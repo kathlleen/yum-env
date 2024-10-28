@@ -10,6 +10,7 @@ class Promotion(models.Model):
     description = models.TextField(max_length=200, verbose_name="Описание акции")
     start_time = models.DateTimeField(auto_now_add=True, verbose_name="Дата начала акции")
     end_time = models.DateTimeField(auto_now_add=True, verbose_name="Дата конца акции")
+    image = models.ImageField(upload_to='promotion_images', blank=True, null=True, verbose_name='Изображение')
 
     class Meta:
         db_table = "promotion"
