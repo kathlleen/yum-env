@@ -36,3 +36,95 @@
     </div>
 
 </div>
+
+<style>
+    .cart {
+    top: 20px;
+    height: max-content;
+    padding: 20px;
+}
+
+.cart-item {
+    display: flex;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.image-container {
+    width: 100px;
+    height: 80px;
+    position: relative;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+.cart-item img {
+    position: absolute; /* Абсолютное позиционирование */
+    top: 0;
+    left: 0;
+    width: 100%; /* Растягиваем по ширине контейнера */
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.cart-item-info {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cart-item-info button {
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
+    border: none;
+
+}
+
+.cart-item input {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    border: none;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+}
+
+.quantity button, .quantity input {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.cart-summary {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+.cart-summary button {
+    height: 40px;
+    border: none;
+    width: 100%;
+    border-radius: 8px;
+
+    background-color: #D9D9D9;
+    font-size: 16px;
+    font-weight: bolder;
+
+}
+
+.remove-from-cart {
+    margin-left: auto;
+    padding-left: 10px;
+}
+
+
+</style>

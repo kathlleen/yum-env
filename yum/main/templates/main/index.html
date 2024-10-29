@@ -15,21 +15,23 @@
         </div>
 
         {% for promotion in promotions %}
-        <a href="{% url 'menu:restaurans_menu' promotion.restaurant.slug %}">
-            <div class="card">
-                <div class="card-overlay"></div>
-                <img src="{{ promotion.image.url }}" alt="Завтрак" class="card-img">
-                <div class="card-content">
-                    <h3>{{ promotion.name }}</h2>
-                </div>
+        <div class="card promotion-card" data-promo-id='{{ promotion.id }}'>
+            <div class="card-overlay"></div>
+            <img src="{{ promotion.image.url }}" alt="Завтрак" class="card-img">
+            <div class="card-content">
+                <h3>{{ promotion.name }}</h3>
             </div>
-        </a>
+        </div>
+        <!--        </a>-->
         {% endfor %}
         <div class="arrow a-right">
             <p> → </p>
         </div>
     </div>
 </section>
+
+
+{% include 'includes/modal_base.html' %}
 
 <!--<section class="rating-sect">
     <h2>Высокий рестинг</h2>

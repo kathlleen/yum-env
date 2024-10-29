@@ -184,6 +184,8 @@ aside {
     flex-direction: column; /* Выстраиваем элементы по вертикали */
     justify-content: space-between; /* Убедимся, что кнопка расположена внизу */
     gap: 10px;
+
+    cursor: pointer;
 }
 
 .card button {

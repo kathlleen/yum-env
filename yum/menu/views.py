@@ -27,5 +27,9 @@ def menu(request, restaurant_slug):
 
     return render(request, 'menu/restaurant_menu.html', context)
 
-def dish(request):
-    pass
+def dish_detail(request, restaurant_slug, dish_id):
+    # Получаем блюдо по ID
+    dish = get_object_or_404(Dish, id=dish_id)  # Проверка на наличие блюда
+    return render(request, 'includes/modal_dish.html', {'dish': dish, 'content_type': 'dish'})
+
+
