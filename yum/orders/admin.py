@@ -1,29 +1,41 @@
 from django.contrib import admin
 
-from orders.models import OrderItem, Order
-
+from orders.models import Order, OrderItem
 
 # Register your models here.
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
-    fields = [
-        'user',
-        'phone_number',
-        'delivery_address',
-        'slug',
-        'payment_on_get',
-        'is_paid',
-        'status',
-        'created_timestamp',
-    ]
+
+
+class OrderItemTabulareAdmin(admin.TabularInline):
+    model = OrderItem
+    fields = 'dish', 'name', 'price', 'quantity'
+    search_fields = (
+        "dish",
+        'name',
+    )
+    extra=0
+
+
+
+class OrderTabulareAdmin(admin.TabularInline):
+    model = Order
+    fields = ('status', 'payment_on_get', 'is_paid', 'created_timestamp')
+    search_fields = ('payment_on_get', 'is_paid', 'created_timestamp')
+
+    readonly_fields = ("created_timestamp", )
+    extra=0
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    fields = [
-        'order',
-        'dish',
-        'name',
-        'price',
-        'quantity',
-        'created_timestamp',
-    ]
+    list_display = ['order', 'dish', 'name', 'quantity', 'price']
+    search_fields = ['order', 'name', 'dish']
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'customer','status', 'payment_on_get', 'is_paid', 'created_timestamp']
+    search_fields = ['id']
+    readonly_fields = ["created_timestamp"]
+    list_filter = ['status', 'payment_on_get', 'is_paid']
+    inlines = (OrderItemTabulareAdmin, )
+
+

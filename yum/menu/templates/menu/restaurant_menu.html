@@ -55,10 +55,12 @@
                 {% else %}
                 <img src="{% static 'images/no-photo.jpg' %}" alt="Not found image">
                 {% endif %}
-                <div class="card-content dish-card" data-dish-id="{{ dish.id }}">
-                    <h3>{{ dish.price }} p.</h3>
-                    <p class="truncate">{{ dish.name }}</p>
-                    <p>{{ dish.weight }} г</p>
+                <div class="card-content">
+                    <div class=" dish-card" data-dish-id="{{ dish.id }}" style="display: flex; flex-direction:column; gap:10px;">
+                        <h3>{{ dish.price }} p.</h3>
+                        <p class="truncate">{{ dish.name }}</p>
+                        <p>{{ dish.weight }} г</p>
+                    </div>
                     <a href="{% url 'cart:cart_add' dish.id %}" class="add-to-cart" data-dish-id="{{ dish.id }}">
                         {% csrf_token %}
                         <button class="btn">+ Добавить</button>
