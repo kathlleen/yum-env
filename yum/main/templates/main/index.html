@@ -10,9 +10,9 @@
 <section class="promotions-sect">
     <h2>Акции</h2>
     <div class="promotions">
-        <div class="arrow a-left">
-            <p> ← </p>
-        </div>
+<!--        <div class="arrow a-left">-->
+<!--            <p> ← </p>-->
+<!--        </div>-->
 
         {% for promotion in promotions %}
         <div class="card promotion-card" data-promo-id='{{ promotion.id }}'>
@@ -22,11 +22,11 @@
                 <h3>{{ promotion.name }}</h3>
             </div>
         </div>
-        <!--        </a>-->
+
         {% endfor %}
-        <div class="arrow a-right">
-            <p> → </p>
-        </div>
+<!--        <div class="arrow a-right">-->
+<!--            <p> → </p>-->
+<!--        </div>-->
     </div>
 </section>
 
@@ -247,6 +247,8 @@
 </section>
 
 </div>
+
+
 </div>
 
 <section class="restaurans">

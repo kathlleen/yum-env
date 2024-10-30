@@ -32,8 +32,9 @@
     {% endfor %}
 
     <div class="cart-summary">
-        <p>Работа сервиса: {{ carts.courier_price }} р.</p>
+
         {% if carts and not order %}
+            <p>Работа сервиса: {{ carts.courier_price }} р.</p>
             {% if user.is_authenticated %}
             <a href="{% url 'orders:create_order' %}">
                 <button>Верно, к оплате: {{ carts.total_price }} р.</button>
@@ -43,6 +44,8 @@
                 <button>Верно, к оплате: {{ carts.total_price }} р.</button>
             </a>
             {% endif %}
+        {% else %}
+            <p>Пока что тут ничего нет &#128577</p>
         {% endif %}
     </div>
 
@@ -137,6 +140,7 @@
     margin-left: auto;
     padding-left: 10px;
 }
+
 
 
 

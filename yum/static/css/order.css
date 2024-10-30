@@ -1,5 +1,4 @@
 
-
 .background {
     position: relative;
     /* height: 110%; */
@@ -25,26 +24,26 @@
     color: white;
 }
 
-/* Стили для остального контента */
-
-.registration {
+.order {
     display: flex;
     justify-content: center; /* Горизонтальное центрирование */
     align-items: center; /* Вертикальное центрирование */
     width: 100%;
-    height: 90vh; /* Занимаем всю высоту окна */
+    height: 100vh; /* Занимаем всю высоту окна */
     padding: 0; /* Убираем отступы, если они мешают центрированию */
 }
 
-.registration-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 30px;
+.order-container {
+    background-color: #fff;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 500px;
-    color: white;
+
+    margin-right: auto;
+    margin-left: auto;
+    color: black;
 }
 
 h2 {
@@ -52,66 +51,40 @@ h2 {
     margin-bottom: 20px;
 }
 
-a {
-    color: white;
-    text-decoration: underline;
-}
-.registration-form .form-group {
-    margin-bottom: 15px;
+.details {
+    margin-top: 20px;
+    border-radius: 10px;
+    border:1px solid gray;
+    padding: 20px;
 }
 
-.form-big-group {
+.details h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.order-form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    margin-bottom: 20px;
     gap: 20px;
 }
 
-
-.registration-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
 }
 
-.registration-form input[type="text"],
-.registration-form input[type="email"],
-.registration-form input[type="password"] {
+.btn {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-.registration-form input[type="text"]:focus,
-.registration-form input[type="email"]:focus,
-.registration-form input[type="password"]:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-.register-btn {
-    width: 100%;
-    height: 50px;
+    height: 40px;
     background-color: #434242;
     color: white;
     border-radius: 5px;
     border: none;
 
     font-size: 14px;
-    margin-top: 20px;
     cursor:pointer;
-}
-
-
-.register-links a {
-    font-size: 16px;
-    text-decoration: underline;
-}
-
-.register-links {
-    display: flex;
-    justify-content: flex-start;
-    color: black;
 }
