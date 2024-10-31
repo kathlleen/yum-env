@@ -184,10 +184,15 @@ section {
 }
 
 .filters a:hover {
-    background-color: #191919;
+
+}
+
+.filters a.active {
+    background-color: #191919; /* Цвет фона для активной ссылки */
     padding: 10px;
     border-radius: 12px;
 }
+
 
 .restaurans-cards {
     margin-top: 30px;

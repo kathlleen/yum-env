@@ -1,20 +1,33 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const filters = document.querySelectorAll('.filters a');
+$(document).ready(() => {
+    const filters = $('.filters a');
 
-    filters.forEach(filter => {
-        filter.addEventListener('click', (event) => {
-            event.preventDefault();
-            const categorySlug = filter.getAttribute('href').split('/').pop();  // Извлекаем slug из ссылки
+    filters.on('click', function(event) {
+        event.preventDefault();
 
-            fetch(`/filter_restaurants/${categorySlug}/`)  // Путь должен совпадать с URL-адресом эндпоинта
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelector('.restaurants-cards').innerHTML = data.html;
-                })
-                .catch(error => console.error('Ошибка:', error));
-        });
+        // Удалите класс 'active' у всех ссылок
+        filters.removeClass('active');
+
+        // Добавьте класс 'active' к текущей ссылке
+        $(this).addClass('active');
+
+        const url = $(this).attr('href');  // Получаем URL из href ссылки
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const restaurantList = $('#restaurants-list');
+                restaurantList.html(data.html);  // Вставляем как HTML-контент
+                console.log("Контент обновлен:", data.html);
+            })
+            .catch(error => console.error('Ошибка:', error));
     });
 });
+
 
 
 

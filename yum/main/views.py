@@ -21,22 +21,24 @@ def index(request, category_slug='all'):
 	promotions = Promotion.objects.all()
 
 	context = {
-		'title' : "Главная страница | YUM",
-		'restaurans' : restaurans,
-		'categories' : categories,
+		'title': "Главная страница | YUM",
+		'restaurans': restaurans,
+		'categories': categories,
 		'sliced_categories': sliced_categories,
-		'promotions' : promotions,
+		'promotions': promotions,
 	}
 	return render(request, 'main/index.html', context)
 
-def filter_restaurants(request, category_slug='all'):
-	if category_slug == 'all':
-		restaurants = Restaurans.objects.all()
-	else:
-		restaurants = Restaurans.objects.filter(restaurant__category__slug=category_slug).distinct()
-	html = render(request, 'main/partials/restaurants_list.html', {'restaurants': restaurants}).content.decode('utf-8')
-	return JsonResponse({'html': html})
 
+def filter_restaurants(request, category_slug):
+	if category_slug == 'all':
+		restaurans = Restaurans.objects.all()
+	else:
+		restaurans = Restaurans.objects.filter(restaurant__category__slug=category_slug).distinct()
+
+	# Рендерим только частичку HTML с ресторанами
+	html = render(request, 'includes/restaurants_list.html', {'restaurans': restaurans}).content.decode('utf-8')
+	return JsonResponse({'html': html})
 
 def about(request):
 	context = {
