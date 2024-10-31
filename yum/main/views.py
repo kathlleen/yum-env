@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 
 from restaurans.models import Restaurans
@@ -27,6 +28,15 @@ def index(request, category_slug='all'):
 		'promotions' : promotions,
 	}
 	return render(request, 'main/index.html', context)
+
+def filter_restaurants(request, category_slug='all'):
+	if category_slug == 'all':
+		restaurants = Restaurans.objects.all()
+	else:
+		restaurants = Restaurans.objects.filter(restaurant__category__slug=category_slug).distinct()
+	html = render(request, 'main/partials/restaurants_list.html', {'restaurants': restaurants}).content.decode('utf-8')
+	return JsonResponse({'html': html})
+
 
 def about(request):
 	context = {

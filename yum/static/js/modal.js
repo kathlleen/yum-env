@@ -10,11 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(html => {
                 document.getElementById('modalContent').innerHTML = html;
                 document.getElementById('universalModal').style.display = 'flex';
+//                document.getElementById('universalModal').style.overflow-y = 'hidden';
                 const closeButton = document.querySelector('.close-btn');
 
                 if (closeButton) {
                     closeButton.addEventListener('click', function() {
                         document.getElementById('universalModal').style.display = 'none';
+//                        document.getElementById('universalModal').style.overflow-y = 'auto';
                         document.getElementById('modalContent').innerHTML = ''; // Очищаем контент
                     });
                 }

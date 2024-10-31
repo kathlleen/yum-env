@@ -156,7 +156,6 @@ header button {
 /* Показываем меню при наведении курсора */
 .dropdown:hover .dropdown-content {
     display: block;
-    margin-top: 5px;
     z-index: 2;
 }
 

@@ -44,7 +44,6 @@ def login(request):
     return render(request, 'users/login.html',context)
 
 
-
 def register_customer(request):
     if request.method == "POST":
         form = CustomerRegistrationForm(data=request.POST)

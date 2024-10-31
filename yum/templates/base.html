@@ -40,8 +40,10 @@
                     {% endif %}
                     {% endif %}
 
-
+                    {% if not order %}
                     <button id="open-cart">Корзина</button>
+                    {% endif %}
+
 
                     {% if user.is_authenticated %}
                     <a href="{% url 'users:logout' %}">
