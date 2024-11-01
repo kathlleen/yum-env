@@ -77,8 +77,8 @@ $(document).on("click", ".remove-from-cart", function (e) {
     // Блокируем его базовое действие
     e.preventDefault();
     // Берем элемент счетчика в значке корзины и берем оттуда значение
-    var goodsInCartCount = $("#cart-count");
-    var cartCount = parseInt(goodsInCartCount.text() || 0);
+//    var goodsInCartCount = $("#cart-count");
+//    var cartCount = parseInt(goodsInCartCount.text() || 0);
     // Получаем id корзины из атрибута data-cart-id
     var cart_id = $(this).data("cart-id");
     // Из атрибута href берем ссылку на контроллер django
@@ -94,8 +94,8 @@ $(document).on("click", ".remove-from-cart", function (e) {
         success: function (data) {
 
             // Уменьшаем количество товаров в корзине (отрисовка)
-            cartCount -= data.quantity_deleted;
-            goodsInCartCount.text(cartCount);
+//            cartCount -= data.quantity_deleted;
+//            goodsInCartCount.text(cartCount);
             // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
             var cartItemsContainer = $("#cart-items-container");
             cartItemsContainer.html(data.cart_items_html);
@@ -153,10 +153,10 @@ function updateCart(cartID, quantity, change, url) {
         },
         success: function (data) {
             // Изменяем количество товаров в корзине
-            var goodsInCartCount = $("#cart-count");
-            var cartCount = parseInt(goodsInCartCount.text() || 0);
-            cartCount += change;
-            goodsInCartCount.text(cartCount);
+//            var goodsInCartCount = $("#cart-count");
+//            var cartCount = parseInt(goodsInCartCount.text() || 0);
+//            cartCount += change;
+//            goodsInCartCount.text(cartCount);
             // Меняем содержимое корзины
             var cartItemsContainer = $("#cart-items-container");
             cartItemsContainer.html(data.cart_items_html);

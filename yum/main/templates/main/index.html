@@ -15,7 +15,7 @@
 <!--        </div>-->
 
         {% for promotion in promotions %}
-        <div class="card promotion-card" data-promo-id='{{ promotion.id }}'>
+        <div class="card promotion-card" style="cursor: pointer;" data-promo-id='{{ promotion.id }}'>
             <div class="card-overlay"></div>
             <img src="{{ promotion.image.url }}" alt="Завтрак" class="card-img">
             <div class="card-content">
