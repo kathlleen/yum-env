@@ -20,13 +20,18 @@
             <nav>
                 <div class="nav-left">
                     <a href="{% url 'main:index' %}"><h1>YUM</h1></a>
-                    <input type="text" placeholder="Найти рестораны, блюдо">
+
+                    <form role="search" action="{% url 'main:search' %}" method='get'>
+                        <input type="text" placeholder="Найти рестораны, блюдо" name="q">
+                    </form>
+
+
                     <input type="text" placeholder="Укажите адрес доставки">
                 </div>
                 <div class="nav-right">
                     {% if user.is_authenticated %}
                     {% if user.is_superuser %}
-                     <a href="{% url 'admin:index' %}">
+                    <a href="{% url 'admin:index' %}">
                         <button>Админ панель</button>
                     </a>
                     <div class="dropdown">

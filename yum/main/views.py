@@ -1,11 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-
 from restaurans.models import Restaurans
-
 from menu.models import Categories
-
 from promotions.models import Promotion
+from main.utils import q_search
 
 
 # Create your views here.
@@ -13,7 +11,13 @@ def index(request, category_slug='all'):
 	categories = Categories.objects.all()
 	sliced_categories = list(categories[:10])
 
-	if category_slug == 'all':
+	query = request.GET.get('q', None)
+	print(query)
+
+	if query:
+		restaurans = q_search(query)
+		print(restaurans)
+	elif category_slug == 'all':
 		restaurans = Restaurans.objects.all()
 	else:
 		restaurans = Restaurans.objects.filter(restaurant__category__slug=category_slug).distinct()
