@@ -1,0 +1,282 @@
+
+.container {
+    color: black;
+}
+
+/* Изменяем фон при наведении на ссылку в dropdown */
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+
+    border-radius: 5px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.user-details {
+    flex-grow: 1;
+}
+
+.edit-form {
+    display: none;
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.page-title {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.title-block p {
+    color: white;
+}
+
+.title-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 25px;
+    padding-top: 40px;
+
+}
+
+.btn {
+    width: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    min-width: 100px;
+    height: 40px;
+    background-color: #373737;
+    color: white;
+    border-radius: 5px;
+    border: none;
+
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+
+    cursor:pointer;
+}
+
+
+.details-btn {
+    width: auto;
+    padding-right: 22px;
+    padding-left: 22px;
+    height: 40px;
+    background-color: #373737;
+    color: white;
+    border-radius: 5px;
+    border: none;
+
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+
+    cursor:pointer;
+}
+
+footer {
+    margin-top: 100px;
+    background-color: #373737;
+    height: auto;
+    color: white;
+    padding: 90px;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);;
+    width: 90%;
+    justify-content: center;
+    justify-items: center;
+    column-gap: 30px;
+    row-gap: 40px;
+    margin: 0 auto;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contacts {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.contacts-media {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+footer p {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+footer ul {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+footer a {
+    color: white;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16.41px;
+
+}
+
+.download {
+    width: 170px;
+    height: 40px;
+    border-radius: 5px;
+
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    width: 80%;
+}
+
+.profile-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.user-details h2 {
+    margin: 0;
+}
+
+.user-details p {
+    margin: 5px 0;
+}
+
+.edit-btn {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+
+.cart, .orders {
+    margin-top: 20px;
+}
+
+.cart h3, .orders h3 {
+    margin-bottom: 15px;
+}
+
+.cart-items, .order-details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cart-item, .order-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.checkout-btn, .toggle-details-btn {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover, .toggle-details-btn:hover {
+    background-color: #218838;
+}
+
+.order {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.order-details {
+    display: none;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 4px;
+}

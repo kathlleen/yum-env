@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+{% load cache %}
+
+{% block static_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}"/>{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="profile-container">
+        <!-- Блок информации о пользователе -->
+        <div class="user-info">
+            {% if user.image %}
+            <img src="{{ user.image.url }}" alt="Аватар пользователя" class="avatar">
+            {% else %}
+            <img src="{% static 'images/avatar1.jpg' %}" alt="Аватар пользователя" class="avatar">
+            {% endif %}
+            <div class="user-details">
+                <h2>{{form.username.value}}</h2>
+                <p>{{form.first_name.value}} {{form.last_name.value}}</p>
+                {% if form.email.value %}
+                <p>Email: {{form.email.value}}</p>
+                {% endif %}
+                <button class="btn">Редактировать профиль</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок формы редактирования (скрытый по умолчанию) -->
+    <div class="profile-container edit-form" style="display: none;">
+        <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_image">Изменить аватар:</label>
+                <input type="file" id="id_image" accept="image/*" name="image">
+                {% if form.image.errors %}
+                <p>{{form.image.errors}}</p>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_username">Имя пользователя:</label>
+                <input type="text" id="id_username" name="username"
+                       value="{{ form.username.value }}"
+                       required>
+                {% if form.username.errors %}
+                <p>{{form.username.errors}}</p>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_first_name">Имя:</label>
+                <input type="text" id="id_first_name" name="first_name"
+                       value="{{ form.first_name.value }}"
+                       required>
+                {% if form.first_name.errors %}
+                <p>{{form.first_name.errors}}</p>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_last_name">Фамилия:</label>
+                <input type="text" id="id_last_name" name="last_name"
+                       value="{{ form.last_name.value }}"
+                       required>
+                {% if form.last_name.errors %}
+                <p>{{form.last_name.errors}}</p>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                <input type="email" id="id_email" name="email"
+                       value="{{ form.email.value }}"
+                       required>
+                {% if form.email.errors %}
+                <p>{{form.email.errors}}</p>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn">Сохранить изменения</button>
+        </form>
+
+    </div>
+
+    <!-- Блок корзины -->
+    <div class="profile-container">
+        <div id="cart-items-container">
+            {% include "includes/included_cart.html" %}
+        </div>
+    </div>
+
+    <!-- Блок заказов -->
+
+<!--    {% cache 60 user_orders user.id %}-->
+    <div class="profile-container">
+        <div class="orders">
+            <h3>Заказы</h3>
+            {% for order in orders %}
+            <div class="order">
+                <div class="order-header">
+                    <p>Заказ #{{ order.id }}</p>
+                    <p>Статус: {{ order.status }}</p>
+                    <button class="details-btn">Подробнее</button>
+                </div>
+                <div class="order-details">
+                    {% for item in order.orderitem_set.all %}
+                    <a href="{% url 'menu:restaurans_menu' item.dish.restaurant.slug %}">{{ item.dish.name }}</a>
+                    <p>{{ item.price }} ₽ * {{ item.quantity }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+<!--            <div class="order">-->
+<!--                <div class="order-header">-->
+<!--                    <p>Заказ #1235</p>-->
+<!--                    <p>Статус: В пути</p>-->
+<!--                    <button class="details-btn">Подробнее</button>-->
+<!--                </div>-->
+<!--                <div class="order-details">-->
+<!--                    <p>Товар 1: Название товара, 1200 ₽</p>-->
+<!--                    <p>Товар 2: Название товара, 1800 ₽</p>-->
+<!--                    <p>Общая сумма: 3000 ₽</p>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </div>
+<!--    {% endcache %}-->
+</div>
+<!-- Подключение JS для раскрытия деталей заказа -->
+<script src="{% static 'js/profile.js' %}"></script>
+<!--<script src="{% static 'js/jquery-ajax.js' %}"></script>-->
+
+{% endblock %}
+

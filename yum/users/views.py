@@ -2,14 +2,17 @@ from django.contrib import auth
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse
-
-from users.forms import UserLoginForm, CustomerRegistrationForm, RestaurantAdminRegistrationForm,CourierRegistrationForm
-
-from users.models import CustomUser
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import CreateView, UpdateView
+from users.forms import UserLoginForm, CustomerRegistrationForm, \
+    RestaurantAdminRegistrationForm,CourierRegistrationForm, ProfileForm
+# from users.models import CustomUser
 
 from carts.models import Cart
-
+from common.mixins import CacheMixin
+from orders.models import Order, OrderItem
+from django.db.models import Prefetch
 
 # Create your views here.
 def login(request):
@@ -42,6 +45,29 @@ def login(request):
         'form': form,
     }
     return render(request, 'users/login.html',context)
+
+
+class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
+    template_name = 'users/profile.html'
+    form_class = ProfileForm
+    success_url = reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Profile'
+
+        orders = Order.objects.filter(customer=self.request.user).prefetch_related(
+            Prefetch(
+                "orderitem_set",
+                queryset=OrderItem.objects.select_related("dish"),
+            )
+        ).order_by("-id")
+
+        context['orders'] = self.set_get_cache(orders, f"user_{self.request.user.id}_orders", 60 * 2)
+        return context
 
 
 def register_customer(request):
