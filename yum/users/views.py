@@ -67,6 +67,7 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
         ).order_by("-id")
 
         context['orders'] = self.set_get_cache(orders, f"user_{self.request.user.id}_orders", 60 * 2)
+        context['order'] =  True
         return context
 
 

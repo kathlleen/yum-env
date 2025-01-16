@@ -1,12 +1,31 @@
-
-.container {
-    color: black;
+.background {
+    position: relative;
+    /* height: 110%; */
+    background-image: url('../images/image.jpg'); /* Подставьте нужное изображение */
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
 }
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 50%) 0%, rgba(25, 25, 25, 1) 100%);
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+
 
 /* Изменяем фон при наведении на ссылку в dropdown */
 .dropdown-content a:hover {
     background-color: #f1f1f1;
-
     border-radius: 5px;
 }
 
@@ -95,6 +114,38 @@
     cursor:pointer;
 }
 
+.user_form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.avatars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 20px;
+}
+
+.change_avatar {
+    border-radius: 50%;
+    height: 105px;
+    width: 105px;
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.change_avatar:hover {
+    background-color: #666;
+}
+
+.change_avatar .avatar {
+    margin: 0;
+}
+
+
 
 .details-btn {
     width: auto;
@@ -113,74 +164,6 @@
     cursor:pointer;
 }
 
-footer {
-    margin-top: 100px;
-    background-color: #373737;
-    height: auto;
-    color: white;
-    padding: 90px;
-}
-
-.footer-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);;
-    width: 90%;
-    justify-content: center;
-    justify-items: center;
-    column-gap: 30px;
-    row-gap: 40px;
-    margin: 0 auto;
-}
-
-.footer-column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.contacts {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-}
-
-.contacts-media {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-}
-
-footer p {
-    font-size: 16px;
-    font-weight: 400;
-}
-
-footer ul {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-footer a {
-    color: white;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 16.41px;
-
-}
-
-.download {
-    width: 170px;
-    height: 40px;
-    border-radius: 5px;
-
-    font-family: Roboto;
-    font-size: 18px;
-    font-weight: 700;
-}
 
 .container {
     margin-right: auto;
@@ -189,7 +172,8 @@ footer a {
 }
 
 .profile-container {
-    background-color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -276,7 +260,6 @@ footer a {
 .order-details {
     display: none;
     margin-top: 10px;
-    background-color: #f9f9f9;
     padding: 10px;
     border-radius: 4px;
 }

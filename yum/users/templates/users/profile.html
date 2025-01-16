@@ -29,52 +29,86 @@
 
     <!-- Блок формы редактирования (скрытый по умолчанию) -->
     <div class="profile-container edit-form" style="display: none;">
-        <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
+        <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data"
+              class="user_form">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="id_image">Изменить аватар:</label>
-                <input type="file" id="id_image" accept="image/*" name="image">
-                {% if form.image.errors %}
-                <p>{{form.image.errors}}</p>
-                {% endif %}
+            <div>
+                <div class="form-group">
+                    <label for="id_image">Изменить аватар:</label>
+
+                    <div class="avatars">
+                        <button class="change_avatar">
+                        <img src="{% static 'images/avatar1.jpg' %}" alt="Аватар пользователя" class="avatar">
+                        </button>
+                        <button class="change_avatar">
+                            <img src="{% static 'images/avatar2.webp' %}" alt="Аватар пользователя" class="avatar">
+                        </button>
+                        <button class="change_avatar">
+                            <img src="{% static 'images/avatar3.jpg' %}" alt="Аватар пользователя" class="avatar">
+                        </button>
+                        <button class="change_avatar">
+                        <img src="{% static 'images/avatar4.jpg' %}" alt="Аватар пользователя" class="avatar">
+                        </button>
+                        <button class="change_avatar">
+                            <img src="{% static 'images/avatar5.jpg' %}" alt="Аватар пользователя" class="avatar">
+                        </button>
+                        <button class="change_avatar">
+                            <img src="{% static 'images/avatar6.jpg' %}" alt="Аватар пользователя" class="avatar">
+                        </button>
+                        <button class="change_avatar">
+                            <img src="{% static 'images/avatar7.jpg' %}" alt="Аватар пользователя" class="avatar">
+                        </button>
+                        <button class="change_avatar">
+                            <img src="{% static 'images/avatar8.jpg' %}" alt="Аватар пользователя" class="avatar">
+                        </button>
+
+                    </div>
+
+                    <input type="file" id="id_image" accept="image/*" name="image">
+                    {% if form.image.errors %}
+                    <p>{{form.image.errors}}</p>
+                    {% endif %}
+                </div>
             </div>
-            <div class="form-group">
-                <label for="id_username">Имя пользователя:</label>
-                <input type="text" id="id_username" name="username"
-                       value="{{ form.username.value }}"
-                       required>
-                {% if form.username.errors %}
-                <p>{{form.username.errors}}</p>
-                {% endif %}
+            <div>
+                <div class="form-group">
+                    <label for="id_username">Имя пользователя:</label>
+                    <input type="text" id="id_username" name="username"
+                           value="{{ form.username.value }}"
+                           required>
+                    {% if form.username.errors %}
+                    <p>{{form.username.errors}}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_first_name">Имя:</label>
+                    <input type="text" id="id_first_name" name="first_name"
+                           value="{{ form.first_name.value }}"
+                           required>
+                    {% if form.first_name.errors %}
+                    <p>{{form.first_name.errors}}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_last_name">Фамилия:</label>
+                    <input type="text" id="id_last_name" name="last_name"
+                           value="{{ form.last_name.value }}"
+                           required>
+                    {% if form.last_name.errors %}
+                    <p>{{form.last_name.errors}}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_email">Email:</label>
+                    <input type="email" id="id_email" name="email"
+                           value="{{ form.email.value }}"
+                           required>
+                    {% if form.email.errors %}
+                    <p>{{form.email.errors}}</p>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn">Сохранить изменения</button>
             </div>
-            <div class="form-group">
-                <label for="id_first_name">Имя:</label>
-                <input type="text" id="id_first_name" name="first_name"
-                       value="{{ form.first_name.value }}"
-                       required>
-                {% if form.first_name.errors %}
-                <p>{{form.first_name.errors}}</p>
-                {% endif %}
-            </div>
-            <div class="form-group">
-                <label for="id_last_name">Фамилия:</label>
-                <input type="text" id="id_last_name" name="last_name"
-                       value="{{ form.last_name.value }}"
-                       required>
-                {% if form.last_name.errors %}
-                <p>{{form.last_name.errors}}</p>
-                {% endif %}
-            </div>
-            <div class="form-group">
-                <label for="id_email">Email:</label>
-                <input type="email" id="id_email" name="email"
-                       value="{{ form.email.value }}"
-                       required>
-                {% if form.email.errors %}
-                <p>{{form.email.errors}}</p>
-                {% endif %}
-            </div>
-            <button type="submit" class="btn">Сохранить изменения</button>
         </form>
 
     </div>

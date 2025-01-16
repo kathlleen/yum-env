@@ -34,6 +34,7 @@
                     <a href="{% url 'admin:index' %}">
                         <button>Админ панель</button>
                     </a>
+                    {% if not order %}
                     <div class="dropdown">
                         <button class="dropbtn">Зарегестрировать</button>
                         <ul class="dropdown-content">
@@ -42,6 +43,8 @@
                             <li><a href="{% url 'users:register_restaurant_admin' %}">Администратора</a></li>
                         </ul>
                     </div>
+                    {% endif %}
+
                     {% endif %}
                     {% endif %}
 
@@ -80,7 +83,6 @@
     </footer>
     <script src="{% static 'js/catalog.js' %}"></script>
     <script src="{% static 'js/modal.js' %}"></script>
-    <script src="{% static 'js/jquery/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'js/jquery/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'js/jquery-ajax.js' %}"></script>
 </body>
