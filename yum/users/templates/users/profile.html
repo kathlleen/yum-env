@@ -37,33 +37,13 @@
                     <label for="id_image">Изменить аватар:</label>
 
                     <div class="avatars">
-                        <button class="change_avatar">
-                        <img src="{% static 'images/avatar1.jpg' %}" alt="Аватар пользователя" class="avatar">
-                        </button>
-                        <button class="change_avatar">
-                            <img src="{% static 'images/avatar2.webp' %}" alt="Аватар пользователя" class="avatar">
-                        </button>
-                        <button class="change_avatar">
-                            <img src="{% static 'images/avatar3.jpg' %}" alt="Аватар пользователя" class="avatar">
-                        </button>
-                        <button class="change_avatar">
-                        <img src="{% static 'images/avatar4.jpg' %}" alt="Аватар пользователя" class="avatar">
-                        </button>
-                        <button class="change_avatar">
-                            <img src="{% static 'images/avatar5.jpg' %}" alt="Аватар пользователя" class="avatar">
-                        </button>
-                        <button class="change_avatar">
-                            <img src="{% static 'images/avatar6.jpg' %}" alt="Аватар пользователя" class="avatar">
-                        </button>
-                        <button class="change_avatar">
-                            <img src="{% static 'images/avatar7.jpg' %}" alt="Аватар пользователя" class="avatar">
-                        </button>
-                        <button class="change_avatar">
-                            <img src="{% static 'images/avatar8.jpg' %}" alt="Аватар пользователя" class="avatar">
-                        </button>
-
+                        {% for avatar in avatar_files %}
+                            <button class="change_avatar" type="button" data-avatar="{{ avatar }}">
+                                <img src="{{ MEDIA_URL }}{{ avatar }}" alt="Аватар пользователя" class="avatar">
+                            </button>
+                        {% endfor %}
                     </div>
-
+                    <input type="hidden" id="selected_avatar" name="selected_avatar" value="">
                     <input type="file" id="id_image" accept="image/*" name="image">
                     {% if form.image.errors %}
                     <p>{{form.image.errors}}</p>
@@ -159,7 +139,7 @@
 </div>
 <!-- Подключение JS для раскрытия деталей заказа -->
 <script src="{% static 'js/profile.js' %}"></script>
-<!--<script src="{% static 'js/jquery-ajax.js' %}"></script>-->
+<script src="{% static 'js/jquery-ajax.js' %}"></script>
 
 {% endblock %}
 

@@ -14,6 +14,9 @@ from common.mixins import CacheMixin
 from orders.models import Order, OrderItem
 from django.db.models import Prefetch
 
+import os
+from django.conf import settings
+
 # Create your views here.
 def login(request):
     if request.method == "POST":
@@ -55,6 +58,20 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
+    def form_valid(self, form):
+        selected_avatar = self.request.POST.get('selected_avatar')
+
+        if selected_avatar:
+            # Сохраняем выбранный аватар
+            self.request.user.image = selected_avatar
+
+        # Обрабатываем загруженное изображение (если есть)
+        if self.request.FILES.get('image'):
+            self.request.user.image = self.request.FILES['image']
+
+        self.request.user.save()
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Profile'
@@ -65,6 +82,19 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
                 queryset=OrderItem.objects.select_related("dish"),
             )
         ).order_by("-id")
+
+        # Получаем список изображений из папки media/avatars/
+        avatar_directory = os.path.join(settings.MEDIA_ROOT, 'avatars')
+        avatar_files = []
+
+        # Проверяем наличие папки и собираем список файлов
+        if os.path.exists(avatar_directory):
+            # Преобразуем пути в правильный формат
+            avatar_files = [os.path.join('avatars', f).replace("\\", "/") for f in os.listdir(avatar_directory) if
+                            f.endswith(('jpg', 'jpeg', 'png', 'webp'))]
+
+        context['avatar_files'] = avatar_files
+        context['MEDIA_URL'] = settings.MEDIA_URL
 
         context['orders'] = self.set_get_cache(orders, f"user_{self.request.user.id}_orders", 60 * 2)
         context['order'] =  True
