@@ -22,7 +22,6 @@ def menu(request, restaurant_slug):
         'restaurant' : restaurant,
         'categories': categories,
         'dishes_by_category': dishes_by_category,
-
     }
 
     return render(request, 'menu/restaurant_menu.html', context)

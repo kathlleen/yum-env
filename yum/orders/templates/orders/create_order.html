@@ -43,7 +43,7 @@
                                value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}"
                                name="first_name" required>
                         {% if form.first_name.errors %}
-                        <p>{{form.password1.errors}}</p>
+                        <p>{{form.first_name.errors}}</p>
                         {% endif %}
                     </div>
                     <div>
@@ -52,7 +52,7 @@
                                value="{% if form.last_name.value %}{{ form.last_name.value }}{% endif %}"
                                required>
                         {% if form.last_name.errors %}
-                        <p>{{form.password1.errors}}</p>
+                        <p>{{form.last_name.errors}}</p>
                         {% endif %}
                     </div>
                     <div>
@@ -62,7 +62,7 @@
                                placeholder="+375290000000"
                                required>
                         {% if form.phone_number.errors %}
-                        <p>{{form.password1.errors}}</p>
+                        <p>{{form.phone_number.errors}}</p>
                         {% endif %}
                         <div class="alert alert-danger alert-dismissible fade show" style="display: none"
                              id="phone_number_error">Неправильный формат
@@ -74,7 +74,7 @@
                                   value="{% if form.delivery_address.value %}{{ form.delivery_address.value }}{% endif %}"
                                   name="delivery_address" rows="2"></textarea>
                         {% if form.delivery_address.errors %}
-                        <p>{{form.password1.errors}}</p>
+                        <p>{{form.delivery_address.errors}}</p>
                         {% endif %}
                     </div>
                     <div class="row">
@@ -89,7 +89,7 @@
                                    id="id_payment_on_get" value="1">
                             <label class="form-check-label" for="id_payment_on_get">При получении</label>
                             {% if form.payment_on_get.errors %}
-                            <p>{{form.password1.errors}}</p>
+                            <p>{{form.payment_on_get.errors}}</p>
                             {% endif %}
                         </div>
                     </div>

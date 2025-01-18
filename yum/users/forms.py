@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
-
+import re
 from users.models import CustomUser
 
 
@@ -26,6 +26,31 @@ class ProfileForm(UserChangeForm):
     last_name = forms.CharField()
     username = forms.CharField()
     email = forms.CharField()
+
+    # def clean_email(self): # валидация телефона
+    #     data = self.cleaned_data['email']
+    #     #
+    #     # if not data.isdigit():
+    #     #     raise forms.ValidationError("Номер телефона должен содержать только цифры")
+    #
+    #     pattern = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+    #     if not pattern.match(data):
+    #         raise forms.ValidationError("Неверный формат почты")
+    #
+    #     return data
+
+    def clean_phone_number(self): # валидация телефона
+        data = self.cleaned_data['phone_number']
+        #
+        # if not data.isdigit():
+        #     raise forms.ValidationError("Номер телефона должен содержать только цифры")
+
+        pattern = re.compile(r'^(\+375|80)(29|25|44|33)(\d{3})(\d{2})(\d{2})$')
+        if not pattern.match(data):
+            raise forms.ValidationError("Неверный формат номера")
+
+        return data
+
 
 class CustomerRegistrationForm(UserCreationForm):
 

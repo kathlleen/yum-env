@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load carts_tags %}
 
 {% block static_css %}
 <link rel="stylesheet" href="{% static 'css/rest-style.css' %}"/>
@@ -61,7 +62,7 @@
                         <p class="truncate">{{ dish.name }}</p>
                         <p>{{ dish.weight }} г</p>
                     </div>
-                    <a href="{% url 'cart:cart_add' %}" class="add-to-cart" data-dish-id="{{ dish.id }}">
+                    <a href="{% url 'cart:cart_add' %}" class="add-to-cart" data-dish-id="{{ dish.id }}" data-rest-id="{{ restaurant.id }}">
                         {% csrf_token %}
                         <button class="btn">+ Добавить</button>
                     </a>
@@ -72,12 +73,14 @@
         </div>
         {% endfor %}
 
+
         {% include 'includes/modal_base.html' %}
     </main>
 
     <!-- Корзина -->
     <aside class="cart">
-            {% include "includes/included_cart.html" %}
+        {% user_carts request restaurant as carts %}
+        {% include "includes/included_cart.html" %}
     </aside>
 </div>
 

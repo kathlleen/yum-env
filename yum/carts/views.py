@@ -9,12 +9,17 @@ from carts.utils import get_user_carts
 from carts.models import Cart
 from django.urls import reverse
 from menu.models import Dish
+from restaurans.models import Restaurans
 
 
 def cart_add(request):
     dish_id = request.POST.get("dish_id")
+    restaurant_id = request.POST.get("rest_id")
+    restaurant = get_object_or_404(Restaurans, id=restaurant_id)
+
     # dish_id = 5
     # print(dish_id)
+
     dish = Dish.objects.get(id=dish_id)
     # dish = get_object_or_404(Dish, pk=dish_id)
 
@@ -41,8 +46,9 @@ def cart_add(request):
                 session_key=request.session.session_key, dish=dish, quantity=1)
 
 
-    user_cart = get_user_carts(request)
-    cart_items_html = render_to_string("includes/included_cart.html", {"carts": user_cart}, request=request)
+    user_cart = get_user_carts(request, restaurant=restaurant)
+    cart_items_html = render_to_string("includes/included_cart.html",
+                                       {"carts": user_cart, "restaurant": restaurant}, request=request)
 
     response_data = {
         "cart_items_html": cart_items_html,
@@ -55,6 +61,7 @@ def cart_add(request):
 def cart_change(request):
     cart_id = request.POST.get("cart_id")
     quantity = request.POST.get("quantity")
+    rest_id = request.POST.get("rest_id")
 
     cart = Cart.objects.get(id=cart_id)
 
@@ -62,9 +69,14 @@ def cart_change(request):
     cart.save()
     updated_quantity = cart.quantity
 
-    user_cart = get_user_carts(request)
+    if rest_id:
+        restaurant = get_object_or_404(Restaurans, id=rest_id)
+    else:
+        restaurant = None
 
-    context = {"carts": user_cart}
+    user_cart = get_user_carts(request, restaurant=restaurant)
+
+    context = {"carts": user_cart, "restaurant":restaurant}
 
     # # if referer page is create_order add key orders: True to context
     # referer = request.META.get('HTTP_REFERER')
@@ -84,12 +96,20 @@ def cart_change(request):
 
 def cart_remove(request):
     cart_id = request.POST.get("cart_id")
+    rest_id = request.POST.get("rest_id")
+
     cart = Cart.objects.get(id=cart_id)
     # quantity = cart.quantity
     cart.delete()
 
-    user_cart = get_user_carts(request)
-    cart_items_html = render_to_string("includes/included_cart.html", {"carts": user_cart}, request=request)
+    if rest_id:
+        restaurant = get_object_or_404(Restaurans, id=rest_id)
+    else:
+        restaurant = None
+
+    user_cart = get_user_carts(request, restaurant=restaurant)
+    cart_items_html = render_to_string("includes/included_cart.html",
+                                       {"carts": user_cart, "restaurant": restaurant}, request=request)
 
     response_data = {
         "cart_items_html": cart_items_html,

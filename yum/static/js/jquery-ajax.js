@@ -4,10 +4,8 @@ $(document).ready(() => {
     filters.on('click', function(event) {
         event.preventDefault();
 
-        // Удалите класс 'active' у всех ссылок
         filters.removeClass('active');
 
-        // Добавьте класс 'active' к текущей ссылке
         $(this).addClass('active');
 
         const url = $(this).attr('href');  // Получаем URL из href ссылки
@@ -42,6 +40,7 @@ $(document).ready(function () {
 
         // Получаем id товара из атрибута data-product-id
         var dish_id = $(this).data("dish-id");
+        var rest_id = $(this).data("rest-id");
 
         // Из атрибута href берем ссылку на контроллер django
         var add_to_cart_url = $(this).attr("href");
@@ -53,6 +52,7 @@ $(document).ready(function () {
             url: add_to_cart_url,
             data: {
                 dish_id: dish_id,
+                rest_id: rest_id,
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
             },
             success: function (data) {
@@ -81,21 +81,27 @@ $(document).on("click", ".remove-from-cart", function (e) {
 //    var cartCount = parseInt(goodsInCartCount.text() || 0);
     // Получаем id корзины из атрибута data-cart-id
     var cart_id = $(this).data("cart-id");
-    // Из атрибута href берем ссылку на контроллер django
+    var rest_id = $(this).data("rest-id");
+
     var remove_from_cart = $(this).attr("href");
-    // делаем post запрос через ajax не перезагружая страницу
+
+    // Формируем данные для отправки
+    var data = {
+        cart_id: cart_id,
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()
+    };
+
+    // Если restaurant_id присутствует, добавляем его в запрос
+    if (rest_id) {
+        data.rest_id = rest_id;
+    }
+
     $.ajax({
         type: "POST",
         url: remove_from_cart,
-        data: {
-            cart_id: cart_id,
-            csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-        },
+        data: data,
         success: function (data) {
 
-            // Уменьшаем количество товаров в корзине (отрисовка)
-//            cartCount -= data.quantity_deleted;
-//            goodsInCartCount.text(cartCount);
             // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
             var cartItemsContainer = $("#cart-items-container");
             cartItemsContainer.html(data.cart_items_html);
@@ -115,6 +121,7 @@ $(document).on("click", ".decrement", function () {
     var url = $(this).data("cart-change-url");
     // Берем id корзины из атрибута data-cart-id
     var cartID = $(this).data("cart-id");
+    var rest_id = $(this).data("rest-id");
     // Ищем ближайшеий input с количеством
     var $input = $(this).closest('.input-group').find('.number');
     // Берем значение количества товара
@@ -133,6 +140,7 @@ $(document).on("click", ".increment", function () {
     var url = $(this).data("cart-change-url");
     // Берем id корзины из атрибута data-cart-id
     var cartID = $(this).data("cart-id");
+    var rest_id = $(this).data("rest-id");
     // Ищем ближайшеий input с количеством
     var $input = $(this).closest('.input-group').find('.number');
     // Берем значение количества товара
@@ -143,14 +151,22 @@ $(document).on("click", ".increment", function () {
     updateCart(cartID, currentValue + 1, 1, url);
 });
 function updateCart(cartID, quantity, change, url) {
+
+    var data = {
+        cart_id: cartID,
+        quantity: quantity,
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()
+    };
+
+    // Если restaurant_id присутствует, добавляем его в запрос
+    if (rest_id) {
+        data.rest_id = rest_id;
+    }
+
     $.ajax({
         type: "POST",
         url: url,
-        data: {
-            cart_id: cartID,
-            quantity: quantity,
-            csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-        },
+        data: data,
         success: function (data) {
             // Изменяем количество товаров в корзине
 //            var goodsInCartCount = $("#cart-count");
