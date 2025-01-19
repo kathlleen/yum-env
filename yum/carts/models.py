@@ -21,7 +21,6 @@ class CartQueryset(models.QuerySet):
     def courier_price(self):
         # Округляем результат до двух знаков после запятой
         price = sum(cart.dish_price() for cart in self) * Decimal('0.05')
-        print(price.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
         return price.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
     def total_price(self):

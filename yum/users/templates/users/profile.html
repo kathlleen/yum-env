@@ -95,9 +95,7 @@
 
     <!-- Блок корзины -->
     <div class="profile-container">
-        <div id="cart-items-container">
-            {% include "includes/included_cart.html" %}
-        </div>
+            {% include "includes/all_carts.html" %}
     </div>
 
     <!-- Блок заказов -->
@@ -139,6 +137,7 @@
 </div>
 <!-- Подключение JS для раскрытия деталей заказа -->
 <script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/jquery/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'js/jquery-ajax.js' %}"></script>
 
 {% endblock %}

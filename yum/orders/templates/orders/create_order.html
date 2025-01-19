@@ -22,7 +22,7 @@
         <h2>Оформление заказа</h2>
 
         <div id="cart-items-container">
-            {% user_carts request as carts %}
+            {% user_carts request restaurant as carts %}
             {% include "includes/included_cart.html" %}
         </div>
 

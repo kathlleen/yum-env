@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import ValidationError
 from django.db import transaction
 from django.contrib import messages
@@ -9,10 +9,11 @@ from carts.models import Cart
 from orders.models import Order
 from orders.models import OrderItem
 
-
+from restaurans.models import Restaurans
 # Create your views here.
 @login_required
-def create_order(request):
+def create_order(request, restaurant_id):
+    restaurant = get_object_or_404(Restaurans, id=restaurant_id)
 
     if request.method == 'POST':
         form = CreateOrderForm(data=request.POST)
@@ -20,7 +21,11 @@ def create_order(request):
             try:
                 with transaction.atomic(): # атомарные транзакции
                     user = request.user
-                    cart_items = Cart.objects.filter(user=user)
+
+                    if restaurant_id:
+                        cart_items = Cart.objects.filter(user=user, dish__restaurant_id=restaurant_id)
+                    else:
+                        cart_items = Cart.objects.filter(user=user)
 
                     if cart_items.exists():
                         # создать заказ
@@ -53,7 +58,8 @@ def create_order(request):
 
             except ValidationError as e:
                 messages.error(request, str(e))
-                return redirect('orders:create_order')
+                # return redirect('orders:create_order')
+                return redirect('main:index')
 
     else:
         initial = {
@@ -67,6 +73,7 @@ def create_order(request):
         'title' : 'Оформление заказа',
         'form' : form,
         'order' : True,
+        'restaurant': restaurant,
     }
 
     return render(request, 'orders/create_order.html', context=context)

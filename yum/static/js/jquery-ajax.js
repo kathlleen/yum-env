@@ -62,7 +62,7 @@ $(document).ready(function () {
 //                goodsInCartCount.text(cartCount);
 
                 // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
-                var cartItemsContainer = $("#cart-items-container");
+                var cartItemsContainer = $(`#cart-items-container-${rest_id}`);
                 cartItemsContainer.html(data.cart_items_html);
 
             }
@@ -103,7 +103,7 @@ $(document).on("click", ".remove-from-cart", function (e) {
         success: function (data) {
 
             // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
-            var cartItemsContainer = $("#cart-items-container");
+            var cartItemsContainer = $(`#cart-items-container-${rest_id}`);
             cartItemsContainer.html(data.cart_items_html);
 
         },
@@ -131,7 +131,7 @@ $(document).on("click", ".decrement", function () {
         $input.val(currentValue - 1);
         // Запускаем функцию определенную ниже
         // с аргументами (id карты, новое количество, количество уменьшилось или прибавилось, url)
-        updateCart(cartID, currentValue - 1, -1, url);
+        updateCart(cartID, currentValue - 1, -1, url, rest_id);
     }
 });
 // Обработчик события для увеличения значения
@@ -148,9 +148,16 @@ $(document).on("click", ".increment", function () {
     $input.val(currentValue + 1);
     // Запускаем функцию определенную ниже
     // с аргументами (id карты, новое количество, количество уменьшилось или прибавилось, url)
-    updateCart(cartID, currentValue + 1, 1, url);
+    updateCart(cartID, currentValue + 1, 1, url, rest_id);
 });
-function updateCart(cartID, quantity, change, url) {
+
+let isRequestInProgress = false;
+function updateCart(cartID, quantity, change, url, rest_id) {
+    console.log(`Updating cart: cartID=${cartID}, quantity=${quantity}, change=${change}`);
+
+    if (isRequestInProgress) return; // Блокируем повторный запрос, если предыдущий еще не завершен
+
+    isRequestInProgress = true;
 
     var data = {
         cart_id: cartID,
@@ -174,11 +181,13 @@ function updateCart(cartID, quantity, change, url) {
 //            cartCount += change;
 //            goodsInCartCount.text(cartCount);
             // Меняем содержимое корзины
-            var cartItemsContainer = $("#cart-items-container");
+            var cartItemsContainer = $(`#cart-items-container-${rest_id}`);
             cartItemsContainer.html(data.cart_items_html);
+            isRequestInProgress = false;
         },
         error: function (data) {
             console.log("Ошибка при добавлении товара в корзину");
+            isRequestInProgress = false;
         },
     });
 }

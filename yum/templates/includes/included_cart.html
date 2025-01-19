@@ -1,9 +1,8 @@
 {% load static %}
 {% load carts_tags %}
+{% user_carts request restaurant as carts %}
 
-<!--{% user_carts request restaurant as carts %}-->
-
-<div id="cart-items-container">
+<div id="cart-items-container-{{ restaurant.id }}">
 <h3>Корзина</h3>
 <div class="cart-items">
 
@@ -20,12 +19,10 @@
             <p class="truncate">{{ cart.dish.name }}</p>
             <span>{{ cart.dish.price }} р.</span>
 
-
-
             <div class="quantity input-group">
                 <span>
                 <button class="decrement" type="button" data-cart-id="{{ cart.id }}"
-                        {% if restaurant %} data-rest-id="{{ restaurant.id }}" {% endif %}
+                        data-rest-id="{{ restaurant.id }}"
                         data-cart-change-url="{% url 'cart:cart_change' %}">
                     {% csrf_token %}
                     -</button>
@@ -33,7 +30,7 @@
                 <input class="number" type="text" value="{{ cart.quantity }}" readonly>
                 <span>
                 <button class="increment" type="button" data-cart-id="{{ cart.id }}"
-                        {% if restaurant %} data-rest-id="{{ restaurant.id }}" {% endif %}
+                        data-rest-id="{{ restaurant.id }}"
                         data-cart-change-url="{% url 'cart:cart_change' %}">
                     {% csrf_token %}
                     +</button>
@@ -42,7 +39,7 @@
         </div>
 
         <a href="{% url 'cart:cart_remove' %}" class='remove-from-cart'
-           {% if restaurant %} data-rest-id="{{ restaurant.id }}" {% endif %}
+            data-rest-id="{{ restaurant.id }}"
             data-cart-id="{{ cart.id }}">×</a>
     </div>
     {% endfor %}
@@ -53,7 +50,7 @@
             <p>Работа сервиса: {{ carts.courier_price }} р.</p>
             {% if not order %}
                 {% if user.is_authenticated %}
-                <a href="{% url 'orders:create_order' %}">
+                <a href="{% url 'orders:create_order' restaurant.id %}">
                     <button>Верно, к оплате: {{ carts.total_price }} р.</button>
                 </a>
                 {% else %}

@@ -1,0 +1,98 @@
+{% load static %}
+{% load carts_tags %}
+
+{% user_restaurants request as restaurants %}
+
+<div id="all-cart-items-container">
+    <div class="all-cart-items">
+        {% if restaurants %}
+            {% if restaurants|length > 1 %}
+                {% for restaurant in restaurants %}
+                    <div class="restaurant-cart">
+                        <button class="restaurant-toggle" data-restaurant-id="{{ restaurant.id }}">
+                            {{ restaurant.name }}
+                            <span class="arrow">▼</span>
+                        </button>
+                        <div class="restaurant-details" id="restaurant-{{ restaurant.id }}" style="display: none;">
+                            {% user_carts request restaurant as carts %}
+                            {% if carts %}
+                                {% include "includes/included_cart.html" with carts=carts restaurant=restaurant %}
+                            {% else %}
+                                <p>В корзине для {{ restaurant.name }} ничего нет &#128577;</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for restaurant in restaurants %}
+                    {% user_carts request restaurant as carts %}
+                    {% include "includes/included_cart.html" with carts=carts restaurant=restaurant %}
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <p>Пока что тут ничего нет &#128577;</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .restaurant-cart {
+        margin-bottom: 20px;
+    }
+
+    .restaurant-toggle {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        text-align: left;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .restaurant-toggle .arrow {
+        font-size: 14px;
+        transition: transform 0.3s ease;
+    }
+
+    .restaurant-toggle.open .arrow {
+        transform: rotate(180deg);
+    }
+
+    .restaurant-details {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggles = document.querySelectorAll('.restaurant-toggle');
+
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                const restaurantId = this.getAttribute('data-restaurant-id');
+                const details = document.querySelector(`#restaurant-${restaurantId}`);
+
+                // Закрываем все открытые разделы
+                document.querySelectorAll('.restaurant-details').forEach(detail => {
+                    if (detail !== details) {
+                        detail.style.display = 'none';
+                        const openToggle = detail.previousElementSibling;
+                        if (openToggle) openToggle.classList.remove('open');
+                    }
+                });
+
+                // Переключаем текущий раздел
+                const isOpen = details.style.display === 'block';
+                details.style.display = isOpen ? 'none' : 'block';
+                this.classList.toggle('open', !isOpen);
+            });
+        });
+    });
+</script>
