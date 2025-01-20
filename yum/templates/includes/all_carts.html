@@ -13,7 +13,7 @@
                             {{ restaurant.name }}
                             <span class="arrow">▼</span>
                         </button>
-                        <div class="restaurant-details" id="restaurant-{{ restaurant.id }}" style="display: none;">
+                        <div class="restaurant-details" id="restaurant-{{ restaurant.id }}">
                             {% user_carts request restaurant as carts %}
                             {% if carts %}
                                 {% include "includes/included_cart.html" with carts=carts restaurant=restaurant %}
@@ -63,9 +63,18 @@
     }
 
     .restaurant-details {
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        padding: 0;
         margin-top: 10px;
+        border: none; /* Убираем видимую границу */
+    }
+
+    .restaurant-details.open {
+        max-height: 500px; /* Достаточно для содержимого */
         padding: 10px;
-        border: 1px solid #ddd;
+        border: 1px solid #ddd; /* Добавляем границу при открытии */
         border-radius: 8px;
     }
 </style>
@@ -75,23 +84,33 @@
         const toggles = document.querySelectorAll('.restaurant-toggle');
 
         toggles.forEach(toggle => {
+            let isProcessing = false; // Флаг для блокировки быстрого повторного выполнения
+
             toggle.addEventListener('click', function () {
+                if (isProcessing) return; // Пропускаем, если событие уже обрабатывается
+                isProcessing = true; // Устанавливаем флаг
+
                 const restaurantId = this.getAttribute('data-restaurant-id');
                 const details = document.querySelector(`#restaurant-${restaurantId}`);
 
-                // Закрываем все открытые разделы
+                // Закрываем все открытые разделы, кроме текущего
                 document.querySelectorAll('.restaurant-details').forEach(detail => {
                     if (detail !== details) {
-                        detail.style.display = 'none';
+                        detail.classList.remove('open');
                         const openToggle = detail.previousElementSibling;
                         if (openToggle) openToggle.classList.remove('open');
                     }
                 });
 
                 // Переключаем текущий раздел
-                const isOpen = details.style.display === 'block';
-                details.style.display = isOpen ? 'none' : 'block';
+                const isOpen = details.classList.contains('open');
+                details.classList.toggle('open', !isOpen);
                 this.classList.toggle('open', !isOpen);
+
+                // Сбрасываем флаг через 300 мс (после завершения анимации)
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 300);
             });
         });
     });

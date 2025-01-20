@@ -8,7 +8,7 @@
 {% block content %}
 
 <div class="container">
-    <div class="profile-container">
+    <div class="profile-container user-container">
         <!-- Блок информации о пользователе -->
         <div class="user-info">
             {% if user.image %}
@@ -94,14 +94,14 @@
     </div>
 
     <!-- Блок корзины -->
-    <div class="profile-container">
+    <div class="profile-container cart-container">
             {% include "includes/all_carts.html" %}
     </div>
 
     <!-- Блок заказов -->
 
 <!--    {% cache 60 user_orders user.id %}-->
-    <div class="profile-container">
+    <div class="profile-container orders-container">
         <div class="orders">
             <h3>Заказы</h3>
             {% for order in orders %}

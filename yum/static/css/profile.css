@@ -29,10 +29,44 @@
     border-radius: 5px;
 }
 
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    width: 80%;
+    margin-top: 40px;
+
+    display: grid;
+    grid-template-columns: 40% 60%;
+
+    gap: 30px;
+
+}
+
+.profile-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.user-container {
+
+}
+
+.cart-container {
+    grid-row: span 2;
+}
+
+.orders-container {
+
+}
+
 .user-info {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .avatar {
@@ -48,7 +82,6 @@
 
 .edit-form {
     display: none;
-    margin-top: 20px;
 }
 
 .form-group {
@@ -188,27 +221,7 @@
 }
 
 
-.container {
-    margin-right: auto;
-    margin-left: auto;
-    width: 80%;
-}
 
-.profile-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    margin: 20px;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-}
 
 
 
