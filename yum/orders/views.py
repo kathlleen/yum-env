@@ -22,10 +22,7 @@ def create_order(request, restaurant_id):
                 with transaction.atomic(): # атомарные транзакции
                     user = request.user
 
-                    if restaurant_id:
-                        cart_items = Cart.objects.filter(user=user, dish__restaurant_id=restaurant_id)
-                    else:
-                        cart_items = Cart.objects.filter(user=user)
+                    cart_items = Cart.objects.filter(user=user, dish__restaurant_id=restaurant_id)
 
                     if cart_items.exists():
                         # создать заказ
@@ -34,7 +31,8 @@ def create_order(request, restaurant_id):
                             courier=None,
                             phone_number = form.cleaned_data['phone_number'],
                             delivery_address = form.cleaned_data['delivery_address'],
-                            payment_on_get = form.cleaned_data['payment_on_get']
+                            payment_on_get = form.cleaned_data['payment_on_get'],
+                            restaurant=restaurant
                         )
                         # создать заказанные товары (orderItem)
                         for cart_item in cart_items:
@@ -58,8 +56,8 @@ def create_order(request, restaurant_id):
 
             except ValidationError as e:
                 messages.error(request, str(e))
-                # return redirect('orders:create_order')
-                return redirect('main:index')
+                return redirect('orders:create_order')
+                # return redirect('main:index')
 
     else:
         initial = {

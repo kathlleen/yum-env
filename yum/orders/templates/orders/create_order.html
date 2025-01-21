@@ -34,7 +34,7 @@
 
         <div class="details">
             <h3>Детали заказа</h3>
-            <form action="{% url 'orders:create_order' %}" method="post" id="create_order_form">
+            <form action="{% url 'orders:create_order' restaurant.id %}" method="post" id="create_order_form">
                 {% csrf_token %}
                 <div class="order-form">
                     <div>
