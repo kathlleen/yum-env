@@ -113,10 +113,14 @@
                 </div>
                 <div class="order-details">
                     {% for item in order.orderitem_set.all %}
-                    <a href="{% url 'menu:restaurans_menu' item.dish.restaurant.slug %}">{{ item.dish.name }}</a>
-                    <p>{{ item.price }} ₽ * {{ item.quantity }}</p>
+                    <div class="order-item">
+                        <span class="dish-name">{{ item.dish.name }}</span>
+                        <span class="dots"></span>
+                        <span class="dish-price">{{ item.price }} ₽ * {{ item.quantity }}</span>
+                    </div>
                     {% endfor %}
                 </div>
+
             </div>
             {% endfor %}
 <!--            <div class="order">-->

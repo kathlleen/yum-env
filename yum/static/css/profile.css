@@ -295,6 +295,10 @@
     margin-top: 10px;
 }
 
+.order-header {
+    align-items: center;
+}
+
 .checkout-btn, .toggle-details-btn {
     padding: 10px;
     background-color: #28a745;
@@ -331,6 +335,8 @@
     padding: 0;
     margin-top: 10px;
     border: none; /* Убираем видимую границу */
+
+
 }
 
 .order-details.open {
@@ -340,3 +346,25 @@
     border-radius: 8px; /* Скругленные углы */
 }
 
+.order-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between; /* Распределяем элементы по сторонам */
+    gap: 10px; /* Добавляем промежуток между элементами */
+}
+
+.dish-name {
+    flex-shrink: 0; /* Не дает сжиматься названию блюда */
+}
+
+.dots {
+    flex-grow: 1; /* Занимает оставшееся пространство */
+    border-bottom: 3px dotted #aaa; /* Создаем точки */
+
+    height: 0; /* Чтобы линия оставалась в рамках строки */
+
+}
+
+.dish-price {
+    flex-shrink: 0; /* Не дает сжиматься цене */
+}
