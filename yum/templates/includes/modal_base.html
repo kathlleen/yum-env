@@ -10,7 +10,7 @@
             {% elif content_type == "promotion" %}
                 {% include 'includes/modal_promotion.html' %}
             {% elif content_type == "cart" %}
-                {% include 'includes/included_cart.html' %}
+                {% include "includes/all_carts.html" %}
             {% else %}
                 <p>Контент не найден.</p>
             {% endif %}

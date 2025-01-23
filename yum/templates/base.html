@@ -34,6 +34,7 @@
                     <a href="{% url 'admin:index' %}">
                         <button>Админ панель</button>
                     </a>
+                    {% if not profile %}
                     <div class="dropdown">
                         <button class="dropbtn">Зарегестрировать</button>
                         <ul class="dropdown-content">
@@ -42,6 +43,7 @@
                             <li><a href="{% url 'users:register_restaurant_admin' %}">Администратора</a></li>
                         </ul>
                     </div>
+                    {% endif %}
 
                     {% endif %}
                     {% endif %}

@@ -95,7 +95,7 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
 
         context['avatar_files'] = avatar_files
         context['MEDIA_URL'] = settings.MEDIA_URL
-
+        context['profile'] = True
         context['orders'] = self.set_get_cache(orders, f"user_{self.request.user.id}_orders", 60 * 2)
         return context
 
