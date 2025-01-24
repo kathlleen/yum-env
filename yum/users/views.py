@@ -33,8 +33,8 @@ def login(request):
 
                 if user.is_restaurant_admin():
                     restaurant = user.restaurant  # Получаем ресторан, которым управляет админ
-                    return render(request, 'restaurans/restaurant_dashboard.html', {'restaurant': restaurant})
-
+                    # return render(request, 'restaurans/restaurant_dashboard.html', {'restaurant': restaurant})
+                    return redirect('restaurans:restaurant-dashboard')
                 if session_key:
                     Cart.objects.filter(session_key=session_key).update(user=user)
 

@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ restaurant.name }}</title>
-</head>
-<body>
+{% extends "base_rest.html" %}
+{% load static %}
+{% block static_css %}
+<link rel="stylesheet" href="{% static 'css/rest-profile.css' %}"/>
+{% endblock %}
 
-</body>
-</html>
+{% block content %}
+
+<h1 class="dashboard-title">{{ restaurant.name }} - Заказы</h1>
+
+<div class="orders-container">
+    {% for order in orders %}
+    <div class="order-card">
+        <h2 class="order-id">Заказ №{{ order.id }}</h2>
+        <p><span class="label">Дата заказа:</span> {{ order.created_timestamp }}</p>
+        <p><span class="label">Статус:</span> {{ order.status }}</p>
+        <p><span class="label">Адрес доставки:</span> {{ order.delivery_address }}</p>
+        <p><span class="label">Телефон:</span> {{ order.phone_number }}</p>
+        <h3 class="order-items-title">Состав заказа:</h3>
+        <ul class="order-items">
+            {% for item in order.orderitem_set.all %}
+            <li class="order-item">
+                {{ item.dish.name }} - {{ item.quantity }} шт. ({{ item.price }} руб.)
+            </li>
+            {% endfor %}
+        </ul>
+        <button class="complete-btn">Готово</button>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

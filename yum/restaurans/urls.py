@@ -1,11 +1,9 @@
 from django.urls import path
 
-from main import views
+from restaurans import views
 
 app_name = 'restaurans'
 
 urlpatterns = [
-    # path('', views.index, name='index'),
-    path('restauran-profile/', views.restauran_profile, name='restauran-profile'),
     path('restaurant-dashboard/', views.restaurant_dashboard, name='restaurant-dashboard'),
 ]
