@@ -5,34 +5,39 @@ from menu.models import Categories
 from promotions.models import Promotion
 from main.utils import q_search
 
-
+from django.views.generic import TemplateView
 # Create your views here.
-def index(request, category_slug='all'):
-	categories = Categories.objects.all()
-	sliced_categories = list(categories[:10])
+class IndexView(TemplateView):
+	template_name = 'main/index.html'
 
-	query = request.GET.get('q', None)
-	print(query)
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		category_slug = self.kwargs.get('category_slug', 'all')
+		query = self.request.GET.get('q', None)
 
-	if query:
-		restaurans = q_search(query)
-		print(restaurans)
-	elif category_slug == 'all':
-		restaurans = Restaurans.objects.all()
-	else:
-		restaurans = Restaurans.objects.filter(restaurant__category__slug=category_slug).distinct()
+		# Получение категорий
+		categories = Categories.objects.all()
+		context['categories'] = categories
+		context['sliced_categories'] = categories[:10]
 
-	promotions = Promotion.objects.all()
+		# Логика выбора ресторанов
+		if query:
+			restaurans = q_search(query)
+		elif category_slug == 'all':
+			restaurans = Restaurans.objects.all()
+		else:
+			restaurans = Restaurans.objects.filter(restaurant__category__slug=category_slug).distinct()
 
-	context = {
-		'title': "Главная страница | YUM",
-		'restaurans': restaurans,
-		'categories': categories,
-		'sliced_categories': sliced_categories,
-		'promotions': promotions,
-	}
-	return render(request, 'main/index.html', context)
+		context['restaurans'] = restaurans
 
+		# Получение акций
+		promotions = Promotion.objects.all()
+		context['promotions'] = promotions
+
+		# Заголовок страницы
+		context['title'] = "Главная страница | YUM"
+
+		return context
 
 def filter_restaurants(request, category_slug):
 	if category_slug == 'all':
