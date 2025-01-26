@@ -1,77 +1,76 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.forms import ValidationError
 from django.db import transaction
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-
-from orders.forms import CreateOrderForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
 from carts.models import Cart
-from orders.models import Order
-from orders.models import OrderItem
-
+from orders.models import Order, OrderItem
 from restaurans.models import Restaurans
-# Create your views here.
-@login_required
-def create_order(request, restaurant_id):
-    restaurant = get_object_or_404(Restaurans, id=restaurant_id)
+from orders.forms import CreateOrderForm
 
-    if request.method == 'POST':
-        form = CreateOrderForm(data=request.POST)
-        if form.is_valid():
-            try:
-                with transaction.atomic(): # атомарные транзакции
-                    user = request.user
+class CreateOrderView(LoginRequiredMixin, FormView):
+    template_name = 'orders/create_order.html'
+    form_class = CreateOrderForm
+    success_url = reverse_lazy('users:profile')
 
-                    cart_items = Cart.objects.filter(user=user, dish__restaurant_id=restaurant_id)
+    def dispatch(self, request, *args, **kwargs):
+        # Get the restaurant object or raise 404 if not found
+        self.restaurant = get_object_or_404(Restaurans, id=kwargs.get('restaurant_id'))
+        return super().dispatch(request, *args, **kwargs)
 
-                    if cart_items.exists():
-                        # создать заказ
-                        order = Order.objects.create(
-                            customer=user,
-                            courier=None,
-                            phone_number = form.cleaned_data['phone_number'],
-                            delivery_address = form.cleaned_data['delivery_address'],
-                            payment_on_get = form.cleaned_data['payment_on_get'],
-                            restaurant=restaurant
-                        )
-                        # создать заказанные товары (orderItem)
-                        for cart_item in cart_items:
-                            dish = cart_item.dish
-                            name = cart_item.dish.name
-                            price = cart_item.dish.sell_price()
-                            quantity = cart_item.quantity
+    def form_valid(self, form):
+        user = self.request.user
+        restaurant_id = self.kwargs.get('restaurant_id')
+        cart_items = Cart.objects.filter(user=user, dish__restaurant_id=restaurant_id)
 
-                            OrderItem.objects.create(
-                                order=order,
-                                dish=dish,
-                                name=name,
-                                price=price,
-                                quantity=quantity,
-                            )
+        if not cart_items.exists():
+            messages.error(self.request, "Корзина пуста.")
+            return redirect('orders:create_order', restaurant_id=restaurant_id)
 
-                        # очистить корзину после заказа
-                        cart_items.delete()
+        try:
+            with transaction.atomic():
+                # Create the order
+                order = Order.objects.create(
+                    customer=user,
+                    courier=None,
+                    phone_number=form.cleaned_data['phone_number'],
+                    delivery_address=form.cleaned_data['delivery_address'],
+                    payment_on_get=form.cleaned_data['payment_on_get'],
+                    restaurant=self.restaurant,
+                )
 
-                        return redirect('main:index')
+                # Create order items
+                for cart_item in cart_items:
+                    OrderItem.objects.create(
+                        order=order,
+                        dish=cart_item.dish,
+                        name=cart_item.dish.name,
+                        price=cart_item.dish.sell_price(),
+                        quantity=cart_item.quantity,
+                    )
 
-            except ValidationError as e:
-                messages.error(request, str(e))
-                return redirect('orders:create_order')
-                # return redirect('main:index')
+                # Clear the cart
+                cart_items.delete()
 
-    else:
-        initial = {
-            'first_name' : request.user.first_name,
-            'last_name' : request.user.last_name,
-            }
+                messages.success(self.request, "Заказ успешно оформлен!")
+                return redirect(self.success_url)
 
-        form = CreateOrderForm(initial=initial) # изначальные данные
+        except ValidationError as e:
+            messages.error(self.request, str(e))
+            return self.form_invalid(form)
 
-    context = {
-        'title' : 'Оформление заказа',
-        'form' : form,
-        'order' : True,
-        'restaurant': restaurant,
-    }
+    def get_initial(self):
+        # Pre-fill form with user data
+        return {
+            'first_name': self.request.user.first_name,
+            'last_name': self.request.user.last_name,
+        }
 
-    return render(request, 'orders/create_order.html', context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Оформление заказа'
+        context['restaurant'] = self.restaurant
+        context['order'] = True
+        return context
