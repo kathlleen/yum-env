@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.contrib.auth import authenticate,  login as auth_login
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -7,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from users.forms import UserLoginForm, CustomerRegistrationForm, \
     RestaurantAdminRegistrationForm,CourierRegistrationForm, ProfileForm
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import FormView
 # from users.models import CustomUser
 
 from carts.models import Cart
@@ -18,37 +21,44 @@ import os
 from django.conf import settings
 
 # Create your views here.
-def login(request):
-    if request.method == "POST":
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            username = request.POST['username']
-            password = request.POST['password']
-            user = auth.authenticate(username=username, password=password)
+class UserLoginView(FormView):
+    template_name = 'users/login.html'
+    form_class = UserLoginForm
 
-            session_key = request.session.session_key
+    def get_success_url(self):
+        # If there's a next parameter in the POST request, use that for redirection
+        redirect_page = self.request.POST.get('next', None)
+        if redirect_page and redirect_page != reverse('user:logout'):
+            return redirect_page
+        return reverse_lazy('main:index')
 
-            if user:
-                auth.login(request, user)
+    def form_valid(self, form):
+        # Form is valid, so proceed with user authentication and session management
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(username=username, password=password)
 
-                if user.is_restaurant_admin():
-                    restaurant = user.restaurant  # Получаем ресторан, которым управляет админ
-                    # return render(request, 'restaurans/restaurant_dashboard.html', {'restaurant': restaurant})
-                    return redirect('restaurans:restaurant-dashboard')
-                if session_key:
-                    Cart.objects.filter(session_key=session_key).update(user=user)
+        session_key = self.request.session.session_key
 
-                return HttpResponseRedirect(reverse('main:index'))
+        if user:
+            auth_login(self.request, user)
 
-    else:
-        form = UserLoginForm()
+            if user.is_restaurant_admin():
+                # If the user is a restaurant admin, redirect to restaurant dashboard
+                return HttpResponseRedirect(reverse('restaurans:restaurant-dashboard'))
 
-    context = {
-        'title' : "Authorization",
-        'form': form,
-    }
-    return render(request, 'users/login.html',context)
+            if session_key:
+                # If the user was not previously logged in, update any cart items
+                Cart.objects.filter(session_key=session_key).update(user=user)
 
+            return HttpResponseRedirect(self.get_success_url())
+
+        return self.form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Authorization'
+        return context
 
 class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
     template_name = 'users/profile.html'
@@ -100,72 +110,63 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
         return context
 
 
-def register_customer(request):
-    if request.method == "POST":
-        form = CustomerRegistrationForm(data=request.POST)
-        if form.is_valid():
-            form.save()
+class CustomerRegistrationView(CreateView):
+    template_name = 'users/registration.html'
+    form_class = CustomerRegistrationForm
+    success_url = reverse_lazy('main:index')
 
-            session_key = request.session.session_key
+    def form_valid(self, form):
+        session_key = self.request.session.session_key
+        user = form.save()
 
-            user = form.instance
-            auth.login(request, user)
+        if user:
+            auth_login(self.request, user)
 
-            if session_key:
-                Cart.objects.filter(session_key=session_key).update(user=user)
+        if session_key:
+            Cart.objects.filter(session_key=session_key).update(user=user)
 
-            return HttpResponseRedirect(reverse('main:index'))
-    else:
-        form = CustomerRegistrationForm()
+        return HttpResponseRedirect(self.success_url)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регистрация'
+        context['url'] = 'users:register_customer'
+        return context
 
-    context = {
-        'title' : "Регистрация",
-        'form' : form,
-        'url': 'users:register_customer'
-    }
-    return render(request, 'users/registration.html',context)
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+class RestaurantAdminRegistrationView(CreateView):
+    template_name = 'users/registration.html'
+    form_class = RestaurantAdminRegistrationForm
+    success_url = reverse_lazy('main:index')
 
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.user_type = 'restaurant_admin'  # Set the user type
+        user.save()
+        return HttpResponseRedirect(self.success_url)
 
-@user_passes_test(lambda u: u.is_superuser)
-def register_restaurant_admin(request):
-    if request.method == 'POST':
-        form = RestaurantAdminRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            # Устанавливаем тип пользователя как администратор ресторана
-            user.user_type = 'restaurant_admin'
-            user.save()
-        return HttpResponseRedirect(reverse('main:index'))
-    else:
-        form = RestaurantAdminRegistrationForm()
-
-    context = {
-        'title': "Регистрация администратора ресторана",
-        'form': form,
-        'url' : 'users:register_restaurant_admin'
-    }
-    return render(request, 'users/registration.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регистрация администратора ресторана'
+        context['url'] = 'users:register_restaurant_admin'
+        return context
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+class CourierRegistrationView(CreateView):
+    template_name = 'users/registration.html'
+    form_class = CourierRegistrationForm
+    success_url = reverse_lazy('main:index')
 
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(self.success_url)
 
-@user_passes_test(lambda u: u.is_superuser)
-def register_courier(request):
-    if request.method == 'POST':
-        form = CourierRegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('main:index'))
-    else:
-        form = CourierRegistrationForm()
-
-    context = {
-        'title': "Регистрация курьера",
-        'form': form,
-        'url': 'users:register_courier'
-    }
-    return render(request, 'users/registration.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регистрация курьера'
+        context['url'] = 'users:register_courier'
+        return context
 
 @login_required
 def logout(request):
