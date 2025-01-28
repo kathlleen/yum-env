@@ -11,7 +11,7 @@
                     <div class="restaurant-cart">
                         <button class="restaurant-toggle" data-restaurant-id="{{ restaurant.id }}">
                             {{ restaurant.name }}
-                            <span class="arrow">▼</span>
+                            <span class="cart-arrow">▼</span>
                         </button>
                         <div class="restaurant-details" id="restaurant-{{ restaurant.id }}">
                             {% user_carts request restaurant as carts %}
@@ -36,8 +36,12 @@
 </div>
 
 <style>
+    .all-cart-items {
+        padding: 5px;
+    }
+
     .restaurant-cart {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .restaurant-toggle {
@@ -82,7 +86,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const toggles = document.querySelectorAll('.restaurant-toggle');
-
+        console.log("qewfwv");
         toggles.forEach(toggle => {
             let isProcessing = false; // Флаг для блокировки быстрого повторного выполнения
 

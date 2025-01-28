@@ -48,9 +48,9 @@
                     {% endif %}
                     {% endif %}
 
-                    {% if not order %}
-                    <button id="open-cart">Корзина</button>
-                    {% endif %}
+                    {% block cart_button %}{% endblock %}
+<!--                    <button id="open-cart">Корзина</button>-->
+
 
 
                     {% if user.is_authenticated %}
@@ -76,6 +76,7 @@
 
         {% block content %}
         {% endblock %}
+
     </div>
 
     <footer>

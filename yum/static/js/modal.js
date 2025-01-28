@@ -26,6 +26,37 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    // Делегированный обработчик для всех событий внутри модального окна
+    document.getElementById('modalContent').addEventListener('click', function (event) {
+        const target = event.target;
+
+        // События для корзины
+        if (target.classList.contains('restaurant-toggle')) {
+            handleCartToggle(target);
+        }
+
+    });
+
+    function handleCartToggle(toggle) {
+        const restaurantId = toggle.getAttribute('data-restaurant-id');
+        const details = document.querySelector(`#restaurant-${restaurantId}`);
+
+        // Закрываем все открытые разделы, кроме текущего
+        document.querySelectorAll('.restaurant-details').forEach(detail => {
+            if (detail !== details) {
+                detail.classList.remove('open');
+                const openToggle = detail.previousElementSibling;
+                if (openToggle) openToggle.classList.remove('open');
+            }
+        });
+
+        // Переключаем текущий раздел
+        const isOpen = details.classList.contains('open');
+        details.classList.toggle('open', !isOpen);
+        toggle.classList.toggle('open', !isOpen);
+    }
+
+
     // Пример: открытие модального окна для блюда
     document.querySelectorAll('.dish-card').forEach(card => {
         card.addEventListener('click', function(event) {
@@ -47,4 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
             openModal(`/promotion-detail/${promoId}/`);
         });
     });
+
+
 });

@@ -61,4 +61,4 @@ def promotion_detail(request, promo_id):
 	return render(request, 'includes/modal_promotion.html', {'promotion': promotion, 'content_type': 'promotion'})
 
 def cart_detail(request):
-	return render(request, 'includes/included_cart.html', {'content_type': 'cart'})
+	return render(request, 'includes/all_carts.html', {'content_type': 'cart'})
