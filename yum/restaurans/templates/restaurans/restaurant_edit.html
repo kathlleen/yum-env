@@ -1,0 +1,77 @@
+{% extends "base_rest.html" %}
+{% load static %}
+
+{% block static_css %}
+<link rel="stylesheet" href="{% static 'css/rest-edit.css' %}"/>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Редактирование ресторана: {{ restaurant.name }}</h2>
+
+    <form action="{% url 'restaurans:restaurant-edit' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-content">
+            <!-- Блок с логотипом -->
+            <div class="logo-container">
+                {% if form.instance.image %}
+                    <img src="{{ form.instance.image.url }}" alt="Логотип" class="restaurant-logo">
+                {% else %}
+                    <p class="no-logo">Логотип не загружен</p>
+                {% endif %}
+                <label for="id_image" class="logo-label">Изменить логотип:</label>
+                <input type="file" id="id_image" name="image" class="file-input">
+            </div>
+
+            <!-- Поля формы -->
+            <div class="form-fields">
+                <div class="form-group">
+                    <label for="id_name">Название:</label>
+                    <input type="text" id="id_name" name="name" value="{{ form.name.value }}" required>
+                    {{ form.name.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_description">Описание:</label>
+                    <textarea id="id_description" name="description">{{ form.description.value }}</textarea>
+                    {{ form.description.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_address">Адрес:</label>
+                    <input type="text" id="id_address" name="address" value="{{ form.address.value }}">
+                    {{ form.address.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_phone_number">Телефон:</label>
+                    <input type="text" id="id_phone_number" name="phone_number" value="{{ form.phone_number.value }}">
+                    {{ form.phone_number.errors }}
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Сохранить изменения</button>
+    </form>
+</div>
+
+
+<h3>Меню ресторана</h3>
+<table>
+    <tr>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Скидка</th>
+        <th>Категория</th>
+    </tr>
+    {% for dish in dishes %}
+    <tr>
+        <td>{{ dish.name }}</td>
+        <td>{{ dish.price }}</td>
+        <td>{{ dish.discount }}</td>
+        <td>{{ dish.category }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

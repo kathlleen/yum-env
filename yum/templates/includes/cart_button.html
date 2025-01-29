@@ -1,0 +1,8 @@
+{% load static %}
+{% load carts_tags %}
+
+{% user_restaurants request as restaurants %}
+
+<button id="open-cart">Корзина</button>
+
+{% include 'includes/modal_base.html' %}

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 import re
 from users.models import CustomUser
+from restaurans.models import Restaurans
 
 
 class UserLoginForm(AuthenticationForm):
@@ -38,6 +39,34 @@ class ProfileForm(UserChangeForm):
     #         raise forms.ValidationError("Неверный формат почты")
     #
     #     return data
+
+    def clean_phone_number(self): # валидация телефона
+        data = self.cleaned_data['phone_number']
+        #
+        # if not data.isdigit():
+        #     raise forms.ValidationError("Номер телефона должен содержать только цифры")
+
+        pattern = re.compile(r'^(\+375|80)(29|25|44|33)(\d{3})(\d{2})(\d{2})$')
+        if not pattern.match(data):
+            raise forms.ValidationError("Неверный формат номера")
+
+        return data
+
+
+class RestProfileForm(UserChangeForm):
+    class Meta:
+        model = Restaurans
+        fields = ['image',
+                  'name',
+                  'description',
+                  'address',
+                  'phone_number']
+
+    image = forms.ImageField(required=False)
+    name = forms.CharField()
+    description = forms.CharField()
+    address = forms.CharField()
+    phone_number = forms.CharField()
 
     def clean_phone_number(self): # валидация телефона
         data = self.cleaned_data['phone_number']
