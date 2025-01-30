@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from restaurans.models import Restaurans
 from menu.models import Categories
 from promotions.models import Promotion

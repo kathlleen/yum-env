@@ -1,6 +1,6 @@
 from django.db.models import Prefetch
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from orders.models import Order
 
@@ -12,8 +12,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from common.mixins import CacheMixin
 
+def is_restaurant_admin(user):
+    return user.is_authenticated and user.groups.filter(name="RestaurantAdmins").exists()
+
 
 @login_required
+@user_passes_test(is_restaurant_admin, login_url='main:index')
 def restaurant_dashboard(request):
     # Проверяем, что пользователь связан с рестораном
     restaurant = request.user.restaurant
@@ -33,6 +37,7 @@ def restaurant_dashboard(request):
     return render(request, 'restaurans/restaurant_dashboard.html', context)
 
 @login_required
+@user_passes_test(is_restaurant_admin, login_url='main:index')
 def restaurant_edit(request):
     restaurant = request.user.restaurant
 
