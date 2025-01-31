@@ -13,7 +13,7 @@ from django.views.generic import CreateView, UpdateView
 from common.mixins import CacheMixin
 
 def is_restaurant_admin(user):
-    return user.is_authenticated and user.groups.filter(name="RestaurantAdmins").exists()
+    return user.is_authenticated and user.is_restaurant_admin()
 
 
 @login_required

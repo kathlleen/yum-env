@@ -57,13 +57,14 @@
 </div>
 
 
-<h3>Меню ресторана</h3>
+<h2>Меню ресторана</h2>
 <table>
     <tr>
         <th>Название</th>
         <th>Цена</th>
         <th>Скидка</th>
         <th>Категория</th>
+        <th>Редактирование</th>
     </tr>
     {% for dish in dishes %}
     <tr>
@@ -71,6 +72,10 @@
         <td>{{ dish.price }}</td>
         <td>{{ dish.discount }}</td>
         <td>{{ dish.category }}</td>
+        <td>
+            <button class="btn">Изменить</button>
+            <button class="btn">Удалить</button>
+        </td>
     </tr>
     {% endfor %}
 </table>
