@@ -73,7 +73,9 @@
         <td>{{ dish.discount }}</td>
         <td>{{ dish.category }}</td>
         <td>
-            <button class="btn">Изменить</button>
+            <a href="{% url 'restaurans:edit-dish' dish.slug %}">
+                <button class="btn">Изменить</button>
+            </a>
             <button class="btn">Удалить</button>
         </td>
     </tr>

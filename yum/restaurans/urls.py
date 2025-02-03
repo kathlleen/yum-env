@@ -8,5 +8,6 @@ app_name = 'restaurans'
 urlpatterns = [
     path('restaurant-dashboard/', views.restaurant_dashboard, name='restaurant-dashboard'),
     path('restaurant-edit/', views.RestEditView.as_view(), name='restaurant-edit'),
+    path('edit-dish/<slug:slug>/', views.EditDishView.as_view(), name='edit-dish'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

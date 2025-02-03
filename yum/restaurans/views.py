@@ -12,6 +12,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from common.mixins import CacheMixin
 
+from restaurans.forms import DishEditForm
+
+
 def is_restaurant_admin(user):
     return user.is_authenticated and user.is_restaurant_admin()
 
@@ -36,24 +39,22 @@ def restaurant_dashboard(request):
 
     return render(request, 'restaurans/restaurant_dashboard.html', context)
 
-@login_required
-@user_passes_test(is_restaurant_admin, login_url='main:index')
-def restaurant_edit(request):
-    restaurant = request.user.restaurant
 
-    dishes = Dish.objects.filter(restaurant=restaurant)
-
-    if not restaurant:
-        return redirect('main:index')
-
-    context = {
-        'title': f'{restaurant.name} Редактирование',
-        'restaurant': restaurant,
-        'dishes': dishes,  # Передаем заказы в шаблон
-    }
-
-    return render(request, 'restaurans/restaurant_edit.html', context)
-
+# def restaurant_edit(request):
+#     restaurant = request.user.restaurant
+#
+#     dishes = Dish.objects.filter(restaurant=restaurant)
+#
+#     if not restaurant:
+#         return redirect('main:index')
+#
+#     context = {
+#         'title': f'{restaurant.name} Редактирование',
+#         'restaurant': restaurant,
+#         'dishes': dishes,  # Передаем заказы в шаблон
+#     }
+#
+#     return render(request, 'restaurans/restaurant_edit.html', context)
 
 
 class RestEditView(LoginRequiredMixin, UpdateView):
@@ -72,4 +73,18 @@ class RestEditView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'{self.request.user.restaurant.name} Редактирование'
         context['dishes'] = Dish.objects.filter(restaurant=self.request.user.restaurant).order_by("id")
+        return context
+
+class EditDishView(LoginRequiredMixin, UpdateView):
+    model = Dish
+    template_name = 'restaurans/edit_dish.html'
+    form_class = DishEditForm
+    context_object_name = 'dish'
+
+    def get_success_url(self):
+        return reverse_lazy('restaurans:restaurant-edit')  # После сохранения вернёт на страницу ресторана
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Редактирование {self.object.name}'
         return context
