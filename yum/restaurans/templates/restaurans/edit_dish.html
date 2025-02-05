@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="profile-container">
+<div class="profile-container" style="margin-top: 20px;">
     <h2>Редактирование блюда: {{ dish.name }}</h2>
 
     <form action="{% url 'restaurans:edit-dish' dish.slug %}" method="post" enctype="multipart/form-data">

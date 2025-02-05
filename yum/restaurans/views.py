@@ -1,15 +1,17 @@
 from django.db.models import Prefetch
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
+from django.views import View
 from orders.models import Order
 
 from django.views.generic.edit import FormView
 from menu.models import Dish
 
 from users.forms import RestProfileForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import CreateView, UpdateView, DeleteView
 from common.mixins import CacheMixin
 
 from restaurans.forms import DishEditForm
@@ -88,3 +90,17 @@ class EditDishView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Редактирование {self.object.name}'
         return context
+
+class DeleteDishView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, *args, **kwargs):
+        dish = get_object_or_404(Dish, slug=self.kwargs["slug"])
+
+        if request.user.restaurant != dish.restaurant:
+            return JsonResponse({"success": False, "error": "Доступ запрещен"}, status=403)
+
+        dish.delete()
+        return JsonResponse({"success": True})
+
+    def test_func(self):
+        dish = get_object_or_404(Dish, slug=self.kwargs["slug"])
+        return self.request.user.restaurant == dish.restaurant

@@ -76,9 +76,47 @@
             <a href="{% url 'restaurans:edit-dish' dish.slug %}">
                 <button class="btn">Изменить</button>
             </a>
-            <button class="btn">Удалить</button>
+            <button class="btn delete-dish" data-url="{% url 'restaurans:delete-dish' dish.slug %}" style="background-color: red; color: white;">
+                Удалить
+            </button>
         </td>
     </tr>
     {% endfor %}
+
 </table>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".delete-dish").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+            const deleteUrl = this.getAttribute("data-url");
+
+            if (this.dataset.confirm === "true") {
+                // Отправляем запрос на удаление
+                fetch(deleteUrl, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "Content-Type": "application/json"
+                    }
+                }).then(response => response.json()).then(data => {
+                    if (data.success) {
+                        location.reload(); // Перезагрузка страницы после удаления
+                    }
+                });
+            } else {
+                // Меняем текст кнопки на "Точно?" и стиль
+                this.textContent = "Точно?";
+                this.style.backgroundColor = "darkred";
+                this.dataset.confirm = "true";
+            }
+        });
+    });
+});
+</script>
+
 {% endblock %}
+
+

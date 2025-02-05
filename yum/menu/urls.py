@@ -1,6 +1,7 @@
 from django.urls import path
 
 from menu.views import MenuView, DishDetailView
+from restaurans.views import DeleteDishView
 
 app_name = 'menu'
 
