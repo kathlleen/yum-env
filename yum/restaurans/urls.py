@@ -10,6 +10,7 @@ urlpatterns = [
     path('restaurant-edit/', views.RestEditView.as_view(), name='restaurant-edit'),
     path('edit-dish/<slug:slug>/', views.EditDishView.as_view(), name='edit-dish'),
     path('dish/<slug:slug>/delete/', views.DeleteDishView.as_view(), name='delete-dish'),
+    path('add-dish/', views.AddDishView.as_view(), name='add-dish'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

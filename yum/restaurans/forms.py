@@ -5,7 +5,7 @@ from menu.models import Dish
 from menu.models import Categories
 
 
-class DishEditForm(UserChangeForm):
+class DishForm(UserChangeForm):
     class Meta:
         model = Dish
         fields = ['image',

@@ -14,7 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from common.mixins import CacheMixin
 
-from restaurans.forms import DishEditForm
+from restaurans.forms import DishForm
 
 
 def is_restaurant_admin(user):
@@ -80,7 +80,7 @@ class RestEditView(LoginRequiredMixin, UpdateView):
 class EditDishView(LoginRequiredMixin, UpdateView):
     model = Dish
     template_name = 'restaurans/edit_dish.html'
-    form_class = DishEditForm
+    form_class = DishForm
     context_object_name = 'dish'
 
     def get_success_url(self):
@@ -90,6 +90,21 @@ class EditDishView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Редактирование {self.object.name}'
         return context
+
+class AddDishView(LoginRequiredMixin, View):
+    def get(self, request):
+        form = DishForm()
+        return render(request, 'restaurans/add_dish.html', {'form': form})
+
+    def post(self, request):
+        form = DishForm(request.POST, request.FILES)
+        if form.is_valid():
+            dish = form.save(commit=False)
+            dish.restaurant = request.user.restaurant  # Привязываем блюдо к ресторану пользователя
+            dish.save()
+            return redirect('restaurans:restaurant-edit')  # Перенаправление на страницу с меню ресторана
+        return render(request, 'restaurans/add_dish.html', {'form': form})
+
 
 class DeleteDishView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
@@ -104,3 +119,4 @@ class DeleteDishView(LoginRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         dish = get_object_or_404(Dish, slug=self.kwargs["slug"])
         return self.request.user.restaurant == dish.restaurant
+
