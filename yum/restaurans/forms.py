@@ -3,6 +3,8 @@ from django import forms
 
 from menu.models import Dish
 from menu.models import Categories
+from django.utils.text import slugify
+from unidecode import unidecode
 
 
 class DishForm(UserChangeForm):
@@ -26,4 +28,15 @@ class DishForm(UserChangeForm):
 
 
 
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Categories
+        fields = ['name']
+
+    def save(self, commit=True):
+        category = super().save(commit=False)
+        category.slug = slugify(unidecode(self.cleaned_data['name']))  # Генерируем slug из названия
+        if commit:
+            category.save()
+        return category
 

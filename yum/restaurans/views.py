@@ -16,6 +16,8 @@ from common.mixins import CacheMixin
 
 from restaurans.forms import DishForm
 
+from restaurans.forms import CategoryForm
+
 
 def is_restaurant_admin(user):
     return user.is_authenticated and user.is_restaurant_admin()
@@ -105,6 +107,17 @@ class AddDishView(LoginRequiredMixin, View):
             return redirect('restaurans:restaurant-edit')  # Перенаправление на страницу с меню ресторана
         return render(request, 'restaurans/add_dish.html', {'form': form})
 
+class AddCategoryView(LoginRequiredMixin, View):
+    def get(self, request):
+        form = CategoryForm()
+        return render(request, 'restaurans/add_category.html', {'form': form})
+
+    def post(self, request):
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('restaurans:restaurant-edit')  # Перенаправление после добавления
+        return render(request, 'restaurans/add_category.html', {'form': form})
 
 class DeleteDishView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
