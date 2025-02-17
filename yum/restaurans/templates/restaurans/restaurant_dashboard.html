@@ -9,9 +9,9 @@
 {% block content %}
 
 <h1 class="dashboard-title">{{ restaurant.name }} - Заказы</h1>
-
+<h2>Готовятся</h2>
 <div class="orders-container">
-    {% for order in orders %}
+    {% for order in process_orders %}
     <div class="order-card">
         <h2 class="order-id">Заказ №{{ order.id }}</h2>
         <p><span class="label">Дата заказа:</span> {{ order.created_timestamp }}</p>
@@ -26,9 +26,30 @@
             </li>
             {% endfor %}
         </ul>
-        <button class="complete-btn">Готово</button>
+        <button class="complete-btn" onclick="window.location.href='{% url 'restaurans:mark_order_complete' order.id %}'">Готово</button>
     </div>
     {% endfor %}
 </div>
 
+<h2>Ждут курьера</h2>
+<div class="orders-container">
+    {% for order in wait_orders %}
+    <div class="order-card">
+        <h2 class="order-id">Заказ №{{ order.id }}</h2>
+        <p><span class="label">Дата заказа:</span> {{ order.created_timestamp }}</p>
+        <p><span class="label">Статус:</span> {{ order.status }}</p>
+        <p><span class="label">Адрес доставки:</span> {{ order.delivery_address }}</p>
+        <p><span class="label">Телефон:</span> {{ order.phone_number }}</p>
+        <h3 class="order-items-title">Состав заказа:</h3>
+        <ul class="order-items">
+            {% for item in order.orderitem_set.all %}
+            <li class="order-item">
+                {{ item.dish.name }} - {{ item.quantity }} шт. ({{ item.price }} руб.)
+            </li>
+            {% endfor %}
+        </ul>
+        <button class="complete-btn" onclick="window.location.href='{% url 'restaurans:mark_order_complete' order.id %}'">Отдать курьеру</button>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

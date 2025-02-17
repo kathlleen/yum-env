@@ -33,16 +33,33 @@ def restaurant_dashboard(request):
         return redirect('main:index')  # Перенаправляем, если у пользователя нет ресторана
 
     # Получаем заказы для ресторана
-    orders = Order.objects.filter(restaurant=restaurant)
+    orders = Order.objects.filter(restaurant=restaurant).order_by('-id')
+    process_orders = orders.filter(status='Процесс')
+    wait_orders = orders.filter(status='Ждет курьера')
 
     context = {
         'title': f'{restaurant.name} Админ',
         'restaurant': restaurant,
-        'orders': orders,  # Передаем заказы в шаблон
+        'process_orders': process_orders,  # Передаем заказы в шаблон
+        'wait_orders' : wait_orders
     }
 
     return render(request, 'restaurans/restaurant_dashboard.html', context)
 
+@login_required
+@user_passes_test(is_restaurant_admin, login_url='main:index')
+def mark_order_complete(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    # Меняем статус заказа
+    if order.status == 'Процесс':
+        order.status = 'Ждет курьера'
+        order.save()
+        return redirect('restaurans:restaurant-dashboard')
+    if order.status == 'Ждет курьера':
+        order.status = 'В пути'
+        order.save()
+        return redirect('restaurans:restaurant-dashboard')  # Перезагружаем страницу
 
 # def restaurant_edit(request):
 #     restaurant = request.user.restaurant

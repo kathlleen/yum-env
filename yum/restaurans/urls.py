@@ -13,6 +13,8 @@ urlpatterns = [
     path('dish/<slug:slug>/delete/', views.DeleteDishView.as_view(), name='delete-dish'),
     path('add-dish/', views.AddDishView.as_view(), name='add-dish'),
     path('add-category/', AddCategoryView.as_view(), name='add-category'),
+    path('order/<int:order_id>/complete/', views.mark_order_complete, name='mark_order_complete'),
+
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

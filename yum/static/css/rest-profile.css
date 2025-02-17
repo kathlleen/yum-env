@@ -27,6 +27,10 @@ p {
     padding: 20px;
 }
 
+h2 {
+    margin-left: 50px;
+}
+
 /* Карточка заказа */
 .order-card {
     background-color: #fff;

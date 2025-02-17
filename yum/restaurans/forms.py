@@ -24,7 +24,7 @@ class DishForm(UserChangeForm):
     price = forms.DecimalField(decimal_places=2, max_digits=7, initial=0.00)
     discount = forms.DecimalField(decimal_places=2, max_digits=7, initial=0.00)
     weight = forms.IntegerField()
-    category = forms.ModelChoiceField(queryset=Categories.objects.all(), empty_label="(Nothing)")
+    category = forms.ModelChoiceField(queryset=Categories.objects.all().order_by('name'), empty_label="(Nothing)")
 
 
 
