@@ -20,6 +20,7 @@ from django.urls import path, include
 
 from django.conf.urls.static import static
 
+from yum import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +31,10 @@ urlpatterns = [
     path('orders/', include('orders.urls', namespace='orders')),
     path('restaurans/', include('restaurans.urls', namespace='restaurans')),
 ]
+
+
+handler404 = views.handler404
+handler500 = views.handler500
 
 if settings.DEBUG:
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
