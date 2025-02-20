@@ -68,6 +68,39 @@ section {
     align-items: center;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(10px);
+    min-width: 160px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+    z-index: 10;
+    border-radius: 8px;
+}
+
+.dropdown-menu a {
+    color: white;
+    padding: 10px 16px;
+    display: block;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.show {
+    display: block;
+}
+
+
 .card {
     width: 270px;
     height: 145px;

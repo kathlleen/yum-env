@@ -264,7 +264,15 @@
 
             <a>Сортировать </a>
             <a>Еще ↓</a>
-            <a>Кухня ↓</a>
+
+            <div class="dropdown">
+                <a href="#" id="cuisine-toggle">Кухня ↓</a>
+                <div class="dropdown-menu" id="cuisine-menu">
+                    {% for cuisine in cuisines %}
+                        <a href="#">{{ cuisine.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 
@@ -272,5 +280,23 @@
         {% include 'includes/restaurants_list.html' with restaurants=restaurants %}
     </div>
 </section>
+
+<script>
+document.getElementById("cuisine-toggle").addEventListener("mouseover", function (event) {
+    event.preventDefault();
+    document.getElementById("cuisine-menu").classList.toggle("show");
+});
+
+// Закрытие списка при клике вне его
+document.addEventListener("mouseout", function (event) {
+    let dropdown = document.getElementById("cuisine-menu");
+    let toggle = document.getElementById("cuisine-toggle");
+
+    if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
+        dropdown.classList.remove("show");
+    }
+});
+
+</script>
 
 {% endblock %}

@@ -6,6 +6,10 @@ from promotions.models import Promotion
 from main.utils import q_search
 
 from django.views.generic import TemplateView
+
+from restaurans.models import Cuisine
+
+
 # Create your views here.
 class IndexView(TemplateView):
 	template_name = 'main/index.html'
@@ -36,6 +40,7 @@ class IndexView(TemplateView):
 
 		# Заголовок страницы
 		context['title'] = "Главная страница | YUM"
+		context['cuisines'] = Cuisine.objects.all()
 
 		return context
 
