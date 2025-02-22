@@ -34,6 +34,7 @@ urlpatterns = [
 
 
 handler404 = views.handler404
+handler500 = views.handler500
 
 if settings.DEBUG:
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

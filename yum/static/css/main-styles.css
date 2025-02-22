@@ -181,13 +181,69 @@ header button {
 
 /* Footer */
 
+
+
 footer {
-    background-color: #434242;
-    height: 500px;
+    background: rgba(67, 66, 66, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 50px 0;
+    color: white;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.footer-section {
+    width: 22%;
+}
+
+.footer-section h2 {
+    color: #64FF8F;
+    margin-bottom: 15px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-section ul li a:hover {
+    color: #64FF8F;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 24px;
+    transition: 0.3s;
+}
+
+.social-icons a:hover {
+    color: #64FF8F;
+}
+
+.footer-bottom {
+    text-align: center;
     margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
-
-footer h2 {
-    color:#64FF8F;
-}
-
