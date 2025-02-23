@@ -6,7 +6,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Nunito', sans-serif;
     background: url('/static/images/image.jpg') no-repeat center center/cover;
     position: relative;
 }

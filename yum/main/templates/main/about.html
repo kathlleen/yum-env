@@ -1,19 +1,226 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
-<h1>О нас</h1>
+{% extends "base.html" %}
+{% load static %}
 
-<a href="{% url 'main:about' %}">О нас</a>
-<a href="{% url 'users:login' %}">Войти</a>
-<!--<a href="{% url 'users:login' %}">Войти как админ ресторана</a>-->
-<!--<a href="{% url 'users:login' %}">Войти как курьер</a>-->
-<a href="{% url 'users:register_customer' %}">Зарегестрироваться</a>
-<a href="{% url 'users:register_courier' %}">Зарегестровать курьера</a>
-<a href="{% url 'users:register_restaurant_admin' %}">Зарегестровать админа ресторана</a>
+{% block static_css %}
+<style>
+/* Общие стили */
+.about-container {
+    background: url("{% static 'images/image.jpg' %}") center/cover no-repeat fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    color: white;
+    position: relative;
+}
 
-</body>
-</html>
+.about-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Затемнение */
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+}
+
+/* Блок с заголовком */
+.about-header {
+    text-align: center;
+    padding: 50px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    max-width: 800px;
+    width: 100%;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.about-header h1 {
+    font-size: 3em;
+    color: #64FF8F;
+    margin-bottom: 10px;
+}
+
+/* Основные блоки */
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.about-box {
+    flex: 1 1 300px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s, background 0.3s;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.about-box:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.about-box h2 {
+    color: #64FF8F;
+    margin-bottom: 10px;
+}
+
+/* Секция с партнёрами */
+.about-partners {
+    text-align: center;
+    margin-top: 60px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.about-partners h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    p-index: 1;
+}
+
+.partner-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.partner-box {
+    width: 350px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s, background 0.3s;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.partner-box:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.partner-box h3 {
+    color: #64FF8F;
+    margin-bottom: 10px;
+}
+
+/* Кнопки */
+.partner-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 25px;
+    background: #64FF8F;
+    color: black;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.partner-btn:hover {
+    background: #50cc70;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Анимация появления */
+.about-box, .partner-box {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <section class="about-header">
+        <h1>О нас</h1>
+        <p>YUM Доставка — это удобный сервис, который соединяет людей с любимыми ресторанами.</p>
+    </section>
+
+    <section class="about-content">
+        <div class="about-box">
+            <h2>Почему мы?</h2>
+            <p>Быстрая доставка, удобное приложение и огромный выбор блюд от проверенных ресторанов.</p>
+        </div>
+
+        <div class="about-box">
+            <h2>Наша миссия</h2>
+            <p>Мы стремимся сделать заказ еды простым, удобным и доступным для каждого.</p>
+        </div>
+
+        <div class="about-box">
+            <h2>Наши партнёры</h2>
+            <p>Более 500 ресторанов доверяют нам доставку своих блюд!</p>
+        </div>
+    </section>
+
+    <section class="about-partners">
+
+        <div class="partner-options">
+            <div class="partner-box">
+                <h3>Ресторанам</h3>
+                <p>Расширьте аудиторию и увеличьте продажи, присоединившись к нашей платформе.</p>
+                <a href="#" class="partner-btn">Добавить ресторан</a>
+            </div>
+
+            <div class="partner-box">
+                <h3>Курьерам</h3>
+                <p>Гибкий график, стабильный доход и работа в удобных районах города.</p>
+                <a href="#" class="partner-btn">Стать курьером</a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.2 }
+    );
+
+    document.querySelectorAll(".about-box, .partner-box").forEach((box) => {
+        observer.observe(box);
+    });
+});
+</script>
+
+{% endblock %}
