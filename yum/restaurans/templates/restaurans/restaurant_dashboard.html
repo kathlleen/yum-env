@@ -52,4 +52,16 @@
     </div>
     {% endfor %}
 </div>
+
+<script>
+    const restaurantId = "{{ restaurant.id }}";
+    const socket = new WebSocket(`ws://${window.location.host}/ws/orders/${restaurantId}/`);
+
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        alert(`Новый заказ №${data.order_id} от ${data.customer}!\nАдрес: ${data.address}`);
+        location.reload(); // Перезагрузить страницу, чтобы увидеть заказ
+    };
+</script>
+
 {% endblock %}

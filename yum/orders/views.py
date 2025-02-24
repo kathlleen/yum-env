@@ -9,6 +9,9 @@ from carts.models import Cart
 from orders.models import Order, OrderItem
 from restaurans.models import Restaurans
 from orders.forms import CreateOrderForm
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 class CreateOrderView(LoginRequiredMixin, FormView):
     template_name = 'orders/create_order.html'
@@ -54,7 +57,18 @@ class CreateOrderView(LoginRequiredMixin, FormView):
                 # Clear the cart
                 cart_items.delete()
 
-                messages.success(self.request, "Заказ успешно оформлен!")
+                channel_layer = get_channel_layer()
+                async_to_sync(channel_layer.group_send)(
+                    f"restaurant_{self.restaurant.id}",
+                    {
+                        "type": "order_message",
+                        "order_id": order.id,
+                        "customer": f"{order.customer.first_name} {order.customer.last_name}",
+                        "address": order.delivery_address,
+                    },
+                )
+
+
                 return redirect(self.success_url)
 
         except ValidationError as e:
