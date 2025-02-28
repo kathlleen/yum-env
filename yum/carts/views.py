@@ -52,6 +52,7 @@ def cart_add(request):
 
     response_data = {
         "cart_items_html": cart_items_html,
+        "success": True # для тестирования
     }
 
     # return redirect(request.META['HTTP_REFERER'])
