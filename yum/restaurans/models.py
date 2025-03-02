@@ -2,6 +2,8 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from restaurans.utils import get_coordinates
+
 
 # Create your models here.
 
@@ -25,7 +27,8 @@ class Restaurans(models.Model):
     image = models.ImageField(upload_to='restaurants_images', blank=True, null=True, verbose_name='Изображение')
     owner = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE, related_name='restaurant', verbose_name='Админ')
     cuisine = models.ForeignKey(to=Cuisine, blank=True, on_delete=models.SET_NULL, null=True, verbose_name="Кухня")
-
+    latitude = models.FloatField(blank=True, null=True, verbose_name="Широта")  # Широта
+    longitude = models.FloatField(blank=True, null=True, verbose_name="Долгота")  # Долгота
 
     class Meta:
         db_table = 'restaurans'
@@ -34,5 +37,11 @@ class Restaurans(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    def save(self, *args, **kwargs):
+        if self.address and (self.latitude is None or self.longitude is None):
+            self.latitude, self.longitude = get_coordinates(self.address)
+        super().save(*args, **kwargs)
+
 
 

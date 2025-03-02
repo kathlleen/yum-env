@@ -9,14 +9,11 @@ from orders.models import Order
 from django.views.generic.edit import FormView
 from menu.models import Dish
 
-from users.forms import RestProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from common.mixins import CacheMixin
 
-from restaurans.forms import DishForm
-
-from restaurans.forms import CategoryForm
+from restaurans.forms import DishForm, CategoryForm, RestProfileForm
 
 
 def is_restaurant_admin(user):

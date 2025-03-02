@@ -1,10 +1,12 @@
 from django.contrib.auth.forms import UserChangeForm
 from django import forms
-
+import re
 from menu.models import Dish
 from menu.models import Categories
 from django.utils.text import slugify
 from unidecode import unidecode
+
+from restaurans.models import Restaurans
 
 
 class DishForm(UserChangeForm):
@@ -40,3 +42,30 @@ class CategoryForm(forms.ModelForm):
             category.save()
         return category
 
+
+class RestProfileForm(UserChangeForm):
+    class Meta:
+        model = Restaurans
+        fields = ['image',
+                  'name',
+                  'description',
+                  'address',
+                  'phone_number']
+
+    image = forms.ImageField(required=False)
+    name = forms.CharField()
+    description = forms.CharField()
+    address = forms.CharField()
+    phone_number = forms.CharField()
+
+    def clean_phone_number(self): # валидация телефона
+        data = self.cleaned_data['phone_number']
+        #
+        # if not data.isdigit():
+        #     raise forms.ValidationError("Номер телефона должен содержать только цифры")
+
+        pattern = re.compile(r'^(\+375|80)(29|25|44|33)(\d{3})(\d{2})(\d{2})$')
+        if not pattern.match(data):
+            raise forms.ValidationError("Неверный формат номера")
+
+        return data
