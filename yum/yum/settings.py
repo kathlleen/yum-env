@@ -25,6 +25,7 @@ load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
+API_KEY = os.getenv('API_KEY')
 
 DATABASES = {
     'default': {

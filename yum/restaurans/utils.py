@@ -3,12 +3,13 @@ from django.conf import settings
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
+
 def get_coordinates(address):
     """Получает широту и долготу по адресу через Google Geocoding API"""
     if not address:
         return None, None
+
+    API_KEY = settings.API_KEY
 
     format_address = address.replace(' ', '+')
     # print(format_address)

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -91,6 +92,8 @@ class RestEditView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'{self.request.user.restaurant.name} Редактирование'
         context['dishes'] = Dish.objects.filter(restaurant=self.request.user.restaurant).order_by("id")
+        context['api_key'] = settings.API_KEY
+        context['address'] = self.request.user.restaurant.address.replace(' ', '+')
         return context
 
 class EditDishView(LoginRequiredMixin, UpdateView):
