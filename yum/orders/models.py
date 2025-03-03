@@ -6,6 +6,8 @@ from menu.models import Dish
 from users.models import CustomUser
 from restaurans.models import Restaurans
 
+from restaurans.utils import get_coordinates
+
 
 class OrderitemQueryset(models.QuerySet):
 
@@ -26,6 +28,10 @@ class Order(models.Model):
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата заказа")
     phone_number = models.CharField(max_length=20, verbose_name="Номер телефона")
     delivery_address = models.TextField(null=True, blank=True, verbose_name="Адрес")
+
+    latitude = models.FloatField(blank=True, null=True, verbose_name="Широта")  # Широта
+    longitude = models.FloatField(blank=True, null=True, verbose_name="Долгота")  # Долгота
+
     payment_on_get = models.BooleanField(default=False, verbose_name="Оплата при получении")
     is_paid = models.BooleanField(default=False, verbose_name="Оплачено")
     status = models.CharField(max_length=50, default='Процесс', verbose_name="Статус")
@@ -38,8 +44,16 @@ class Order(models.Model):
         verbose_name_plural = "Заказы"
         ordering = ("id",)
 
+    def save(self, *args, **kwargs):
+        if self.delivery_address and (self.latitude is None or self.longitude is None):
+            self.latitude, self.longitude = get_coordinates(self.delivery_address)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"Заказ № {self.pk} | Покупатель {self.customer.first_name} {self.customer.last_name}"
+
+
+
 
 
 class OrderItem(models.Model):
