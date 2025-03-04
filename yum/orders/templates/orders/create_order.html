@@ -77,47 +77,50 @@
                         <p>{{form.street.errors}}</p>
                         {% endif %}
                     </div>
+                    <div class="row">
+                        <div class="row" id="houseField">
+                            <label for="id_house" class="form-label">Дом*:</label>
+                            <input class="form-control small" id="id_house"
+                                   value="{% if form.house.value %}{{ form.house.value }}{% endif %}"
+                                   name="house" rows="2">
+                            {% if form.house.errors %}
+                            <p>{{form.house.errors}}</p>
+                            {% endif %}
+                        </div>
 
-                    <div class="row" id="houseField">
-                        <label for="id_house" class="form-label">Дом*:</label>
-                        <input class="form-control" id="id_house"
-                                  value="{% if form.house.value %}{{ form.house.value }}{% endif %}"
-                                  name="house" rows="2">
-                        {% if form.house.errors %}
-                        <p>{{form.house.errors}}</p>
-                        {% endif %}
+                        <div class="row" id="entranceField">
+                            <label for="id_entrance" class="form-label">Подъезд*:</label>
+                            <input class="form-control small" id="id_entrance" type="number"
+                                   value="{% if form.entrance.value %}{{ form.entrance.value }}{% endif %}"
+                                   name="entrance" rows="2">
+                            {% if form.entrance.errors %}
+                            <p>{{form.entrance.errors}}</p>
+                            {% endif %}
+                        </div>
                     </div>
+                    <div class="row">
 
-                    <div class="row" id="entranceField">
-                        <label for="id_entrance" class="form-label">Подъезд*:</label>
-                        <input class="form-control" id="id_entrance"
-                                  value="{% if form.entrance.value %}{{ form.entrance.value }}{% endif %}"
-                                  name="entrance" rows="2">
-                        {% if form.entrance.errors %}
-                        <p>{{form.entrance.errors}}</p>
-                        {% endif %}
+                        <div class="row" id="floorField">
+                            <label for="id_floor" class="form-label">Этаж*:</label>
+                            <input class="form-control small" id="id_floor" type="number"
+                                   value="{% if form.floor.value %}{{ form.floor.value }}{% endif %}"
+                                   name="floor" rows="2">
+                            {% if form.floor.errors %}
+                            <p>{{form.floor.errors}}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="row" id="apartmentField">
+                            <label for="id_apartment" class="form-label">Квартира*:</label>
+                            <input class="form-control small" id="id_apartment" type="number"
+                                   value="{% if form.apartment.value %}{{ form.apartment.value }}{% endif %}"
+                                   name="apartment" rows="2">
+                            {% if form.apartment.errors %}
+                            <p>{{form.apartment.errors}}</p>
+                            {% endif %}
+                        </div>
+
                     </div>
-
-                    <div class="row" id="floorField">
-                        <label for="id_floor" class="form-label">Этаж*:</label>
-                        <input class="form-control" id="id_floor"
-                                  value="{% if form.floor.value %}{{ form.floor.value }}{% endif %}"
-                                  name="floor" rows="2">
-                        {% if form.floor.errors %}
-                        <p>{{form.floor.errors}}</p>
-                        {% endif %}
-                    </div>
-
-                    <div class="row" id="apartmentField">
-                        <label for="id_apartment" class="form-label">Квартира*:</label>
-                        <input class="form-control" id="id_apartment"
-                                  value="{% if form.apartment.value %}{{ form.apartment.value }}{% endif %}"
-                                  name="apartment" rows="2">
-                        {% if form.apartment.errors %}
-                        <p>{{form.apartment.errors}}</p>
-                        {% endif %}
-                    </div>
-
                     <div class="row">
                         <label class="form-label">Способ оплаты: </label>
                         <div class="form-check form-check-inline">

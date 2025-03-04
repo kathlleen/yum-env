@@ -20,6 +20,8 @@
     position: relative;
     z-index: 1;
     color: white;
+    min-height: 600px;
+    margin-bottom: 100px;
 }
 
 

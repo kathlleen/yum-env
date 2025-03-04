@@ -48,7 +48,7 @@
     color: white;
 }
 
-h2 {
+.order h2 {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -70,6 +70,18 @@ h2 {
     flex-direction: column;
     margin-bottom: 20px;
     gap: 20px;
+}
+
+.form-control {
+    height: 35px;
+    padding-left: 5px;
+    border-radius: 5px;
+    border: none;
+
+}
+
+.small {
+    width: 50px;
 }
 
 .row {
