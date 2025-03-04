@@ -68,15 +68,56 @@
                              id="phone_number_error">Неправильный формат
                         </div>
                     </div>
-                    <div class="row" id="deliveryAddressField">
-                        <label for="id_delivery_address" class="form-label">Адрес*:</label>
-                        <textarea class="form-control" id="id_delivery_address"
-                                  value="{% if form.delivery_address.value %}{{ form.delivery_address.value }}{% endif %}"
-                                  name="delivery_address" rows="2"></textarea>
-                        {% if form.delivery_address.errors %}
-                        <p>{{form.delivery_address.errors}}</p>
+                    <div class="row" id="streetField">
+                        <label for="id_street" class="form-label">Улица*:</label>
+                        <textarea class="form-control" id="id_street"
+                                  value="{% if form.street.value %}{{ form.street.value }}{% endif %}"
+                                  name="street" rows="2"></textarea>
+                        {% if form.street.errors %}
+                        <p>{{form.street.errors}}</p>
                         {% endif %}
                     </div>
+
+                    <div class="row" id="houseField">
+                        <label for="id_house" class="form-label">Дом*:</label>
+                        <input class="form-control" id="id_house"
+                                  value="{% if form.house.value %}{{ form.house.value }}{% endif %}"
+                                  name="house" rows="2">
+                        {% if form.house.errors %}
+                        <p>{{form.house.errors}}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="row" id="entranceField">
+                        <label for="id_entrance" class="form-label">Подъезд*:</label>
+                        <input class="form-control" id="id_entrance"
+                                  value="{% if form.entrance.value %}{{ form.entrance.value }}{% endif %}"
+                                  name="entrance" rows="2">
+                        {% if form.entrance.errors %}
+                        <p>{{form.entrance.errors}}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="row" id="floorField">
+                        <label for="id_floor" class="form-label">Этаж*:</label>
+                        <input class="form-control" id="id_floor"
+                                  value="{% if form.floor.value %}{{ form.floor.value }}{% endif %}"
+                                  name="floor" rows="2">
+                        {% if form.floor.errors %}
+                        <p>{{form.floor.errors}}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="row" id="apartmentField">
+                        <label for="id_apartment" class="form-label">Квартира*:</label>
+                        <input class="form-control" id="id_apartment"
+                                  value="{% if form.apartment.value %}{{ form.apartment.value }}{% endif %}"
+                                  name="apartment" rows="2">
+                        {% if form.apartment.errors %}
+                        <p>{{form.apartment.errors}}</p>
+                        {% endif %}
+                    </div>
+
                     <div class="row">
                         <label class="form-label">Способ оплаты: </label>
                         <div class="form-check form-check-inline">

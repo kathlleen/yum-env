@@ -6,14 +6,20 @@ class CreateOrderForm(forms.Form):
     first_name = forms.CharField()
     last_name = forms.CharField()
     phone_number = forms.CharField()
-    delivery_address = forms.CharField(required=False)
+    # delivery_address = forms.CharField(required=False)
+    street = forms.CharField()
+    house = forms.CharField()
+
+    entrance = forms.IntegerField(required=False)
+    floor = forms.IntegerField(required=False)
+    apartment = forms.IntegerField(required=False)
+
     payment_on_get = forms.ChoiceField(
         choices=[
             ("0", 'False'),
             ("1", 'True'),
         ],
     )
-
 
     def clean_phone_number(self): # валидация телефона
         data = self.cleaned_data['phone_number']

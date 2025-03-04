@@ -35,11 +35,19 @@ class CreateOrderView(LoginRequiredMixin, FormView):
         try:
             with transaction.atomic():
                 # Create the order
+
+                street = form.cleaned_data['street']
+                house = form.cleaned_data['house']
+                delivery_address = 'улица ' + street + ', ' + house
+
                 order = Order.objects.create(
                     customer=user,
                     courier=None,
                     phone_number=form.cleaned_data['phone_number'],
-                    delivery_address=form.cleaned_data['delivery_address'],
+                    delivery_address=delivery_address,
+                    entrance=form.cleaned_data['entrance'],
+                    floor=form.cleaned_data['floor'],
+                    apartment=form.cleaned_data['apartment'],
                     payment_on_get=form.cleaned_data['payment_on_get'],
                     restaurant=self.restaurant,
                 )

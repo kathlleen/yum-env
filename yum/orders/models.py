@@ -27,7 +27,11 @@ class Order(models.Model):
                                 verbose_name="Курьер", default=None, related_name = "courier")
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата заказа")
     phone_number = models.CharField(max_length=20, verbose_name="Номер телефона")
+
     delivery_address = models.TextField(null=True, blank=True, verbose_name="Адрес")
+    entrance = models.IntegerField(null=True, blank=True, verbose_name="Подъезд")
+    floor = models.IntegerField(null=True, blank=True, verbose_name="Этаж")
+    apartment = models.IntegerField(null=True, blank=True, verbose_name="Квартира")
 
     latitude = models.FloatField(blank=True, null=True, verbose_name="Широта")  # Широта
     longitude = models.FloatField(blank=True, null=True, verbose_name="Долгота")  # Долгота
