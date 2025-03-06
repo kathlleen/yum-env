@@ -119,3 +119,18 @@ def cart_remove(request):
 
     return JsonResponse(response_data)
     # return redirect(request.META['HTTP_REFERER'])
+
+
+def cart_clear(request, restaurant_id):
+    restaurant = get_object_or_404(Restaurans, id=restaurant_id)
+
+    if request.user.is_authenticated:
+        Cart.objects.filter(user=request.user, dish__restaurant=restaurant).delete()
+    else:
+        Cart.objects.filter(session_key=request.session.session_key, dish__restaurant=restaurant).delete()
+
+    user_cart = get_user_carts(request, restaurant=restaurant)
+    cart_items_html = render_to_string("includes/included_cart.html",
+                                       {"carts": user_cart, "restaurant": restaurant}, request=request)
+
+    return JsonResponse({"cart_items_html": cart_items_html, "success": True})
