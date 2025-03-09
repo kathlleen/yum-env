@@ -11,26 +11,23 @@
 
 <section class="promotions-sect">
     <h2>Акции</h2>
-    <div class="promotions">
-        <div class="arrow a-left">
-            <p> ← </p>
-        </div>
-
-        {% for promotion in promotions %}
-        <div class="card promotion-card" style="cursor: pointer;" data-promo-id='{{ promotion.id }}'>
-            <div class="card-overlay"></div>
-            <img src="{{ promotion.image.url }}" alt="Завтрак" class="card-img">
-            <div class="card-content">
-                <h3>{{ promotion.name }}</h3>
+    <div class="promotions-wrapper">
+        <div class="arrow a-left">←</div>
+        <div class="promotions">
+            {% for promotion in promotions %}
+            <div class="card promotion-card" data-promo-id="{{ promotion.id }}">
+                <div class="card-overlay"></div>
+                <img src="{{ promotion.image.url }}" alt="{{ promotion.name }}" class="card-img">
+                <div class="card-content">
+                    <h3>{{ promotion.name }}</h3>
+                </div>
             </div>
+            {% endfor %}
         </div>
-
-        {% endfor %}
-        <div class="arrow a-right">
-            <p> → </p>
-        </div>
+        <div class="arrow a-right">→</div>
     </div>
 </section>
+
 
 
 {% include 'includes/modal_base.html' %}
@@ -181,7 +178,7 @@
 <section class="collections-sect">
 
     <h2>Подборки</h2>
-    <div class="promotions">
+    <div class="collections">
         <div class="card">
             <div class="card-overlay"></div>
             <img src="{% static 'images/dish2.jpg' %}" alt="Завтрак" class="card-img">
@@ -296,6 +293,30 @@ document.addEventListener("mouseout", function (event) {
         dropdown.classList.remove("show");
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const slider = document.querySelector(".promotions");
+    const leftArrow = document.querySelector(".a-left");
+    const rightArrow = document.querySelector(".a-right");
+
+    const cardWidth = document.querySelector(".promotion-card").offsetWidth + 20; // ширина карточки + отступ
+    let scrollPosition = 0;
+
+    rightArrow.addEventListener("click", function () {
+        if (scrollPosition < slider.scrollWidth - slider.clientWidth) {
+            scrollPosition += cardWidth * 4;
+            slider.scrollTo({ left: scrollPosition, behavior: "smooth" });
+        }
+    });
+
+    leftArrow.addEventListener("click", function () {
+        if (scrollPosition > 0) {
+            scrollPosition -= cardWidth * 4;
+            slider.scrollTo({ left: scrollPosition, behavior: "smooth" });
+        }
+    });
+});
+
 
 </script>
 

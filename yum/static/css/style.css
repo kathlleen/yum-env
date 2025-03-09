@@ -41,32 +41,71 @@ section {
 }
 
 .arrow {
-    background-color: rgba(116, 116, 116, 70%);
+    background-color: rgba(116, 116, 116, 0.7);
     width: 50px;
     height: 50px;
-    border-radius: 100%;
-    text-align: center;
-    padding: 10px;
-    z-index: 3;
-    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 23px;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    z-index: 10;
+    transition: background 0.3s ease;
+}
 
+.arrow:hover {
+    background-color: rgba(116, 116, 116, 1);
 }
 
 .a-left {
-    left: 7%;
+    left: 10px;
 }
 
 .a-right {
-    right: 7%;
+    right: 10px;
 }
 
+
 .promotions {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Скрываем скроллбар в Firefox */
+    -ms-overflow-style: none; /* Скрываем скроллбар в IE/Edge */
+    width: 100%;
+    max-width: 1000px;
+    padding: 10px 0;
+}
+
+.collections {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
+
+
+.promotions-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.promotion-card {
+    flex: 0 0 calc(25% - 20px); /* 4 карточки в ряду */
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
 
 .dropdown {
     position: relative;
