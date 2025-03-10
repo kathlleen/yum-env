@@ -42,6 +42,8 @@ class IndexView(TemplateView):
 		context['title'] = "Главная страница | YUM"
 		context['cuisines'] = Cuisine.objects.all()
 
+		context['best_rest'] = Restaurans.objects.order_by("-rating")
+
 		return context
 
 def filter_restaurants(request, category_slug):

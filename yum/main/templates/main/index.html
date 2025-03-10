@@ -5,15 +5,16 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
 {% endblock %}
 
-{% block base_menu %}<button id="open-cart">Корзина</button>{% endblock %}
+{% block base_menu %}
+<button id="open-cart">Корзина</button>{% endblock %}
 
 {% block content %}
 
 <section class="promotions-sect">
     <h2>Акции</h2>
     <div class="promotions-wrapper">
-        <div class="arrow a-left">←</div>
-        <div class="promotions">
+        <div class="arrow a-left" id="promotion-left">←</div>
+        <div class="promotions promotions-slider">
             {% for promotion in promotions %}
             <div class="card promotion-card" data-promo-id="{{ promotion.id }}">
                 <div class="card-overlay"></div>
@@ -24,88 +25,40 @@
             </div>
             {% endfor %}
         </div>
-        <div class="arrow a-right">→</div>
+        <div class="arrow a-right" id="promotion-right">→</div>
     </div>
 </section>
-
 
 
 {% include 'includes/modal_base.html' %}
 
-<!--<section class="rating-sect">
+<section class="rating-sect">
     <h2>Высокий рестинг</h2>
-    <div class="promotions">
-        <div class="arrow a-left">
-            <p> ← </p>
-        </div>
-
-        <div class="card">
-            <div class="card-overlay"></div>
-            <img src="{% static 'images/dish4.jpg' %}" alt="Завтрак" class="card-img">
-            <div class="card-content">
-                <h3>Васильки</h3>
-                <div class="rating">
-                    <h3>4.9</h3>
-                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.71989 21.5021L8.35095 14.6577L2.88062 10.0542L10.1075 9.44524L12.9179 2.99057L15.7284 9.44524L22.9552 10.0542L17.4849 14.6577L19.116 21.5021L12.9179 17.8729L6.71989 21.5021Z"
-                              fill="#FFE976"/>
-                    </svg>
+    <div class="promotions-wrapper">
+        <div class="arrow a-left" id="rating-left">←</div>
+        <div class="promotions rating-slider">
+            {% for rest in best_rest %}
+            <div class="card promotion-card" data-promo-id="{{ rest.id }}">
+                <div class="card-overlay"></div>
+                <img src="{{ rest.image.url }}" alt="{{ rest.name }}" class="card-img">
+                <div class="card-content">
+                    <h3>{{ rest.name }} </h3>
+                    <div class="rating">
+                        <h3>{{ rest.rating }}</h3>
+                        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.71989 21.5021L8.35095 14.6577L2.88062 10.0542L10.1075 9.44524L12.9179 2.99057L15.7284 9.44524L22.9552 10.0542L17.4849 14.6577L19.116 21.5021L12.9179 17.8729L6.71989 21.5021Z"
+                                  fill="#FFE976"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        <div class="card">
-            <div class="card-overlay"></div>
-            <img src="{% static 'images/dish5.jpg' %}" alt="Завтрак" class="card-img">
-            <div class="card-content">
-                <h3>Усадьба</h3>
-                <div class="rating">
-                    <h3>4.9</h3>
-                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.71989 21.5021L8.35095 14.6577L2.88062 10.0542L10.1075 9.44524L12.9179 2.99057L15.7284 9.44524L22.9552 10.0542L17.4849 14.6577L19.116 21.5021L12.9179 17.8729L6.71989 21.5021Z"
-                              fill="#FFE976"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-overlay"></div>
-            <img src="{% static 'images/dish3.jpg' %}" alt="Завтрак" class="card-img">
-            <div class="card-content">
-                <h3>Невинный бар</h3>
-                <div class="rating">
-                    <h3>4.9</h3>
-                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.71989 21.5021L8.35095 14.6577L2.88062 10.0542L10.1075 9.44524L12.9179 2.99057L15.7284 9.44524L22.9552 10.0542L17.4849 14.6577L19.116 21.5021L12.9179 17.8729L6.71989 21.5021Z"
-                              fill="#FFE976"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-overlay"></div>
-            <img src="{% static 'images/dish5.jpg' %}" alt="Завтрак" class="card-img">
-            <div class="card-content">
-                <h3>Тьерри</h3>
-                <div class="rating">
-                    <h3>4.9</h3>
-                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.71989 21.5021L8.35095 14.6577L2.88062 10.0542L10.1075 9.44524L12.9179 2.99057L15.7284 9.44524L22.9552 10.0542L17.4849 14.6577L19.116 21.5021L12.9179 17.8729L6.71989 21.5021Z"
-                              fill="#FFE976"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="arrow a-right">
-            <p> → </p>
-        </div>
-
-
+        <div class="arrow a-right" id="rating-right">→</div>
     </div>
-</section>
 
+</section>
+<!--
 <section class="for-you-sect">
 
     <h2>Специально для вас</h2>
@@ -266,7 +219,7 @@
                 <a href="#" id="cuisine-toggle">Кухня ↓</a>
                 <div class="dropdown-menu" id="cuisine-menu">
                     {% for cuisine in cuisines %}
-                        <a href="#">{{ cuisine.name }}</a>
+                    <a href="#">{{ cuisine.name }}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -294,10 +247,12 @@ document.addEventListener("mouseout", function (event) {
     }
 });
 
+// слайдер акций
+
 document.addEventListener("DOMContentLoaded", function () {
-    const slider = document.querySelector(".promotions");
-    const leftArrow = document.querySelector(".a-left");
-    const rightArrow = document.querySelector(".a-right");
+    const slider = document.querySelector(".promotions-slider");
+    const leftArrow = document.getElementById("promotion-left");
+    const rightArrow = document.getElementById("promotion-right");
 
     const cardWidth = document.querySelector(".promotion-card").offsetWidth + 20; // ширина карточки + отступ
     let scrollPosition = 0;
@@ -316,6 +271,33 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// слайдер лучший ресторанов
+document.addEventListener("DOMContentLoaded", function () {
+    const slider = document.querySelector(".rating-slider");
+    const leftArrow = document.getElementById("rating-left");
+    const rightArrow = document.getElementById("rating-right");
+
+    const cardWidth = document.querySelector(".promotion-card").offsetWidth + 20; // ширина карточки + отступ
+    let scrollPosition = 0;
+
+    rightArrow.addEventListener("click", function () {
+        if (scrollPosition < slider.scrollWidth - slider.clientWidth) {
+            scrollPosition += cardWidth * 4;
+            slider.scrollTo({ left: scrollPosition, behavior: "smooth" });
+        }
+    });
+
+    leftArrow.addEventListener("click", function () {
+        if (scrollPosition > 0) {
+            scrollPosition -= cardWidth * 4;
+            slider.scrollTo({ left: scrollPosition, behavior: "smooth" });
+        }
+    });
+});
+
+
+
 
 
 </script>
