@@ -30,6 +30,7 @@ urlpatterns = [
     path('menu/', include('menu.urls', namespace='menu')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('restaurans/', include('restaurans.urls', namespace='restaurans')),
+    path('couriers/', include('couriers.urls', namespace='couriers')),
 ]
 
 

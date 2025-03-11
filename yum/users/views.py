@@ -47,6 +47,9 @@ class UserLoginView(FormView):
                 # If the user is a restaurant admin, redirect to restaurant dashboard
                 return HttpResponseRedirect(reverse('restaurans:restaurant-dashboard'))
 
+            if user.is_courier():
+                return HttpResponseRedirect(reverse('couriers:courier-dashboard'))
+
             if session_key:
                 # If the user was not previously logged in, update any cart items
                 Cart.objects.filter(session_key=session_key).update(user=user)

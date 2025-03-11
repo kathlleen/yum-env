@@ -42,7 +42,8 @@ class IndexView(TemplateView):
 		context['title'] = "Главная страница | YUM"
 		context['cuisines'] = Cuisine.objects.all()
 
-		context['best_rest'] = Restaurans.objects.order_by("-rating")
+		# !!! Добавить кэширование запроса с обновлением раз в день !!!
+		context['best_rest'] = Restaurans.objects.order_by("-rating")[:20]
 
 		return context
 
