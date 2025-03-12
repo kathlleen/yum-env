@@ -53,20 +53,28 @@
                     {% block base_menu %}{% endblock %}
 <!--                    <button id="open-cart">Корзина</button>-->
 
-
-
                     {% if user.is_authenticated %}
                     <a href="{% url 'users:profile' %}">
                         <button>Профиль</button>
                     </a>
-                    <a href="{% url 'users:logout' %}">
+
+                    {% if user.is_courier %}
+                    <a href="{% url 'couriers:courier-dashboard' %}">
+                        <button>Управление</button>
+                    </a>
+                    {% elif user.is_restaurant_admin %}
+                    <a href="{% url 'restaurans:restaurant-dashboard' %}">
+                        <button>Управление</button>
+                    </a>
+                    {% endif %}
+
+                    <a href="{% url 'couriers:courier-dashboard' %}">
                         <button>Выйти</button>
                     </a>
                     {% else %}
                     <a href="{% url 'users:login' %}">
                         <button>Войти</button>
                     </a>
-
                     {% endif %}
                 </div>
 
