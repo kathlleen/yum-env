@@ -50,6 +50,7 @@ class CreateOrderView(LoginRequiredMixin, FormView):
                     apartment=form.cleaned_data['apartment'],
                     payment_on_get=form.cleaned_data['payment_on_get'],
                     restaurant=self.restaurant,
+                    status='processing'
                 )
 
                 # Create order items

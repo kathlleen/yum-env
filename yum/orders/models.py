@@ -20,6 +20,15 @@ class OrderitemQueryset(models.QuerySet):
         return 0
 
 # Create your models here.
+STATUS_CHOICES = [
+    ('processing', 'В обработке'),
+    ('restaurant_confirmed', 'Ресторан подтвердил'),
+    ('cooking', 'Готовится'),
+    ('awaiting_delivery', 'Ожидает курьера'),
+    ('on_the_way', 'В пути'),
+    ('delivered', 'Доставлен'),
+    ('canceled', 'Отменён'),
+]
 class Order(models.Model):
     customer = models.ForeignKey(to=CustomUser, on_delete=models.SET_DEFAULT, blank=True, null=True,
                              verbose_name="Покупатель", default=None, related_name = "customer")
@@ -38,7 +47,12 @@ class Order(models.Model):
 
     payment_on_get = models.BooleanField(default=False, verbose_name="Оплата при получении")
     is_paid = models.BooleanField(default=False, verbose_name="Оплачено")
-    status = models.CharField(max_length=50, default='Процесс', verbose_name="Статус")
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='processing',
+        verbose_name="Статус"
+    )
     restaurant = models.ForeignKey(to=Restaurans, on_delete=models.CASCADE, blank=True, null=True,
                                    verbose_name="Ресторан", default=None, related_name = "order_restaurant")
 

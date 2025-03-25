@@ -19,27 +19,24 @@ from restaurans.forms import DishForm, CategoryForm, RestProfileForm
 
 def is_restaurant_admin(user):
     return user.is_authenticated and user.is_restaurant_admin()
-
-
 @login_required
 @user_passes_test(is_restaurant_admin, login_url='main:index')
 def restaurant_dashboard(request):
-    # Проверяем, что пользователь связан с рестораном
     restaurant = request.user.restaurant
 
     if not restaurant:
-        return redirect('main:index')  # Перенаправляем, если у пользователя нет ресторана
+        return redirect('main:index')
 
-    # Получаем заказы для ресторана
+    # Используем значения из STATUS_CHOICES для фильтрации
     orders = Order.objects.filter(restaurant=restaurant).order_by('-id')
-    process_orders = orders.filter(status='Процесс')
-    wait_orders = orders.filter(status='Ждет курьера')
+    process_orders = orders.filter(status='processing')
+    wait_orders = orders.filter(status='awaiting_delivery')
 
     context = {
         'title': f'{restaurant.name} Админ',
         'restaurant': restaurant,
-        'process_orders': process_orders,  # Передаем заказы в шаблон
-        'wait_orders' : wait_orders
+        'process_orders': process_orders,
+        'wait_orders': wait_orders
     }
 
     return render(request, 'restaurans/restaurant_dashboard.html', context)
@@ -49,16 +46,14 @@ def restaurant_dashboard(request):
 def mark_order_complete(request, order_id):
     order = get_object_or_404(Order, id=order_id)
 
-    # Меняем статус заказа
-    if order.status == 'Процесс':
-        order.status = 'Ждет курьера'
+    if order.status == 'processing':
+        order.status = 'awaiting_delivery'
         order.save()
-        return redirect('restaurans:restaurant-dashboard')
-    if order.status == 'Ждет курьера':
-        order.status = 'В пути'
+    elif order.status == 'awaiting_delivery':
+        order.status = 'on_the_way'
         order.save()
-        return redirect('restaurans:restaurant-dashboard')  # Перезагружаем страницу
 
+    return redirect('restaurans:restaurant-dashboard')
 # def restaurant_edit(request):
 #     restaurant = request.user.restaurant
 #

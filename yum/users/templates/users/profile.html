@@ -109,7 +109,7 @@
             <div class="order">
                 <div class="order-header">
                     <p>Заказ #{{ order.id }}</p>
-                    <p>Статус: {{ order.status }}</p>
+                    <p>Статус: {{ order.get_status_display  }}</p>
                     <button class="details-btn">Подробнее</button>
                 </div>
                 <div class="order-details">
@@ -149,4 +149,3 @@
 <script src="{% static 'js/jquery-ajax.js' %}"></script>
 
 {% endblock %}
-
