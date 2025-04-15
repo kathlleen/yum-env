@@ -147,6 +147,22 @@ section {
     position: relative;
 }
 
+.status.closed {
+    position: absolute;
+    background-color: red;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+.status.closing-soon {
+    position: absolute;
+    background-color: orange;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+
 .card-img {
     width: 270px;
     height: 145px;

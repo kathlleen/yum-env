@@ -13,7 +13,6 @@ from restaurans.models import Cuisine
 # Create your views here.
 class IndexView(TemplateView):
 	template_name = 'main/index.html'
-
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		category_slug = self.kwargs.get('category_slug', 'all')
@@ -32,6 +31,13 @@ class IndexView(TemplateView):
 		else:
 			restaurans = Restaurans.objects.filter(restaurant__category__slug=category_slug).distinct()
 
+		# После получения queryset
+		restaurans = list(restaurans)
+
+		# Сортировка: сначала открытые, потом закрытые
+
+		# !!! Добавить кэширование с обновлением раз в пол часа !!!
+		restaurans.sort(key=lambda r: (not r.is_open(), r.name))
 		context['restaurans'] = restaurans
 
 		# Получение акций
