@@ -48,19 +48,25 @@
 
         {% if carts %}
             <p>Работа сервиса: {{ carts.courier_price }} р.</p>
-            {% if not order %}
-                {% if user.is_authenticated %}
-                <a href="{% url 'orders:create_order' restaurant.id %}">
-                    <button>Верно, к оплате: {{ carts.total_price }} р.</button>
-                </a>
+            {% if restaurant.is_open %}
+                {% if not order %}
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'orders:create_order' restaurant.id %}">
+                        <button>Верно, к оплате: {{ carts.total_price }} р.</button>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'users:login' %}">
+                        <button>Верно, к оплате: {{ carts.total_price }} р.</button>
+                    </a>
+                    {% endif %}
+
                 {% else %}
-                <a href="{% url 'users:login' %}">
-                    <button>Верно, к оплате: {{ carts.total_price }} р.</button>
-                </a>
+                <p><strong>Итого: {{ carts.total_price }} р.</strong></p>
                 {% endif %}
             {% else %}
-            <p><strong>Итого: {{ carts.total_price }} р.</strong></p>
+                <p><strong>Ресторан сейчас закрыт</strong></p>
             {% endif %}
+
         {% else %}
             <p>Пока что тут ничего нет &#128577</p>
         {% endif %}
