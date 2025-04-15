@@ -7,6 +7,8 @@ app_name = 'couriers'
 
 urlpatterns = [
     path('courier-dashboard/', views.courier_dashboard, name='courier-dashboard'),
+    path('courier-profile/', views.courier_profile, name='courier-profile'),
+    path('courier-statistics/', views.courier_statistics, name='courier-statistics'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,152 @@
+/* Общий стиль страницы */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Заголовок страницы */
+.dashboard-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    color: white;
+}
+
+p {
+    color: #4a5568;
+}
+
+.orders-section {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Контейнер для заказов */
+.orders-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+h2 {
+    margin-left: 50px;
+}
+
+/* Карточка заказа */
+.order-card {
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Заголовок заказа */
+.order-id {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 8px;
+}
+
+/* Лейблы */
+.label {
+    font-weight: bold;
+    color: #4a5568;
+}
+
+/* Заголовок состава заказа */
+.order-items-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 12px;
+    color: #2d3748;
+}
+
+/* Список состава заказа */
+.order-items {
+    list-style: disc;
+    margin: 8px 0 0 16px;
+    padding: 0;
+    color: #4a5568;
+}
+
+/* Элемент состава заказа */
+.order-item {
+    margin-bottom: 4px;
+}
+
+/* Кнопка "Готово" */
+.complete-btn {
+    background-color: #38a169;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 12px;
+    transition: background-color 0.3s ease;
+}
+
+/* Контейнер для карты: центрирование и отступы */
+.map-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Стили для временной карты */
+#map {
+    width: 100%;            /* Карта занимает всю ширину контейнера */
+    height: 500px;          /* Фиксированная высота (можете изменять по необходимости) */
+    background: #f0f0f0;     /* Светлый фон для имитации карты */
+    border: 2px dashed #ccc;/* Пунктирная рамка для визуального разделения */
+    border-radius: 8px;     /* Закруглённые углы */
+    color: #666;            /* Цвет текста */
+    display: flex;          /* Выравнивание содержимого по центру */
+    align-items: center;    /* Вертикальное центрирование */
+    justify-content: center;/* Горизонтальное центрирование */
+    font-size: 18px;        /* Размер шрифта */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 700px) {
+    #map {
+        height: 600px;
+        font-size: 16px;
+    }
+}
+
+
+
+/* Ховер для кнопки */
+.complete-btn:hover {
+    background-color: #2f855a;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .dashboard-title {
+        font-size: 20px;
+    }
+
+    .order-card {
+        padding: 12px;
+    }
+
+    .complete-btn {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
