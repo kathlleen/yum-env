@@ -78,6 +78,4 @@ document.addEventListener('DOMContentLoaded', function() {
             openModal(`/promotion-detail/${promoId}/`);
         });
     });
-
-
 });

@@ -149,6 +149,120 @@ a {
     cursor:pointer;
 }
 
+/* АКТИВНЫЕ АКЦИИ */
+section {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 400px;
+    margin: 30px auto 80px auto; /* отступ снизу добавлен */
+}
+
+.arrow {
+    background-color: rgba(116, 116, 116, 0.7);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    z-index: 10;
+    transition: background 0.3s ease;
+}
+
+.arrow:hover {
+    background-color: rgba(116, 116, 116, 1);
+}
+
+.a-left {
+    left: 10px;
+}
+
+.a-right {
+    right: 10px;
+}
+
+
+.promotions {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Скрываем скроллбар в Firefox */
+    -ms-overflow-style: none; /* Скрываем скроллбар в IE/Edge */
+    width: 100%;
+    max-width: 1000px;
+    padding: 10px 0;
+}
+
+.promotions-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.promotion-card {
+    flex: 0 0 calc(25% - 20px); /* 4 карточки в ряду */
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+
+.card {
+    width: 270px;
+    height: 145px;
+    border-radius: 15px;
+    position: relative;
+}
+
+
+
+.card-img {
+    width: 270px;
+    height: 145px;
+    object-fit: cover; /* Обрезаем изображение по размеру карточки */
+    border-radius: 15px;
+    position: absolute; /* Изображение размещается по всей карточке */
+
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 1);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0) 10%, /* Прозрачный в верхней части */
+        rgba(0, 0, 0, 0.8) 100% /* Черный в нижней части */
+    );
+    border-radius: 15px;
+    z-index: 1;
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
 /* ==== Адаптивность ==== */
 
 /* Планшеты и маленькие ноутбуки */

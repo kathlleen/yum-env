@@ -8,8 +8,12 @@ from .forms import PromotionRequestForm
 from restaurans.models import Restaurans
 from django.contrib import messages
 
+from .models import Promotion
+
+
 def promotion_request_view(request, restaurant_id):
     restaurant = get_object_or_404(Restaurans, id=restaurant_id)
+    active_promotions = Promotion.objects.filter(restaurant=restaurant)
 
     if request.method == "POST":
         form = PromotionRequestForm(request.POST, request.FILES)
@@ -26,4 +30,5 @@ def promotion_request_view(request, restaurant_id):
     return render(request, 'promotions/promotion_request_form.html', {
         'form': form,
         'restaurant': restaurant,
+        'active_promotions':active_promotions
     })
