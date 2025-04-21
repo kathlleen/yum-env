@@ -18,7 +18,8 @@ def promotion_request_view(request, restaurant_id):
             promo_req.restaurant = restaurant
             promo_req.save()
             # messages.success(request, "Заявка отправлена. Мы свяжемся с вами после проверки.")
-            return redirect('restaurant_dashboard', restaurant_id=restaurant.id)
+            return redirect('restaurans:restaurant-dashboard')
+
     else:
         form = PromotionRequestForm()
 

@@ -1,0 +1,196 @@
+
+.background {
+    position: relative;
+    /* height: 110%; */
+    background-image: url('../images/image.jpg'); /* Подставьте нужное изображение */
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 50%) 0%, rgba(25, 25, 25, 1) 100%);
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    /* padding: 20px; */
+    color: white;
+}
+
+/* Стили для остального контента */
+
+.registration {
+    display: flex;
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
+    width: 100%;
+    height: 90vh; /* Занимаем всю высоту окна */
+    padding: 0; /* Убираем отступы, если они мешают центрированию */
+}
+
+.registration-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    color: white;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+a {
+    color: white;
+    text-decoration: underline;
+}
+.registration-form .form-group {
+    margin-bottom: 15px;
+}
+
+.form-big-group {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.form-big-group > div {
+    flex: 1;
+}
+
+.registration-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.registration-form input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.registration-form textarea {
+    height: 140px;
+}
+
+
+.registration-form input[type="text"]:focus,
+.registration-form textarea:focus,
+.registration-form input[type="date"]:focus,
+.registration-form input[type="file"]:focus{
+    border-color: #64FF8F;
+    outline: none;
+}
+
+.registration-form textarea,
+.registration-form input[type="date"],
+.registration-form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+
+/* Убираем все странности у file input */
+.registration-form input[type="file"]::-webkit-file-upload-button {
+    background: #f1f1f1;
+    color: black;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: normal;
+    transition: background 0.3s;
+}
+
+.registration-form input[type="file"]::-webkit-file-upload-button:hover {
+    background: #e2e2e2;
+}
+
+
+/* Отображение ошибок */
+.error-message {
+    color: #ff8080;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
+.register-btn {
+    width: 100%;
+    height: 50px;
+    background-color: #434242;
+    color: white;
+    border-radius: 5px;
+    border: none;
+
+    font-size: 14px;
+    margin-top: 20px;
+    cursor:pointer;
+}
+
+/* ==== Адаптивность ==== */
+
+/* Планшеты и маленькие ноутбуки */
+@media (max-width: 768px) {
+    .form-big-group {
+        flex-direction: column;
+    }
+
+    .registration-container {
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    .registration-form textarea {
+        height: 120px;
+    }
+}
+
+/* Смартфоны */
+@media (max-width: 480px) {
+    .registration {
+        padding: 10px;
+    }
+
+    .registration-container {
+        padding: 15px;
+    }
+
+    .registration-form input[type="text"],
+    .registration-form textarea,
+    .registration-form input[type="date"],
+    .registration-form input[type="file"] {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .register-btn {
+        font-size: 13px;
+        height: 45px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+}
