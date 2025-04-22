@@ -1,0 +1,128 @@
+{% extends "base_rest.html" %}
+{% load static %}
+
+{% block static_css %}
+<link rel="stylesheet" href="{% static 'css/promotions.css' %}"/>
+{% endblock %}
+
+{% block content %}
+<div class="registration">
+    <div class="registration-container">
+        <h2>Заявка на акцию</h2>
+        <form method="post" enctype="multipart/form-data" class="registration-form">
+            {% csrf_token %}
+            <div class="form-big-group">
+                <div>
+                    <div class="form-group">
+                        <label for="id_name">Название акции</label>
+                        <input type="text" name="name" id="id_name" placeholder="Введите название акции"
+                               value="{{ form.name.value|default_if_none:'' }}" required>
+                        {% if form.name.errors %}
+                        <p class="error-message">{{ form.name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_description">Описание</label>
+                        <textarea name="description" id="id_description" placeholder="Опишите суть акции"
+                                  style="resize: none;">{{ form.description.value|default_if_none:'' }}</textarea>
+                        {% if form.description.errors %}
+                        <p class="error-message">{{ form.description.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-group">
+                        <label for="id_start_time">Дата начала</label>
+                        <input type="date" name="start_time" id="id_start_time"
+                               value="{{ form.start_time.value|default_if_none:'' }}" required>
+                        {% if form.start_time.errors %}
+                        <p class="error-message">{{ form.start_time.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_end_time">Дата окончания</label>
+                        <input type="date" name="end_time" id="id_end_time"
+                               value="{{ form.end_time.value|default_if_none:'' }}" required>
+                        {% if form.end_time.errors %}
+                        <p class="error-message">{{ form.end_time.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_image">Изображение</label>
+                        <input type="file" name="image" id="id_image">
+                        {% if form.image.errors %}
+                        <p class="error-message">{{ form.image.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="register-btn">Отправить заявку</button>
+        </form>
+    </div>
+</div>
+
+<section class="promotions-sect">
+    <h2>Активные акции</h2>
+
+    {% if active_promotions %}
+
+    <div class="promotions-wrapper">
+        <div class="arrow a-left" id="promotion-left">←</div>
+        <div class="promotions promotions-slider">
+            {% for promotion in active_promotions %}
+            <div class="card promotion-card" data-promo-id="{{ promotion.id }}">
+                <div class="card-overlay"></div>
+                <img src="{{ promotion.image.url }}" alt="{{ promotion.name }}" class="card-img">
+                <div class="card-content">
+                    <h3>{{ promotion.name }}</h3>
+                    <p>С {{ promotion.start_time }} до {{ promotion.end_time }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="arrow a-right" id="promotion-right">→</div>
+    </div>
+
+    {% else %}
+
+    <p>Оставьте заявку, чтобы добавить рекламную акцию</p>
+
+    {% endif %}
+</section>
+
+<script>
+
+    // слайдер акций
+
+document.addEventListener("DOMContentLoaded", function () {
+    const slider = document.querySelector(".promotions-slider");
+    const leftArrow = document.getElementById("promotion-left");
+    const rightArrow = document.getElementById("promotion-right");
+
+    const cardWidth = document.querySelector(".promotion-card").offsetWidth + 20; // ширина карточки + отступ
+    let scrollPosition = 0;
+
+    rightArrow.addEventListener("click", function () {
+        if (scrollPosition < slider.scrollWidth - slider.clientWidth) {
+            scrollPosition += cardWidth * 4;
+            slider.scrollTo({ left: scrollPosition, behavior: "smooth" });
+        }
+    });
+
+    leftArrow.addEventListener("click", function () {
+        if (scrollPosition > 0) {
+            scrollPosition -= cardWidth * 4;
+            slider.scrollTo({ left: scrollPosition, behavior: "smooth" });
+        }
+    });
+});
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base_courier.html" %}
+{% load static %}
+{% block static_css %}
+<link rel="stylesheet" href="{% static 'css/courier-profile.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
+<section class="map-container">
+    <div id="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2405961.139011021!2d22.71853981250001!3d53.92159130000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dbcf40454f435b%3A0xefca14ef5f7a4077!2z0J3QtdCy0LjQvdC90YvQuSDQkdCw0YA!5e0!3m2!1sru!2sru!4v1744740506788!5m2!1sru!2sru" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+    </div>
+</section>
+
+
+
+<section class="orders-section">
+
+<h2>В пути</h2>
+<div class="orders-container">
+    {% for order in active_orders %}
+    <div class="order-card">
+        <h2 class="order-id">Заказ №{{ order.id }}</h2>
+        <p><span class="label">Статус:</span> {{ order.get_status_display }}</p>
+        <p><span class="label">Дата заказа:</span> {{ order.created_timestamp }}</p>
+        <p><span class="label">Адрес доставки:</span> {{ order.delivery_address }}</p>
+        <p><span class="label">Адрес ресторана:</span> {{ order.restaurant.address }}</p>
+        <p><span class="label">Телефон:</span> {{ order.phone_number }}</p>
+        <h3 class="order-items-title">Состав заказа:</h3>
+
+        <button class="complete-btn">Доставлен</button>
+    </div>
+    {% empty %}
+    <p>Нет заказов в пути</p>
+    {% endfor %}
+</div>
+
+<h2>Ждут курьера</h2>
+<div class="orders-container">
+    {% for order in wait_orders %}
+    <div class="order-card">
+        <h2 class="order-id">Заказ №{{ order.id }}</h2>
+        <p><span class="label">Статус:</span> {{ order.get_status_display }}</p>
+        <p><span class="label">Дата заказа:</span> {{ order.created_timestamp }}</p>
+        <p><span class="label">Адрес доставки:</span> {{ order.delivery_address }}</p>
+        <p><span class="label">Адрес ресторана:</span> {{ order.restaurant.address }}</p>
+        <p><span class="label">Телефон:</span> {{ order.phone_number }}</p>
+        <h3 class="order-items-title">Состав заказа:</h3>
+
+        <button class="complete-btn">Принять заказ</button>
+    </div>
+    {% empty %}
+    <p>Нет заказов, ожидающих курьера</p>
+    {% endfor %}
+</div>
+
+<h2>Готовятся</h2>
+<div class="orders-container">
+    {% for order in process_orders %}
+    <div class="order-card">
+        <h2 class="order-id">Заказ №{{ order.id }}</h2>
+        <p><span class="label">Статус:</span> {{ order.get_status_display }}</p>
+        <p><span class="label">Дата заказа:</span> {{ order.created_timestamp }}</p>
+        <p><span class="label">Адрес доставки:</span> {{ order.delivery_address }}</p>
+        <p><span class="label">Адрес ресторана:</span> {{ order.restaurant.address }}</p>
+        <p><span class="label">Телефон:</span> {{ order.phone_number }}</p>
+        <h3 class="order-items-title">Состав заказа:</h3>
+    </div>
+    {% empty %}
+    <p>Нет заказов в процессе приготовления</p>
+    {% endfor %}
+</div>
+</section>
+
+
+<script>
+</script>
+
+{% endblock %}
