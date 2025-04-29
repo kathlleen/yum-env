@@ -19,6 +19,12 @@ body {
     text-align: center;
 }
 
+.container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+}
+
 /* Внутренний контейнер формы */
 .form-content {
     display: flex;
@@ -154,7 +160,6 @@ table, th, td {
 
 th, td {
     padding: 10px;
-    text-align: left;
 }
 td .btn {
     margin: 0;

@@ -3,7 +3,7 @@
 
 .background {
     position: relative;
-    /* height: 110%; */
+    height: 150%;
     background-image: url('../images/image.jpg'); /* Подставьте нужное изображение */
     background-size: cover;
     background-position: top;

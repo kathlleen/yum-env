@@ -38,7 +38,8 @@
         <div class="arrow a-left" id="rating-left">←</div>
         <div class="promotions rating-slider">
             {% for rest in best_rest %}
-            <div class="card promotion-card" data-promo-id="{{ rest.id }}">
+            <a href="{% url 'menu:restaurans_menu' rest.slug %}">
+            <div class="card promotion-card">
                 <div class="card-overlay"></div>
                 <img src="{{ rest.image.url }}" alt="{{ rest.name }}" class="card-img">
                 <div class="card-content">
@@ -52,6 +53,7 @@
                     </div>
                 </div>
             </div>
+            </a>
             {% endfor %}
         </div>
         <div class="arrow a-right" id="rating-right">→</div>
@@ -64,14 +66,16 @@
     <div class="promotions-wrapper">
         <div class="arrow a-left" id="for-you-left">←</div>
         <div class="promotions for-you-slider">
-            {% for rest in promotions %}
-            <div class="card promotion-card" data-promo-id="{{ rest.id }}">
+            {% for rest in best_rest %}
+            <a href="{% url 'menu:restaurans_menu' rest.slug %}">
+                <div class="card promotion-card">
                 <div class="card-overlay"></div>
                 <img src="{{ rest.image.url }}" alt="{{ rest.name }}" class="card-img">
                 <div class="card-content">
                     <h3>{{ rest.name }}</h3>
                 </div>
             </div>
+            </a>
             {% endfor %}
         </div>
         <div class="arrow a-right" id="for-you-right">→</div>

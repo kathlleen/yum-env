@@ -88,6 +88,7 @@ class RestEditView(LoginRequiredMixin, UpdateView):
         context['title'] = f'{self.request.user.restaurant.name} Редактирование'
         context['dishes'] = Dish.objects.filter(restaurant=self.request.user.restaurant).order_by("id")
         context['api_key'] = settings.API_KEY
+        context['restaurant'] = self.request.user.restaurant
         context['address'] = self.request.user.restaurant.address.replace(' ', '+')
         return context
 
