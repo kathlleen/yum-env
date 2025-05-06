@@ -20,8 +20,9 @@
 .content {
     position: relative;
     z-index: 1;
-    /* padding: 20px; */
     color: white;
+    min-height: 600px;
+    margin-bottom: 100px;
 }
 
 /* Стили для остального контента */

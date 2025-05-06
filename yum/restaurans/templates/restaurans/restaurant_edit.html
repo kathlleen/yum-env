@@ -68,75 +68,53 @@
 
 <div class="container">
     <h2>Меню ресторана</h2>
-<div>
-    <a href="{% url 'restaurans:add-dish' %}">
-        <button class="btn">Добавить блюдо</button>
-    </a>
-    <a href="{% url 'restaurans:add-category' %}">
-        <button class="btn">Добавить категорию</button>
-    </a>
+    <div class="buttons">
+        <a href="{% url 'restaurans:add-dish' %}">
+            <button class="btn">Добавить блюдо</button>
+        </a>
+        <a href="{% url 'restaurans:add-category' %}">
+            <button class="btn">Добавить категорию</button>
+        </a>
+    </div>
 </div>
 
-<table>
-    <tr>
-        <th>Название</th>
-        <th>Цена</th>
-        <th>Скидка</th>
-        <th>Категория</th>
-        <th>Редактирование</th>
-    </tr>
-    {% for dish in dishes %}
-    <tr>
-        <td>{{ dish.name }}</td>
-        <td>{{ dish.price }}</td>
-        <td>{{ dish.discount }}</td>
-        <td>{{ dish.category }}</td>
-        <td>
-            <a href="{% url 'restaurans:edit-dish' dish.slug %}">
-                <button class="btn">Изменить</button>
-            </a>
-            <button class="btn delete-dish" data-url="{% url 'restaurans:delete-dish' dish.slug %}"
-                    style="background-color: red; color: white;">
-                Удалить
-            </button>
-        </td>
-    </tr>
-    {% endfor %}
+<div class="table-container">
+    <table class="promo-table">
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Скидка</th>
+            <th>Изображение</th>
+            <th>Категория</th>
+            <th>Редактирование</th>
+        </tr>
+        {% for dish in dishes %}
+        <tr>
+            <td>{{ dish.name }}</td>
+            <td>{{ dish.description }}</td>
+            <td>{{ dish.price }}</td>
+            <td>{{ dish.discount }}</td>
+            <td>
+                {% if dish.image %}
+                <img src="{{ dish.image.url }}" alt="{{ dish.name }}" class="promo-img">
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td>{{ dish.category }}</td>
+            <td>
+                <a href="{% url 'restaurans:edit-dish' dish.slug %}">
+                    <button class="btn">Редактировать</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
 
-</table>
+    </table>
 </div>
 
 
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".delete-dish").forEach(button => {
-        button.addEventListener("click", function(event) {
-            event.preventDefault();
-            const deleteUrl = this.getAttribute("data-url");
-
-            if (this.dataset.confirm === "true") {
-                // Отправляем запрос на удаление
-                fetch(deleteUrl, {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": "{{ csrf_token }}",
-                        "Content-Type": "application/json"
-                    }
-                }).then(response => response.json()).then(data => {
-                    if (data.success) {
-                        location.reload(); // Перезагрузка страницы после удаления
-                    }
-                });
-            } else {
-                // Меняем текст кнопки на "Точно?" и стиль
-                this.textContent = "Точно?";
-                this.style.backgroundColor = "darkred";
-                this.dataset.confirm = "true";
-            }
-        });
-    });
-});
 
 </script>
 
