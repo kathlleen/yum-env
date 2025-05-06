@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Пример: открытие модального окна для акции
-    document.querySelectorAll('.promotion-card').forEach(promo => {
+    document.querySelectorAll('.open-modal').forEach(promo => {
         promo.addEventListener('click', function(event) {
             const promoId = this.getAttribute('data-promo-id');
             openModal(`/promotion-detail/${promoId}/`);
