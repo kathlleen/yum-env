@@ -9,6 +9,8 @@ from django.views.generic import TemplateView
 
 from restaurans.models import Cuisine
 
+from promotions.models import PromotionRequest
+
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -41,7 +43,8 @@ class IndexView(TemplateView):
 		context['restaurans'] = restaurans
 
 		# Получение акций
-		promotions = Promotion.objects.all()
+		# !!! Добавить кэширование с обновлением раз в день !!!
+		promotions = PromotionRequest.objects.filter(is_approved=True).filter(is_active=True)
 		context['promotions'] = promotions
 
 		# Заголовок страницы
@@ -70,7 +73,7 @@ def about(request):
 	return render(request, 'main/about.html', context)
 
 def promotion_detail(request, promo_id):
-	promotion = get_object_or_404(Promotion, id=promo_id)
+	promotion = get_object_or_404(PromotionRequest, id=promo_id)
 	print(f"Promotion ID: {promotion.id}, Name: {promotion.name}")  # Отладочная информация
 	return render(request, 'includes/modal_promotion.html', {'promotion': promotion, 'content_type': 'promotion'})
 

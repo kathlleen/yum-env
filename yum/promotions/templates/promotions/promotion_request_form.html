@@ -67,33 +67,56 @@
 </div>
 
 <section class="promotions-sect">
-    <h2>Активные акции</h2>
+    <h2>Активные заявки на акции</h2>
 
     {% if active_promotions %}
-
-    <div class="promotions-wrapper">
-        <div class="arrow a-left" id="promotion-left">←</div>
-        <div class="promotions promotions-slider">
-            {% for promotion in active_promotions %}
-            <div class="card promotion-card" data-promo-id="{{ promotion.id }}">
-                <div class="card-overlay"></div>
-                <img src="{{ promotion.image.url }}" alt="{{ promotion.name }}" class="card-img">
-                <div class="card-content">
-                    <h3>{{ promotion.name }}</h3>
-                    <p>С {{ promotion.start_time }} до {{ promotion.end_time }}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        <div class="arrow a-right" id="promotion-right">→</div>
+    <div class="table-container">
+        <table class="promo-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Дата начала</th>
+                    <th>Дата конца</th>
+                    <th>Изображение</th>
+                    <th>Одобрено</th>
+                    <th>Оплачено</th>
+                    <th>Активна</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for promo in active_promotions %}
+                <tr>
+                    <td>{{ promo.name }}</td>
+                    <td>{{ promo.description|truncatechars:50 }}</td>
+                    <td>{{ promo.start_time }}</td>
+                    <td>{{ promo.end_time }}</td>
+                    <td>
+                        {% if promo.image %}
+                        <img src="{{ promo.image.url }}" alt="{{ promo.name }}" class="promo-img">
+                        {% else %}
+                        —
+                        {% endif %}
+                    </td>
+                    <td>{{ promo.is_approved|yesno:"✔,✖" }}</td>
+                    <td>{{ promo.is_paid|yesno:"✔,✖" }}</td>
+                    <td>{{ promo.is_active|yesno:"✔,✖" }}</td>
+                    <td>
+                        <a href="#" class="edit-btn">Редактировать</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
     {% else %}
-
-    <p>Оставьте заявку, чтобы добавить рекламную акцию</p>
-
+    <p>Нет заявок на акции.</p>
     {% endif %}
 </section>
+
+
+
 
 <script>
 

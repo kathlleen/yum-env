@@ -7,13 +7,14 @@ from restaurans.models import Restaurans
 
 class PromotionRequest(models.Model):
     restaurant = models.ForeignKey(to=Restaurans, on_delete=models.CASCADE, verbose_name="Ресторан")
-    name = models.CharField(max_length=150, verbose_name="Название акции")
-    description = models.TextField(max_length=200, verbose_name="Описание")
+    name = models.CharField(max_length=50, verbose_name="Название акции")
+    description = models.TextField(max_length=500, verbose_name="Описание")
     start_time = models.DateField(verbose_name="Дата начала")
     end_time = models.DateField(verbose_name="Дата конца")
     image = models.ImageField(upload_to='promotion_request_images', blank=True, null=True, verbose_name="Изображение")
     is_paid = models.BooleanField(default=False, verbose_name="Оплачено")
     is_approved = models.BooleanField(default=False, verbose_name="Одобрено админом")
+    is_active = models.BooleanField(default=False, verbose_name="Активна")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

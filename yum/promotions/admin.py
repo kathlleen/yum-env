@@ -11,8 +11,8 @@ class PromotionAdmin(admin.ModelAdmin):
 
 @admin.register(PromotionRequest)
 class PromotionRequestAdmin(admin.ModelAdmin):
-    list_display = ('name', 'restaurant', 'is_paid', 'is_approved', 'created_at')
-    list_filter = ('is_paid', 'is_approved')
+    list_display = ('name', 'restaurant', 'is_paid', 'is_approved', 'created_at', 'is_active')
+    list_filter = ('is_paid', 'is_approved', 'is_active')
     actions = ['approve_requests']
 
     def approve_requests(self, request, queryset):

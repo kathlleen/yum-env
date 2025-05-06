@@ -8,12 +8,12 @@ from .forms import PromotionRequestForm
 from restaurans.models import Restaurans
 from django.contrib import messages
 
-from .models import Promotion
+from .models import Promotion, PromotionRequest
 
 
 def promotion_request_view(request, restaurant_id):
     restaurant = get_object_or_404(Restaurans, id=restaurant_id)
-    active_promotions = Promotion.objects.filter(restaurant=restaurant)
+    active_promotions = PromotionRequest.objects.filter(restaurant=restaurant)
 
     if request.method == "POST":
         form = PromotionRequestForm(request.POST, request.FILES)
@@ -32,3 +32,14 @@ def promotion_request_view(request, restaurant_id):
         'restaurant': restaurant,
         'active_promotions':active_promotions
     })
+
+def edit_promotion(request, pk):
+    promotion = get_object_or_404(PromotionRequest, pk=pk)
+    if request.method == 'POST':
+        form = PromotionRequestForm(request.POST, request.FILES, instance=promotion)
+        if form.is_valid():
+            form.save()
+            return redirect('promotion_request')  # подставьте нужное имя
+    else:
+        form = PromotionRequestForm(instance=promotion)
+    return render(request, 'edit_promotion.html', {'form': form})
