@@ -6,10 +6,9 @@ from promotions.models import Promotion
 from main.utils import q_search
 
 from django.views.generic import TemplateView
-
 from restaurans.models import Cuisine
-
 from promotions.models import PromotionRequest
+from rest_collections.models import Selection
 
 
 # Create your views here.
@@ -49,11 +48,12 @@ class IndexView(TemplateView):
 
 		# Заголовок страницы
 		context['title'] = "Главная страница | YUM"
+
 		context['cuisines'] = Cuisine.objects.all()
 
 		# !!! Добавить кэширование запроса с обновлением раз в день !!!
 		context['best_rest'] = Restaurans.objects.order_by("-rating")[:20]
-
+		context['selections'] = Selection.objects.all()
 		return context
 
 def filter_restaurants(request, category_slug):

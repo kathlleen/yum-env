@@ -9,3 +9,5 @@ class SelectionRestaurantInline(admin.TabularInline):
 class SelectionAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at')
     inlines = [SelectionRestaurantInline]
+
+    prepopulated_fields = {'slug': ('name',)}
