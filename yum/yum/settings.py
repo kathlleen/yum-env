@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     'carts',
     'orders',
     'promotions',
-    'couriers'
+    'couriers',
+    'rest_collections',
 ]
 
 ASGI_APPLICATION = "yum.asgi.application"
