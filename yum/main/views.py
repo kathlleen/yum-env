@@ -66,6 +66,12 @@ def filter_restaurants(request, category_slug):
 	html = render(request, 'includes/restaurants_list.html', {'restaurans': restaurans}).content.decode('utf-8')
 	return JsonResponse({'html': html})
 
+def filter_by_cuisine(request, cuisine_slug):
+	restaurans = Restaurans.objects.filter(cuisine__slug=cuisine_slug).distinct()
+
+	html = render(request, 'includes/restaurants_list.html', {'restaurans': restaurans}).content.decode('utf-8')
+	return JsonResponse({'html': html})
+
 def about(request):
 	context = {
 		'title' : "О нас | YUM"

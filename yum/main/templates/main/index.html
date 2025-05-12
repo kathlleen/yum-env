@@ -118,7 +118,7 @@
                 <a href="#" id="cuisine-toggle">Кухня ↓</a>
                 <div class="dropdown-menu" id="cuisine-menu">
                     {% for cuisine in cuisines %}
-                    <a href="#">{{ cuisine.name }}</a>
+                    <a href="{% url 'main:filter_by_cuisine' cuisine.slug %}">{{ cuisine.name }}</a>
                     {% endfor %}
                 </div>
             </div>
