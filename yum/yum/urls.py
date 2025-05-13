@@ -32,6 +32,7 @@ urlpatterns = [
     path('restaurans/', include('restaurans.urls', namespace='restaurans')),
     path('couriers/', include('couriers.urls', namespace='couriers')),
     path('promotions/', include('promotions.urls', namespace='promotions')),
+    path('selections/', include('rest_collections.urls', namespace='selections')),
 ]
 
 

@@ -48,7 +48,6 @@ class IndexView(TemplateView):
 
 		# Заголовок страницы
 		context['title'] = "Главная страница | YUM"
-
 		context['cuisines'] = Cuisine.objects.all()
 
 		# !!! Добавить кэширование запроса с обновлением раз в день !!!

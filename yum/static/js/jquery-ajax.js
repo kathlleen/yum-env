@@ -1,14 +1,13 @@
 $(document).ready(() => {
-    const filters = $('.filters a');
+    const filters = $('.filters a, .collections a');
 
     filters.on('click', function(event) {
         event.preventDefault();
 
         filters.removeClass('active');
-
         $(this).addClass('active');
 
-        const url = $(this).attr('href');  // Получаем URL из href ссылки
+        const url = $(this).attr('href');
 
         fetch(url)
             .then(response => {
@@ -19,15 +18,12 @@ $(document).ready(() => {
             })
             .then(data => {
                 const restaurantList = $('#restaurants-list');
-                restaurantList.html(data.html);  // Вставляем как HTML-контент
+                restaurantList.html(data.html); // заменили контент
                 console.log("Контент обновлен:", data.html);
             })
             .catch(error => console.error('Ошибка:', error));
     });
 });
-
-
-
 
 $(document).ready(function () {
     $(document).on("click", ".add-to-cart", function (e) {
