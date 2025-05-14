@@ -54,21 +54,6 @@ def mark_order_complete(request, order_id):
         order.save()
 
     return redirect('restaurans:restaurant-dashboard')
-# def restaurant_edit(request):
-#     restaurant = request.user.restaurant
-#
-#     dishes = Dish.objects.filter(restaurant=restaurant)
-#
-#     if not restaurant:
-#         return redirect('main:index')
-#
-#     context = {
-#         'title': f'{restaurant.name} Редактирование',
-#         'restaurant': restaurant,
-#         'dishes': dishes,  # Передаем заказы в шаблон
-#     }
-#
-#     return render(request, 'restaurans/restaurant_edit.html', context)
 
 
 class RestEditView(LoginRequiredMixin, UpdateView):

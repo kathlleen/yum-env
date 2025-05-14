@@ -19,6 +19,25 @@ class Categories(models.Model):
     def __str__(self): # перегружаем для отображения названия в бд
         return self.name
 
+class Label(models.Model):
+    TYPE_CHOICES = [
+        ('universal', 'Универсальный'),
+        ('diet', 'Диетический'),
+        ('allergy', 'Аллергия'),
+        ('preference', 'Предпочтение'),
+    ]
+
+    name = models.CharField(max_length=100, unique=True)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+
+    class Meta:
+        verbose_name = 'Метку'
+        verbose_name_plural = 'Метки'
+
+    def __str__(self):
+        return f"{self.name} ({self.get_type_display()})"
+
+
 class Dish(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL')
@@ -29,7 +48,12 @@ class Dish(models.Model):
     weight = models.IntegerField(blank=True, null=True, verbose_name='Вес')
     category = models.ForeignKey(to=Categories, on_delete=models.CASCADE, verbose_name='Категория')
     restaurant = models.ForeignKey(to=Restaurans, blank=True, null=True, on_delete=models.CASCADE, related_name='restaurant', verbose_name='Ресторан')
-
+    composition = models.TextField(blank=True)
+    proteins = models.FloatField(null=True, blank=True)
+    fats = models.FloatField(null=True, blank=True)
+    carbohydrates = models.FloatField(null=True, blank=True)
+    calories = models.FloatField(null=True, blank=True)
+    labels = models.ManyToManyField(Label, through='DishLabel', related_name='dishes')
 
 
     # on_delete бывает:
@@ -56,3 +80,13 @@ class Dish(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse("catalog:product", kwargs={"product_slug":self.slug})
+
+class DishLabel(models.Model):
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    label = models.ForeignKey(Label, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('dish', 'label')
+
+    def __str__(self):
+        return f"{self.dish.name} - {self.label.name}"
