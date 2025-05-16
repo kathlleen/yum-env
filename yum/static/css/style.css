@@ -218,7 +218,7 @@ section {
 }
 
 .rest-card  .card-img {
-    box-shadow: 10px 10px 30px rgba(0, 0, 0, 1);
+    box-shadow: none;
     width: 270px;
     height: 145px;
     border-radius: 15px;
