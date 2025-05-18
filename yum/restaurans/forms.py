@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserChangeForm
 from django import forms
 import re
-from menu.models import Dish
+from menu.models import Dish, Label
 from menu.models import Categories
 from django.utils.text import slugify
 from unidecode import unidecode
@@ -18,16 +18,31 @@ class DishForm(UserChangeForm):
                   'price',
                   'discount',
                   'weight',
-                  'category']
+                  'category',
+                  'composition',
+                  'proteins',
+                  'fats',
+                  'carbohydrates',
+                  'calories',
+                  'labels']
 
     image = forms.ImageField(required=False)
     name = forms.CharField()
     description = forms.CharField()
     price = forms.DecimalField(decimal_places=2, max_digits=7, initial=0.00)
-    discount = forms.DecimalField(decimal_places=2, max_digits=7, initial=0.00)
+    discount = forms.IntegerField()
     weight = forms.IntegerField()
-    category = forms.ModelChoiceField(queryset=Categories.objects.all().order_by('name'), empty_label="(Nothing)")
-
+    category = forms.ModelChoiceField(queryset=Categories.objects.all().order_by('name'), empty_label="(Ничего)")
+    composition = forms.CharField()
+    proteins = forms.IntegerField()
+    fats = forms.IntegerField()
+    carbohydrates = forms.IntegerField()
+    calories = forms.IntegerField()
+    labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
 
 
 class CategoryForm(forms.ModelForm):

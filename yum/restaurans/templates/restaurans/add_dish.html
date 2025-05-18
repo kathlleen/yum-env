@@ -2,155 +2,84 @@
 {% load static %}
 
 {% block static_css %}
-<!--<link rel="stylesheet" href="{% static 'css/rest-edit.css' %}"/>-->
-<style>
-.profile-container {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    background-color: #3f3f3f;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.form-content {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.form-fields {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-
-    margin-bottom: 30px;
-}
-
-.form-block {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-textarea {
-    resize: vertical;
-}
-
-.file-input {
-    border: none;
-}
-
-.btn {
-    width: 100%;
-    padding: 10px;
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background: #218838;
-}
-
-</style>
+<link rel="stylesheet" href="{% static 'css/rest-edit.css' %}"/>
 {% endblock %}
 
 {% block content %}
 <div class="profile-container" style="margin-top: 20px;">
     <h2>Добавление блюда: </h2>
 
-    <form action="{% url 'restaurans:add-dish'  %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        <div class="form-content">
-
-            <!-- Поля формы -->
-            <div class="form-fields">
-                <div class="form-block">
-                    <div class="form-group">
-                        <label for="id_name">Название:</label>
-                        <input type="text" id="id_name" name="name" required>
-                        {{ form.name.errors }}
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_description">Описание:</label>
-                        <textarea id="id_description" name="description"></textarea>
-                        {{ form.description.errors }}
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_price">Цена:</label>
-                        <input type="number" id="id_price" name="price" required>
-                        {{ form.price.errors }}
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="id_discount">Скидка (%):</label>
-                        <input type="number" id="id_discount" name="discount">
-                        {{ form.discount.errors }}
-                    </div>
-                </div>
-
-                <div class="form-block">
-                    <div class="form-group">
-                        <label for="id_weight">Вес (г):</label>
-                        <input type="number" step = "10" id="id_weight" name="weight">
-                        {{ form.weight.errors }}
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_category">Категория:</label>
-                        <select id="id_category" name="category">
-                            {% for category in form.category.field.queryset %}
-                                <option value="{{ category.id }}">
-                                    {{ category.name }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                        {{ form.category.errors }}
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_image" class="logo-label">Загрузить изображение:</label>
-                        <input type="file" id="id_image" name="image" class="file-input">
-                    </div>
-
-                </div>
-
+    <div class="form-content">
+        <form action="{% url 'restaurans:add-dish' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-content">
+                {% include "restaurans/dish_form_fields.html" %}
             </div>
-        </div>
-
-        <button type="submit" class="btn">Сохранить</button>
-    </form>
+            <button type="submit" class="btn">Сохранить новое блюдо</button>
+        </form>
+    </div>
 </div>
+
+
+<style>
+    .form-content {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .profile-container {
+        width: 70%;
+        max-width: 1500px;
+        style="margin-top: 20px;
+    }
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    resize: none; /* запрет изменения размера textarea */
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #64FF8F;
+    box-shadow: 0 0 10px #64FF8F;
+}
+
+.form-group select:focus option {
+    color: black;
+}
+
+.form-fields {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+
+    width: 300px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    width: 300px;
+}
+
+.errorlist {
+    color: red;
+}
+
+</style>
 {% endblock %}
+
 

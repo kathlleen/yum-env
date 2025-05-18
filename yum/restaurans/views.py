@@ -83,18 +83,21 @@ class EditDishView(LoginRequiredMixin, UpdateView):
     form_class = DishForm
     context_object_name = 'dish'
 
+
     def get_success_url(self):
         return reverse_lazy('restaurans:restaurant-edit')  # После сохранения вернёт на страницу ресторана
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Редактирование {self.object.name}'
+        context['restaurant'] = self.request.user.restaurant
         return context
 
 class AddDishView(LoginRequiredMixin, View):
     def get(self, request):
         form = DishForm()
-        return render(request, 'restaurans/add_dish.html', {'form': form})
+        context = {'form': form, 'restaurant': self.request.user.restaurant}
+        return render(request, 'restaurans/add_dish.html', context)
 
     def post(self, request):
         form = DishForm(request.POST, request.FILES)
@@ -108,7 +111,8 @@ class AddDishView(LoginRequiredMixin, View):
 class AddCategoryView(LoginRequiredMixin, View):
     def get(self, request):
         form = CategoryForm()
-        return render(request, 'restaurans/add_category.html', {'form': form})
+        context = {'form': form, 'restaurant': self.request.user.restaurant}
+        return render(request, 'restaurans/add_category.html', context)
 
     def post(self, request):
         form = CategoryForm(request.POST)
@@ -116,6 +120,8 @@ class AddCategoryView(LoginRequiredMixin, View):
             form.save()
             return redirect('restaurans:restaurant-edit')  # Перенаправление после добавления
         return render(request, 'restaurans/add_category.html', {'form': form})
+
+
 
 class DeleteDishView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
