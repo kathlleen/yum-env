@@ -32,6 +32,7 @@ class DishesAdmin(admin.ModelAdmin):
     list_editable = ['discount']
     search_fields = ['name', 'description', 'restaurant']
     list_filter = ['category', 'discount', 'restaurant']
+    inlines = [DishLabelInline]
     fields = [
         'name',
         'category',
@@ -41,5 +42,9 @@ class DishesAdmin(admin.ModelAdmin):
         'image',
         ('price', 'discount'),
         'weight',
-
+        'composition',
+        'proteins',
+        'fats',
+        'carbohydrates',
+        'calories',
     ]
