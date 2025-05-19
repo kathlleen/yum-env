@@ -32,7 +32,7 @@ class DishForm(UserChangeForm):
     price = forms.DecimalField(decimal_places=2, max_digits=7, initial=0.00)
     discount = forms.IntegerField()
     weight = forms.IntegerField()
-    category = forms.ModelChoiceField(queryset=Categories.objects.all().order_by('name'), empty_label="(Ничего)")
+    category = forms.ModelChoiceField(queryset=Categories.objects.all().order_by('name'))
     composition = forms.CharField()
     proteins = forms.IntegerField()
     fats = forms.IntegerField()
@@ -43,7 +43,6 @@ class DishForm(UserChangeForm):
         required=False,
         widget=forms.CheckboxSelectMultiple
     )
-
 
 class CategoryForm(forms.ModelForm):
     class Meta:

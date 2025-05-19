@@ -5,6 +5,7 @@ from django.db import models
 from django.urls import reverse
 
 from restaurans.models import Restaurans
+from users.models import CustomUser
 
 
 class Categories(models.Model):
@@ -90,3 +91,23 @@ class DishLabel(models.Model):
 
     def __str__(self):
         return f"{self.dish.name} - {self.label.name}"
+
+class LabelPreference(models.Model):
+    PREFERENCE_TYPE = [
+        ('like', 'Нравится'),
+        ('dislike', 'Не нравится'),
+        ('diet', 'Диета'),
+        ('allergy', 'Аллергия'),
+    ]
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    label = models.ForeignKey(Label, on_delete=models.CASCADE)
+    preference_type = models.CharField(max_length=10, choices=PREFERENCE_TYPE)
+
+    class Meta:
+        unique_together = ('user', 'label', 'preference_type')
+        verbose_name = 'Предпочтение'
+        verbose_name_plural = 'Предпочтения'
+
+    def __str__(self):
+        return f"{self.user} — {self.label} ({self.preference_type})"

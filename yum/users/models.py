@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -14,6 +15,11 @@ class CustomUser(AbstractUser):
     image = models.ImageField(upload_to='users_images', blank=True, null=True, verbose_name='Изображение')
     latitude = models.FloatField(blank=True, null=True, verbose_name="Широта")  # Широта
     longitude = models.FloatField(blank=True, null=True, verbose_name="Долгота")  # Долгота
+    liked_ingredients = models.TextField(blank=True, null=True,
+                                         help_text="Что вы любите (например, сливки, сыр, грибы)")
+    disliked_ingredients = models.TextField(blank=True, null=True,
+                                            help_text="Что вы не любите (например, лук, каперсы)")
+
     def is_customer(self):
         return self.role == 'customer'
 
@@ -22,5 +28,3 @@ class CustomUser(AbstractUser):
 
     def is_courier(self):
         return self.role == 'courier'
-
-

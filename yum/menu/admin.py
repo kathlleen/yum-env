@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from menu.models import Categories, Dish, DishLabel, Label
+from menu.models import Categories, Dish, DishLabel, Label, LabelPreference
 
 
 # Register your models here.
@@ -17,6 +17,12 @@ class LabelAdmin(admin.ModelAdmin):
     list_display = ('name', 'type')
     list_filter = ('type',)
     search_fields = ('name',)
+
+@admin.register(LabelPreference)
+class LabelPreferenceAdmin(admin.ModelAdmin):
+    list_display = ('user', 'label', 'preference_type')
+    list_filter = ('label', 'preference_type',)
+    search_fields = ('label', 'preference_type',)
 
 
 @admin.register(Dish)

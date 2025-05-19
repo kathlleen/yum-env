@@ -29,17 +29,17 @@
 </div>
 
 <style>
-    .form-content {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-    }
+.form-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
 
-    .profile-container {
-        width: 70%;
-        max-width: 1500px;
-        style="margin-top: 20px;
-    }
+.profile-container {
+    width: 70%;
+    max-width: 1500px;
+    style="margin-top: 20px;
+}
 
 .form-group input,
 .form-group textarea,
@@ -68,10 +68,16 @@
 .form-fields {
     flex: 2;
     display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+}
+
+.dish-fields {
+    display: flex;
     flex-direction: row;
     gap: 15px;
     justify-content: center;
-    width: 300px;
 }
 
 .form-group {
@@ -94,7 +100,7 @@
 }
 
 @media (max-width: 940px) {
-    .form-fields {
+    .dish-fields {
         flex-direction: column;
         align-items: center;
     }

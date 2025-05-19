@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.conf import settings
 from django.db.models import Prefetch
 from django.http import JsonResponse
@@ -6,7 +8,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import View
 from orders.models import Order
-
+from menu.models import Label
 from django.views.generic.edit import FormView
 from menu.models import Dish
 
@@ -83,6 +85,13 @@ class EditDishView(LoginRequiredMixin, UpdateView):
     form_class = DishForm
     context_object_name = 'dish'
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        selected_labels = self.request.POST.getlist('labels')
+        self.object.labels.set(selected_labels)  # Привязываем метки к блюду
+
+        return response
 
     def get_success_url(self):
         return reverse_lazy('restaurans:restaurant-edit')  # После сохранения вернёт на страницу ресторана
@@ -91,12 +100,30 @@ class EditDishView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Редактирование {self.object.name}'
         context['restaurant'] = self.request.user.restaurant
+
+        grouped_labels = defaultdict(list)
+        for label in Label.objects.all():
+            grouped_labels[label.get_type_display()].append(label)
+
+        context['grouped_labels'] = grouped_labels
+        print(grouped_labels)
+
         return context
 
 class AddDishView(LoginRequiredMixin, View):
     def get(self, request):
         form = DishForm()
-        context = {'form': form, 'restaurant': self.request.user.restaurant}
+
+        grouped_labels = defaultdict(list)
+        for label in Label.objects.all():
+            grouped_labels[label.get_type_display()].append(label)
+
+
+        context = {
+            'form': form,
+            'restaurant': self.request.user.restaurant,
+            'grouped_labels': grouped_labels
+            }
         return render(request, 'restaurans/add_dish.html', context)
 
     def post(self, request):
