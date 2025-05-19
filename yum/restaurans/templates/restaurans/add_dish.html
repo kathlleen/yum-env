@@ -6,10 +6,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="profile-container" style="margin-top: 20px;">
-    <h2>Добавление блюда: </h2>
+<div class="category-container">
 
-    <div class="form-content">
+    <div class="profile-container">
+        <h2>Добавление блюда: </h2>
         <form action="{% url 'restaurans:add-dish' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-content">
@@ -20,19 +20,20 @@
     </div>
 </div>
 
-
 <style>
-    .form-content {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-    }
+.form-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 
-    .profile-container {
-        width: 70%;
-        max-width: 1500px;
-        style="margin-top: 20px;
-    }
+    justify-content: center;
+}
+
+.profile-container {
+    width: 60%;
+    max-width: 800px;
+    style="margin-top: 20px;
+}
 
 .form-group input,
 .form-group textarea,
@@ -63,8 +64,9 @@
     display: flex;
     flex-direction: row;
     gap: 15px;
-
+    justify-content: center;
     width: 300px;
+
 }
 
 .form-group {
@@ -79,7 +81,18 @@
     color: red;
 }
 
-</style>
+@media (max-width: 1100px) {
+    .form-fields {
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+}
+
+
+
+</style></style>
 {% endblock %}
 
 

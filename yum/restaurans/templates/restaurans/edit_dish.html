@@ -70,7 +70,7 @@
     display: flex;
     flex-direction: row;
     gap: 15px;
-
+    justify-content: center;
     width: 300px;
 }
 
@@ -85,5 +85,21 @@
 .errorlist {
     color: red;
 }
+
+@media (max-width: 1200px) {
+    .form-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 940px) {
+    .form-fields {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
 </style>
 {% endblock %}
