@@ -20,6 +20,10 @@ from django.db.models import Prefetch
 import os
 from django.conf import settings
 
+from menu.models import LabelPreference
+from users.forms import UserPreferenceForm
+
+
 # Create your views here.
 class UserLoginView(FormView):
     template_name = 'users/login.html'
@@ -170,6 +174,32 @@ class CourierRegistrationView(CreateView):
         context['title'] = 'Регистрация курьера'
         context['url'] = 'users:register_courier'
         return context
+
+@login_required
+def preferences_view(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserPreferenceForm(request.POST, instance=user, user=user)
+        if form.is_valid():
+            form.save()
+
+            # Удалим старые предпочтения
+            LabelPreference.objects.filter(user=user).delete()
+
+            # Сохраняем новые
+            for pref_type in ['like', 'dislike', 'diet', 'allergy']:
+                labels = form.cleaned_data.get(f'{pref_type}_labels')
+                for label in labels:
+                    LabelPreference.objects.create(
+                        user=user,
+                        label=label,
+                        preference_type=pref_type
+                    )
+            return redirect('users:profile')  # или куда нужно
+    else:
+        form = UserPreferenceForm(user=user, instance=user)
+
+    return render(request, 'users/preferences.html', {'form': form})
 
 @login_required
 def logout(request):

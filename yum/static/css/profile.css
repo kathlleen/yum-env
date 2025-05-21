@@ -52,7 +52,6 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-
     grid
 }
 
@@ -84,6 +83,13 @@
     flex-grow: 1;
 }
 
+.profile-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+
+
 .edit-form {
     display: none;
 }
@@ -99,13 +105,20 @@
 
 .form-group input[type="text"],
 .form-group input[type="email"],
+.form-group textarea,
 .form-group input[type="tel"],
 .form-group input[type="file"] {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    resize: none; /* запрет изменения размера textarea */
 }
+
+
 
 .page-title {
     width: 80%;
@@ -175,6 +188,7 @@
         grid-template-columns: auto;
     }
 
+
 }
 
 @media (max-width: 750px) {
@@ -190,6 +204,10 @@
 
     .avatars {
         grid-template-columns: repeat(3, 1fr); /* 1 столбец */
+    }
+
+    .profile-buttons {
+        flex-direction: column;
     }
 }
 

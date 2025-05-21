@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 import re
+from menu.models import Label, LabelPreference
 from users.models import CustomUser
-from restaurans.models import Restaurans
 
 
 class UserLoginForm(AuthenticationForm):
@@ -52,6 +52,46 @@ class ProfileForm(UserChangeForm):
 
         return data
 
+
+class UserPreferenceForm(forms.ModelForm):
+    like_labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.filter(type='universal'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        label='Нравятся'
+    )
+    dislike_labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.filter(type='universal'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        label='Не нравятся'
+    )
+    diet_labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.filter(type='diet'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        label='Диеты'
+    )
+    allergy_labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.filter(type='allergy'),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        label='Аллергии'
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ['liked_ingredients', 'disliked_ingredients']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+
+        # Загружаем текущие предпочтения
+        for pref_type in ['like', 'dislike', 'diet', 'allergy']:
+            field_name = f'{pref_type}_labels'
+            selected = LabelPreference.objects.filter(user=user, preference_type=pref_type).values_list('label_id', flat=True)
+            self.fields[field_name].initial = selected
 
 
 

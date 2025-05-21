@@ -3,7 +3,8 @@
 {% load cache %}
 
 {% block static_css %}
-<link rel="stylesheet" href="{% static 'css/profile.css' %}"/>{% endblock %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
+{% endblock %}
 
 {% block content %}
 
@@ -22,8 +23,15 @@
                 {% if form.email.value %}
                 <p>Email: {{form.email.value}}</p>
                 {% endif %}
-                <button class="btn">Редактировать профиль</button>
+                <div class="profile-buttons">
+                    <button class="btn">Редактировать профиль</button>
+                    <a href="{% url 'users:preferences' %}">
+                        <button class="btn">Мои предпочтения</button>
+                    </a>
+                </div>
             </div>
+
+
         </div>
     </div>
 
@@ -38,9 +46,9 @@
 
                     <div class="avatars">
                         {% for avatar in avatar_files %}
-                            <button class="change_avatar" type="button" data-avatar="{{ avatar }}">
-                                <img src="{{ MEDIA_URL }}{{ avatar }}" alt="Аватар пользователя" class="avatar">
-                            </button>
+                        <button class="change_avatar" type="button" data-avatar="{{ avatar }}">
+                            <img src="{{ MEDIA_URL }}{{ avatar }}" alt="Аватар пользователя" class="avatar">
+                        </button>
                         {% endfor %}
                     </div>
                     <input type="hidden" id="selected_avatar" name="selected_avatar" value="">
@@ -95,12 +103,12 @@
 
     <!-- Блок корзины -->
     <div class="profile-container cart-container">
-            {% include "includes/all_carts.html" %}
+        {% include "includes/all_carts.html" %}
     </div>
 
     <!-- Блок заказов -->
 
-<!--    {% cache 60 user_orders user.id %}-->
+    <!--    {% cache 60 user_orders user.id %}-->
     <div class="profile-container orders-container">
         <div class="orders">
             <h3>Заказы</h3>
@@ -109,7 +117,7 @@
             <div class="order">
                 <div class="order-header">
                     <p>Заказ #{{ order.id }}</p>
-                    <p>Статус: {{ order.get_status_display  }}</p>
+                    <p>Статус: {{ order.get_status_display }}</p>
                     <button class="details-btn">Подробнее</button>
                 </div>
                 <div class="order-details">
@@ -125,24 +133,26 @@
             </div>
             {% endfor %}
             {% else %}
-                <p>Оформите заказ и он появится здесь</p>
+            <p>Оформите заказ и он появится здесь</p>
             {% endif %}
-<!--            <div class="order">-->
-<!--                <div class="order-header">-->
-<!--                    <p>Заказ #1235</p>-->
-<!--                    <p>Статус: В пути</p>-->
-<!--                    <button class="details-btn">Подробнее</button>-->
-<!--                </div>-->
-<!--                <div class="order-details">-->
-<!--                    <p>Товар 1: Название товара, 1200 ₽</p>-->
-<!--                    <p>Товар 2: Название товара, 1800 ₽</p>-->
-<!--                    <p>Общая сумма: 3000 ₽</p>-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--            <div class="order">-->
+            <!--                <div class="order-header">-->
+            <!--                    <p>Заказ #1235</p>-->
+            <!--                    <p>Статус: В пути</p>-->
+            <!--                    <button class="details-btn">Подробнее</button>-->
+            <!--                </div>-->
+            <!--                <div class="order-details">-->
+            <!--                    <p>Товар 1: Название товара, 1200 ₽</p>-->
+            <!--                    <p>Товар 2: Название товара, 1800 ₽</p>-->
+            <!--                    <p>Общая сумма: 3000 ₽</p>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
     </div>
-<!--    {% endcache %}-->
+    <!--    {% endcache %}-->
 </div>
+
+
 <!-- Подключение JS для раскрытия деталей заказа -->
 <script src="{% static 'js/profile.js' %}"></script>
 <script src="{% static 'js/jquery/jquery-3.7.1.min.js' %}"></script>
