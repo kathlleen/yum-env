@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="{% static 'css/rest-style.css' %}"/>
 {% endblock %}
 
-{% block base_menu %}<button id="open-cart">Корзина</button>{% endblock %}
+{% block base_menu %}
+<button id="open-cart">Корзина</button>{% endblock %}
 
 {% block content %}
 
@@ -59,12 +60,50 @@
                 <img src="{% static 'images/no-photo.jpg' %}" alt="Not found image">
                 {% endif %}
                 <div class="card-content">
-                    <div class=" dish-card" data-dish-id="{{ dish.id }}" style="display: flex; flex-direction:column; gap:10px;">
+                    <div class=" dish-card" data-dish-id="{{ dish.id }}"
+                         style="display: flex; flex-direction:column; gap:10px;">
                         <h3>{{ dish.price }} p.</h3>
                         <p class="truncate">{{ dish.name }}</p>
                         <p>{{ dish.weight }} г</p>
+
+                        {% with dish.labels.all as dish_labels %}
+                        {% with dish.description|lower as description %}
+
+                        {% comment %} Метки {% endcomment %}
+                        {% if liked_labels or disliked_labels %}
+                        <div class="preferences">
+                            {% for label in dish_labels %}
+                            {% if label in liked_labels %}
+                            <span class="label liked">❤ {{ label.name }}</span>
+                            {% elif label in disliked_labels %}
+                            <span class="label disliked">✖ {{ label.name }}</span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        {% comment %} Ингредиенты из описания {% endcomment %}
+                        {% if liked_ingredients or disliked_ingredients %}
+                        <div class="preferences">
+                            {% for ing in liked_ingredients %}
+                            {% if ing in description %}
+                            <span class="label liked">❤ {{ ing }}</span>
+                            {% endif %}
+                            {% endfor %}
+                            {% for ing in disliked_ingredients %}
+                            {% if ing in description %}
+                            <span class="label disliked">✖ {{ ing }}</span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        {% endwith %}
+                        {% endwith %}
+
                     </div>
-                    <a href="{% url 'cart:cart_add' %}" class="add-to-cart" data-dish-id="{{ dish.id }}" data-rest-id="{{ restaurant.id }}">
+                    <a href="{% url 'cart:cart_add' %}" class="add-to-cart" data-dish-id="{{ dish.id }}"
+                       data-rest-id="{{ restaurant.id }}">
                         {% csrf_token %}
                         <button class="btn">+ Добавить</button>
                     </a>
@@ -85,5 +124,28 @@
         {% include "includes/included_cart.html" %}
     </aside>
 </div>
+
+<style>
+
+    .label {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin: 2px;
+}
+
+.liked {
+    background-color: #d4fcd4;
+    color: #247624;
+}
+
+.disliked {
+    background-color: #fcd4d4;
+    color: #762424;
+}
+
+
+</style>
 
 {% endblock %}
