@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block static_css %}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="profile-container">
+        <h2>Предпочтения пользователя</h2>
+        <p style="margin-bottom: 10px;">Укажите, какие категории блюд и ингредиенты вам нравятся, не нравятся, подходят
+            под диету или вызывают
+            аллергию. Эти данные будут использоваться для персонализации меню.</p>
+
+        <form method="post" class="form-content">
+            {% csrf_token %}
+            <div class="form-block">
+                <div class="form-group">
+                    <label for="id_liked_ingredients">Любимые ингредиенты:</label>
+                    {{ form.liked_ingredients }}
+                </div>
+                <div class="form-group">
+                    <label for="id_disliked_ingredients">Нелюбимые ингредиенты:</label>
+                    {{ form.disliked_ingredients }}
+                </div>
+            </div>
+
+            <h3>Метки блюд</h3>
+            <div class="labels-block">
+                <div class="form-block">
+                    <div class="form-group">
+                        <label>Нравятся:</label>
+                        {{ form.like_labels }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Диеты:</label>
+                        {{ form.diet_labels }}
+                    </div>
+                </div>
+                <div class="form-block">
+                    <div class="form-group">
+                        <label>Не нравятся:</label>
+                        {{ form.dislike_labels }}
+                    </div>
+                    <div class="form-group">
+                        <label>Аллергии:</label>
+                        {{ form.allergy_labels }}
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Сохранить предпочтения</button>
+        </form>
+    </div>
+</div>
+
+<style>
+/* Заголовки секций формы */
+.profile-container h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+}
+
+.profile-container h3 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+}
+
+.container {
+    width: 55%;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-block {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+}
+
+.labels-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap:10px;
+}
+
+.labels-block .form-block {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+</style>
+
+{% endblock %}

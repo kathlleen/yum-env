@@ -1,0 +1,143 @@
+{# templates/restaurans/partials/dish_form_fields.html #}
+
+<div class="form-fields">
+    <div class='dish-fields'>
+        <div class="form-block">
+            <div class="form-group">
+                <label for="id_name">Название:</label>
+                <input type="text" id="id_name" name="name" value="{{ form.name.value }}" required>
+                {{ form.name.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_description">Описание:</label>
+                <textarea id="id_description" name="description">{{ form.description.value }}</textarea>
+                {{ form.description.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_price">Цена:</label>
+                <input type="number" id="id_price" name="price" step="0.10"
+                       value="{{ form.price.value }}" required>
+                {{ form.price.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_discount">Скидка (%):</label>
+                <input type="number" id="id_discount" name="discount" step="1"
+                       value="{{ form.discount.value }}">
+                {{ form.discount.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_weight">Вес (г):</label>
+                <input type="number" step="10" id="id_weight" name="weight"
+                       value="{{ form.weight.value }}">
+                {{ form.weight.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_category">Категория:</label>
+                <select id="id_category" name="category">
+                    {% for category in form.category.field.queryset %}
+                    <option value="{{ category.id }}">
+                        {{ category.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                {{ form.category.errors }}
+            </div>
+
+        </div>
+
+        <div class="form-block">
+
+            <div class="form-group">
+                <label for="id_composition">Состав:</label>
+                <textarea id="id_composition" name="composition">{{ form.composition.value }}</textarea>
+                {{ form.composition.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_proteins">Белки (г):</label>
+                <input type="number" step="0.1" id="id_proteins" name="proteins"
+                       value="{{ form.proteins.value }}">
+                {{ form.proteins.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_fats">Жиры (г):</label>
+                <input type="number" step="0.1" id="id_fats" name="fats" value="{{ form.fats.value }}">
+                {{ form.fats.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_carbohydrates">Углеводы (г):</label>
+                <input type="number" step="0.1" id="id_carbohydrates" name="carbohydrates"
+                       value="{{ form.carbohydrates.value }}">
+                {{ form.carbohydrates.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_calories">Калории (ккал):</label>
+                <input type="number" step="0.1" id="id_calories" name="calories"
+                       value="{{ form.calories.value }}">
+                {{ form.calories.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_image" class="logo-label">Загрузить изображение:</label>
+                <input type="file" id="id_image" name="image" class="file-input">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="labels">
+    <label class="logo-label">Метки:</label>
+    <div class="custom-checkboxes">
+        {% for checkbox in form.labels %}
+            <label class="checkbox-item">
+                {{ checkbox.tag }} {{ checkbox.choice_label }}
+            </label>
+        {% endfor %}
+    </div>
+    {{ form.labels.errors }}
+</div>
+
+
+
+</div>
+
+<style>
+.labels {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.custom-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-top: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 0.4em;
+    transform: scale(1.2);
+    width: 20px;
+}
+
+
+
+
+</style>
+
