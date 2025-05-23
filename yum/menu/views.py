@@ -33,15 +33,28 @@ class MenuView(TemplateView):
         if user.is_authenticated:
             context['liked_ingredients'] = set(map(str.strip, (user.liked_ingredients or '').lower().split(',')))
             context['disliked_ingredients'] = set(map(str.strip, (user.disliked_ingredients or '').lower().split(',')))
+            print(context['liked_ingredients'])
+            print(context['disliked_ingredients'])
 
             preferences = LabelPreference.objects.filter(user=user).select_related('label')
-            context['liked_labels'] = set(p.label for p in preferences if p.preference_type == 'like')
-            context['disliked_labels'] = set(p.label for p in preferences if p.preference_type == 'dislike')
+
+            context['liked_labels'] = set()
+            context['disliked_labels'] = set()
+            context['active_label_ids'] = set()
+
+            for pref in preferences:
+                if pref.preference_type == 'like':
+                    context['liked_labels'].add(pref.label)
+                elif pref.preference_type == 'dislike':
+                    context['disliked_labels'].add(pref.label)
+                context['active_label_ids'].add(pref.label.id)
+
         else:
             context['liked_ingredients'] = set()
             context['disliked_ingredients'] = set()
             context['liked_labels'] = set()
             context['disliked_labels'] = set()
+            context['active_label_ids'] = set()
 
         return context
 

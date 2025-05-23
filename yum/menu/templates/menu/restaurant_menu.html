@@ -67,39 +67,51 @@
                         <p>{{ dish.weight }} г</p>
 
                         {% with dish.labels.all as dish_labels %}
-                        {% with dish.description|lower as description %}
+                        {% with dish.composition|lower as composition %}
 
-                        {% comment %} Метки {% endcomment %}
-                        {% if liked_labels or disliked_labels %}
-                        <div class="preferences">
+                        <div class="label-container">
+
+                            {# — Универсальные метки — показываются всегда #}
                             {% for label in dish_labels %}
+                            {% if label.type == 'universal' %}
+                            {% if label in liked_labels %}
+                            <span class="label liked">❤ {{ label.name }}{{ label.icon }}</span>
+                            {% elif label in disliked_labels %}
+                            <span class="label disliked">✖ {{ label.name }}{{ label.icon }}</span>
+                            {% else %}
+                            <span class="label neutral">{{ label.name }}{{ label.icon }}</span>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+
+                            {# — Остальные типы меток: только если пользователь выбрал их #}
+                            {% for label in dish_labels %}
+                            {% if label.type != 'universal' and label.id in active_label_ids %}
                             {% if label in liked_labels %}
                             <span class="label liked">❤ {{ label.name }}</span>
                             {% elif label in disliked_labels %}
                             <span class="label disliked">✖ {{ label.name }}</span>
                             {% endif %}
+                            {% endif %}
                             {% endfor %}
-                        </div>
-                        {% endif %}
 
-                        {% comment %} Ингредиенты из описания {% endcomment %}
-                        {% if liked_ingredients or disliked_ingredients %}
-                        <div class="preferences">
+                            {# — Ингредиенты из описания #}
                             {% for ing in liked_ingredients %}
-                            {% if ing in description %}
+                            {% if ing in composition %}
                             <span class="label liked">❤ {{ ing }}</span>
                             {% endif %}
                             {% endfor %}
                             {% for ing in disliked_ingredients %}
-                            {% if ing in description %}
+                            {% if ing in composition %}
                             <span class="label disliked">✖ {{ ing }}</span>
                             {% endif %}
                             {% endfor %}
+
                         </div>
-                        {% endif %}
 
                         {% endwith %}
                         {% endwith %}
+
 
                     </div>
                     <a href="{% url 'cart:cart_add' %}" class="add-to-cart" data-dish-id="{{ dish.id }}"
@@ -127,23 +139,37 @@
 
 <style>
 
-    .label {
-    display: inline-block;
+.label-container {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.label {
     font-size: 12px;
     padding: 3px 8px;
     border-radius: 12px;
-    margin: 2px;
+    background-color: #eee;
+    color: #444;
 }
 
-.liked {
+.label.liked {
     background-color: #d4fcd4;
     color: #247624;
 }
 
-.disliked {
+.label.disliked {
     background-color: #fcd4d4;
     color: #762424;
 }
+
+.label.neutral {
+    background-color: #e0e0e0;
+    color: #666;
+}
+
+
 
 
 </style>
