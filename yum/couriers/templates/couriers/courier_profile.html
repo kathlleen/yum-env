@@ -29,7 +29,7 @@
 
     <!-- Блок формы редактирования (скрытый по умолчанию) -->
     <div class="profile-container edit-form" style="display: none;">
-        <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data"
+        <form action="{% url 'couriers:courier-profile' %}" method="post" enctype="multipart/form-data"
               class="user_form">
             {% csrf_token %}
             <div>
@@ -38,9 +38,9 @@
 
                     <div class="avatars">
                         {% for avatar in avatar_files %}
-                            <button class="change_avatar" type="button" data-avatar="{{ avatar }}">
-                                <img src="{{ MEDIA_URL }}{{ avatar }}" alt="Аватар пользователя" class="avatar">
-                            </button>
+                        <button class="change_avatar" type="button" data-avatar="{{ avatar }}">
+                            <img src="{{ MEDIA_URL }}{{ avatar }}" alt="Аватар пользователя" class="avatar">
+                        </button>
                         {% endfor %}
                     </div>
                     <input type="hidden" id="selected_avatar" name="selected_avatar" value="">
@@ -87,6 +87,19 @@
                     <p>{{form.email.errors}}</p>
                     {% endif %}
                 </div>
+                <div class="form-group">
+                    <label for="id_transport_mode">Способ передвижения:</label>
+                    <select id="id_transport_mode" name="transport_mode" class="form-control">
+                        {% for mode in form.transport_mode.field.choices %}
+                        <option value="{{ mode.0 }}">
+                            {{ mode.1 }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    {{ form.transport_mode.errors }}
+                </div>
+
+
                 <button type="submit" class="btn">Сохранить изменения</button>
             </div>
         </form>
@@ -99,4 +112,7 @@
 <script src="{% static 'js/jquery/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'js/jquery-ajax.js' %}"></script>
 
+<style>
+
+</style>
 {% endblock %}

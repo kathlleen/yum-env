@@ -7,7 +7,7 @@ app_name = 'couriers'
 
 urlpatterns = [
     path('courier-dashboard/', views.courier_dashboard, name='courier-dashboard'),
-    path('courier-profile/', views.courier_profile, name='courier-profile'),
+    path('courier-profile/', views.CourierProfileView.as_view(), name='courier-profile'),
     path('courier-statistics/', views.courier_statistics, name='courier-statistics'),
 
 ]

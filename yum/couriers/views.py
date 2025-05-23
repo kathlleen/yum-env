@@ -1,6 +1,15 @@
+import os
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView
 from orders.models import Order
+
+from common.mixins import CacheMixin
+from couriers.forms import CourierProfileForm
+
 
 def is_courier(user):
     return user.is_authenticated and user.is_courier()
@@ -28,13 +37,46 @@ def courier_dashboard(request):
 
     return render(request, 'couriers/courier_dashboard.html', context)
 
-@login_required
-@user_passes_test(is_courier, login_url='main:index')
-def courier_profile(request):
-    context = {
-        'title': 'Профиль курьера'
-    }
-    return render(request, 'couriers/courier_profile.html', context)
+class CourierProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
+    template_name = 'couriers/courier_profile.html'
+    form_class = CourierProfileForm
+    success_url = reverse_lazy('couriers:courier-profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        selected_avatar = self.request.POST.get('selected_avatar')
+
+        if selected_avatar:
+            # Сохраняем выбранный аватар
+            self.request.user.image = selected_avatar
+
+        # Обрабатываем загруженное изображение (если есть)
+        if self.request.FILES.get('image'):
+            self.request.user.image = self.request.FILES['image']
+
+        self.request.user.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Profile'
+
+        # Получаем список изображений из папки media/avatars/
+        avatar_directory = os.path.join(settings.MEDIA_ROOT, 'avatars')
+        avatar_files = []
+
+        # Проверяем наличие папки и собираем список файлов
+        if os.path.exists(avatar_directory):
+            # Преобразуем пути в правильный формат
+            avatar_files = [os.path.join('avatars', f).replace("\\", "/") for f in os.listdir(avatar_directory) if
+                            f.endswith(('jpg', 'jpeg', 'png', 'webp'))]
+
+        context['avatar_files'] = avatar_files
+        context['MEDIA_URL'] = settings.MEDIA_URL
+        context['profile'] = True
+        return context
 
 
 @login_required
