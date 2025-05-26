@@ -11,6 +11,9 @@ from restaurans.models import Restaurans
 from orders.forms import CreateOrderForm
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from geopy.distance import geodesic
+
+from users.models import CustomUser
 
 
 class CreateOrderView(LoginRequiredMixin, FormView):
@@ -77,6 +80,39 @@ class CreateOrderView(LoginRequiredMixin, FormView):
                     },
                 )
 
+                available_couriers = CustomUser.objects.filter(
+                    on_shift=True,
+                    role='courier',
+                    latitude__isnull=False,
+                    longitude__isnull=False
+                )
+
+                if available_couriers.exists():
+                    restaurant_location = (self.restaurant.latitude, self.restaurant.longitude)
+
+                    sorted_couriers = sorted(
+                        available_couriers,
+                        key=lambda c: (
+                            geodesic(restaurant_location, (c.latitude, c.longitude)).km,
+                            c.priority
+                        )
+                    )
+                    best_courier = sorted_couriers[0]
+                    order.courier = best_courier
+                    order.status = 'awaiting_delivery'
+                    order.save()
+
+                    # WebSocket уведомление курьеру
+                    channel_layer = get_channel_layer()
+                    async_to_sync(channel_layer.group_send)(
+                        f"courier_{best_courier.id}",
+                        {
+                            "type": "new_order",
+                            "order_id": order.id,
+                            "restaurant": self.restaurant.name,
+                            "address": order.delivery_address,
+                        }
+                    )
 
                 return redirect(self.success_url)
 

@@ -35,7 +35,9 @@ class CustomUser(AbstractUser):
         verbose_name="Способ передвижения"
     )
 
-    priority = models.FloatField(default=0.0, verbose_name="Приоритет")  # Обновляется программно
+    priority = models.IntegerField(default=100, verbose_name="Приоритет")  # 1 - очень высокий, 100 - низкий
+    on_shift = models.BooleanField(default=False, verbose_name="На смене")
+    last_location_update = models.DateTimeField(null=True, blank=True)
 
     def is_customer(self):
         return self.role == 'customer'

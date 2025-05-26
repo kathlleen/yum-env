@@ -4,9 +4,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import UpdateView
 from orders.models import Order
-
+import json
+from django.http import JsonResponse
+from django.utils import timezone
 from common.mixins import CacheMixin
 from couriers.forms import CourierProfileForm
 
@@ -86,3 +89,29 @@ def courier_statistics(request):
         'title': 'Статистика курьера'
     }
     return render(request, 'couriers/courier_statistics.html', context)
+
+@login_required
+@user_passes_test(is_courier, login_url='main:index')
+def toggle_shift(request):
+    user = request.user
+    user.on_shift = not user.on_shift
+    user.save()
+    return redirect('couriers:courier-dashboard')
+
+
+@csrf_exempt
+def update_location(request):
+    if request.method == 'POST' and request.user.is_authenticated and request.user.is_courier():
+        data = json.loads(request.body)
+        lat = data.get('latitude')
+        lon = data.get('longitude')
+
+        if lat is not None and lon is not None and request.user.on_shift:
+            request.user.latitude = lat
+            request.user.longitude = lon
+            request.user.last_location_update = timezone.now()
+            request.user.save()
+            return JsonResponse({'status': 'ok'})
+        return JsonResponse({'status': 'error', 'message': 'Invalid data or not on shift'}, status=400)
+
+    return JsonResponse({'status': 'unauthorized'}, status=401)
