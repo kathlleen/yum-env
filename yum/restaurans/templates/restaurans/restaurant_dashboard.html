@@ -53,12 +53,17 @@
 
 <script>
     const restaurantId = "{{ restaurant.id }}";
-    const socket = new WebSocket(`ws://${window.location.host}/ws/orders/${restaurantId}/`);
+    const ws = new WebSocket(`ws://${window.location.host}/ws/restaurant/${restaurantId}/`);
 
-    socket.onmessage = function(event) {
+    ws.onmessage = function(event) {
         const data = JSON.parse(event.data);
-        alert(`Новый заказ №${data.order_id} от ${data.customer}!\nАдрес: ${data.address}`);
-        location.reload();
+
+        if (data.type === "new_order") {
+            alert(`Новый заказ №${data.order_id}`);
+            location.reload();  // перезагрузка для показа заказа в списке
+        }
     };
 </script>
+
+
 {% endblock %}

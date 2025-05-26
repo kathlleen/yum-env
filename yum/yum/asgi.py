@@ -12,7 +12,7 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 import couriers.routing
-
+import restaurans.routing
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "yum.settings")
 
@@ -20,7 +20,7 @@ application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
         URLRouter(
-            couriers.routing.websocket_urlpatterns
+            couriers.routing.websocket_urlpatterns + restaurans.routing.websocket_urlpatterns
         )
     ),
 })

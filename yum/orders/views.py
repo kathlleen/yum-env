@@ -69,17 +69,6 @@ class CreateOrderView(LoginRequiredMixin, FormView):
                 # Clear the cart
                 cart_items.delete()
 
-                channel_layer = get_channel_layer()
-                async_to_sync(channel_layer.group_send)(
-                    f"restaurant_{self.restaurant.id}",
-                    {
-                        "type": "order_message",
-                        "order_id": order.id,
-                        "customer": f"{order.customer.first_name} {order.customer.last_name}",
-                        "address": order.delivery_address,
-                    },
-                )
-
                 available_couriers = CustomUser.objects.filter(
                     on_shift=True,
                     role='courier',
@@ -99,7 +88,6 @@ class CreateOrderView(LoginRequiredMixin, FormView):
                     )
                     best_courier = sorted_couriers[0]
                     order.courier = best_courier
-                    order.status = 'awaiting_delivery'
                     order.save()
 
                     # WebSocket уведомление курьеру
@@ -113,6 +101,18 @@ class CreateOrderView(LoginRequiredMixin, FormView):
                             "address": order.delivery_address,
                         }
                     )
+                    print("Отправляю сообщение ресторану:", f"restaurant_{order.restaurant.id}")
+                    async_to_sync(channel_layer.group_send)(
+                        f"restaurant_{order.restaurant.id}",
+                        {
+                            "type": "new_order",
+                            "order_id": order.id,
+                            "delivery_address": order.delivery_address,
+                            "created_at": order.created_timestamp.strftime('%Y-%m-%d %H:%M'),
+                        }
+                    )
+
+
 
                 return redirect(self.success_url)
 
