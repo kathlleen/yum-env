@@ -92,7 +92,7 @@
         {% for dish in dishes %}
         <tr>
             <td>{{ dish.name }}</td>
-            <td>{{ dish.description }}</td>
+            <td style="width: 500px;">{{ dish.description }}</td>
             <td>{{ dish.price }}</td>
             <td>{{ dish.discount }}</td>
             <td>
@@ -103,10 +103,15 @@
                 {% endif %}
             </td>
             <td>{{ dish.category }}</td>
-            <td>
+            <td style="width: 270px;">
                 <a href="{% url 'restaurans:edit-dish' dish.slug %}">
-                    <button class="btn">Редактировать</button>
+                    <button class="btn">Изменить</button>
                 </a>
+                <button class="btn delete-dish" data-url="{% url 'restaurans:delete-dish' dish.slug %}"
+                        style="background-color: red; color: white;">
+                    Удалить
+                </button>
+
             </td>
         </tr>
         {% endfor %}
@@ -115,6 +120,35 @@
 </div>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".delete-dish").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+            const deleteUrl = this.getAttribute("data-url");
+
+            if (this.dataset.confirm === "true") {
+                // Отправляем запрос на удаление
+                fetch(deleteUrl, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "Content-Type": "application/json"
+                    }
+                }).then(response => response.json()).then(data => {
+                    if (data.success) {
+                        location.reload(); // Перезагрузка страницы после удаления
+                    }
+                });
+            } else {
+                // Меняем текст кнопки на "Точно?" и стиль
+                this.textContent = "Точно?";
+                this.style.backgroundColor = "darkred";
+                this.dataset.confirm = "true";
+            }
+        });
+    });
+});
 
 </script>
 
