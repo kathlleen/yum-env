@@ -404,3 +404,38 @@
 .dish-price {
     flex-shrink: 0; /* Не дает сжиматься цене */
 }
+
+
+
+
+.rating-block {
+    margin: 15px 0;
+}
+
+.star-rating {
+    display: flex;
+    direction: row;
+    gap: 8px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.star-rating .star {
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+.star-rating .star.hovered,
+.star-rating .star.selected {
+    color: #FFD700;
+}
+
+.submit-rating-btn {
+    margin-top: 10px;
+    background-color: #373737;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}

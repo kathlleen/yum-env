@@ -129,6 +129,25 @@
                     </div>
                     {% endfor %}
                 </div>
+                {% if order.status == 'delivered' %}
+                <!-- Рейтинг курьера -->
+                <div class="order-header">
+                    <div class="rating-block">
+                        <label>Оценка курьеру:</label>
+                        <div class="star-rating" data-input-name="courier_rating"></div>
+                    </div>
+
+                    <!-- Рейтинг ресторану -->
+                    <div class="rating-block">
+                        <label>Оценка ресторану:</label>
+                        <div class="star-rating" data-input-name="restaurant_rating"></div>
+                    </div>
+
+                    <input type="hidden" name="courier_rating" value="">
+                    <input type="hidden" name="restaurant_rating" value="">
+                    <button type="submit" class="submit-rating-btn">Оценить</button>
+                </div>
+                {% endif %}
 
             </div>
             {% endfor %}
@@ -146,5 +165,51 @@
 <script src="{% static 'js/profile.js' %}"></script>
 <script src="{% static 'js/jquery/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'js/jquery-ajax.js' %}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const starRatingBlocks = document.querySelectorAll('.star-rating');
+
+    starRatingBlocks.forEach(block => {
+        const inputName = block.getAttribute('data-input-name');
+        const hiddenInput = document.querySelector(`input[name="${inputName}"]`);
+
+        for (let i = 1; i <= 5; i++) {
+            const star = document.createElement('span');
+            star.classList.add('star');
+            star.innerHTML = '★';
+            star.dataset.value = i;
+            block.appendChild(star);
+        }
+
+        const stars = block.querySelectorAll('.star');
+
+        stars.forEach(star => {
+            star.addEventListener('mouseenter', () => {
+                updateStars(stars, star.dataset.value, 'hovered');
+            });
+            star.addEventListener('mouseleave', () => {
+                updateStars(stars, hiddenInput.value, 'selected');
+            });
+            star.addEventListener('click', () => {
+                hiddenInput.value = star.dataset.value;
+                updateStars(stars, star.dataset.value, 'selected');
+            });
+        });
+
+        function updateStars(stars, value, className) {
+            stars.forEach(s => s.classList.remove('hovered', 'selected'));
+            stars.forEach(s => {
+                if (s.dataset.value <= value) {
+                    s.classList.add(className);
+                }
+            });
+        }
+    });
+});
+
+
+</script>
+
 
 {% endblock %}
