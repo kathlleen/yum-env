@@ -99,6 +99,30 @@ h2 {
     transition: background-color 0.3s ease;
 }
 
+form {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+/* Кнопка */
+button.btn {
+
+    background: #64FF8F;
+    color: #121212;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+button.btn:hover {
+    background: #3CE578;
+}
+
+
 /* Контейнер для карты: центрирование и отступы */
 .map-container {
     max-width: 1200px;

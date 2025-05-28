@@ -2,7 +2,7 @@ import os
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import UpdateView
@@ -39,6 +39,17 @@ def courier_dashboard(request):
     }
 
     return render(request, 'couriers/courier_dashboard.html', context)
+
+
+@login_required
+def mark_order_delivered(request, order_id):
+    order = get_object_or_404(Order, id=order_id, courier=request.user)
+
+    if request.method == 'POST':
+        order.status = 'delivered'
+        order.save()
+
+    return redirect('couriers:courier-dashboard')  # Или куда надо
 
 class CourierProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
     template_name = 'couriers/courier_profile.html'

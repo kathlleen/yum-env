@@ -6,19 +6,19 @@
 
 {% block content %}
 
-<section class="map-container">
-    <div id="map">
-        <iframe
-                width="100%"
-                height="350"
-                style="border:0; margin-top: 20px;"
-                loading="lazy"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/place?key={{ api_key }}&q={{ address }}">
-        </iframe>
-    </div>
-</section>
+<!--<section class="map-container">-->
+<!--    <div id="map">-->
+<!--        <iframe-->
+<!--                width="100%"-->
+<!--                height="350"-->
+<!--                style="border:0; margin-top: 20px;"-->
+<!--                loading="lazy"-->
+<!--                allowfullscreen-->
+<!--                referrerpolicy="no-referrer-when-downgrade"-->
+<!--                src="https://www.google.com/maps/embed/v1/place?key={{ api_key }}&q={{ address }}">-->
+<!--        </iframe>-->
+<!--    </div>-->
+<!--</section>-->
 
 <form method="post" action="{% url 'couriers:toggle-shift' %}">
     {% csrf_token %}
@@ -27,9 +27,9 @@
     </button>
 </form>
 
-{% if user.on_shift %}
-<h2>{{ user.latitude }} {{ user.longitude }}</h2>
-{% endif %}
+<!--{% if user.on_shift %}-->
+<!--<h2>{{ user.latitude }} {{ user.longitude }}</h2>-->
+<!--{% endif %}-->
 
 
 <section class="orders-section">
@@ -44,9 +44,20 @@
             <p><span class="label">Адрес доставки:</span> {{ order.delivery_address }}</p>
             <p><span class="label">Адрес ресторана:</span> {{ order.restaurant.address }}</p>
             <p><span class="label">Телефон:</span> {{ order.phone_number }}</p>
+            <p><span class="label">Заказчик:</span> {{ order.customer.first_name }} {{ order.customer.last_name }}</p>
             <h3 class="order-items-title">Состав заказа:</h3>
+            <ul class="order-items">
+                {% for item in order.orderitem_set.all %}
+                <li class="order-item">
+                    {{ item.dish.name }} - {{ item.quantity }} шт. ({{ item.price }} руб.)
+                </li>
+                {% endfor %}
+            </ul>
+            <form method="post" action="{% url 'couriers:mark_order_delivered' order.id %}">
+                {% csrf_token %}
+                <button type="submit" class="complete-btn">Доставлен</button>
+            </form>
 
-            <button class="complete-btn">Доставлен</button>
         </div>
         {% empty %}
         <p>Нет заказов в пути</p>
@@ -63,8 +74,15 @@
             <p><span class="label">Адрес доставки:</span> {{ order.delivery_address }}</p>
             <p><span class="label">Адрес ресторана:</span> {{ order.restaurant.address }}</p>
             <p><span class="label">Телефон:</span> {{ order.phone_number }}</p>
+            <p><span class="label">Заказчик:</span> {{ order.customer.first_name }} {{ order.customer.last_name }}</p>
             <h3 class="order-items-title">Состав заказа:</h3>
-
+            <ul class="order-items">
+                {% for item in order.orderitem_set.all %}
+                <li class="order-item">
+                    {{ item.dish.name }} - {{ item.quantity }} шт. ({{ item.price }} руб.)
+                </li>
+                {% endfor %}
+            </ul>
             <button class="complete-btn">Принять заказ</button>
         </div>
         {% empty %}
@@ -82,7 +100,15 @@
             <p><span class="label">Адрес доставки:</span> {{ order.delivery_address }}</p>
             <p><span class="label">Адрес ресторана:</span> {{ order.restaurant.address }}</p>
             <p><span class="label">Телефон:</span> {{ order.phone_number }}</p>
+            <p><span class="label">Заказчик:</span> {{ order.customer.first_name }} {{ order.customer.last_name }}</p>
             <h3 class="order-items-title">Состав заказа:</h3>
+            <ul class="order-items">
+                {% for item in order.orderitem_set.all %}
+                <li class="order-item">
+                    {{ item.dish.name }} - {{ item.quantity }} шт. ({{ item.price }} руб.)
+                </li>
+                {% endfor %}
+            </ul>
         </div>
         {% empty %}
         <p>Нет заказов в процессе приготовления</p>
@@ -120,6 +146,10 @@ courierSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     alert("Новый заказ: " + data.order_id + " (" + data.address + ")");
 };
+
+
+
+
 
 </script>
 

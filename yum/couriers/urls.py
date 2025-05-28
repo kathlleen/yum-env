@@ -11,6 +11,7 @@ urlpatterns = [
     path('courier-statistics/', views.courier_statistics, name='courier-statistics'),
     path('toggle-shift/', views.toggle_shift, name='toggle-shift'),
     path('update-location/', views.update_location, name='update-location'),
+    path('order/<int:order_id>/delivered/', views.mark_order_delivered, name='mark_order_delivered'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
