@@ -2,6 +2,9 @@ from django.contrib import admin
 
 from orders.models import Order, OrderItem
 
+from orders.models import OrderRating
+
+
 # Register your models here.
 
 
@@ -38,4 +41,9 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['status', 'payment_on_get', 'is_paid']
     inlines = (OrderItemTabulareAdmin, )
 
+@admin.register(OrderRating)
+class OrderRatingAdmin(admin.ModelAdmin):
+    list_display = ['id', 'order', 'courier','restaurant', 'courier_rating', 'restaurant_rating', 'created_at']
+    search_fields = ['id']
+    readonly_fields = ['created_at']
 

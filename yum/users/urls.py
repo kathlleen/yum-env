@@ -10,10 +10,12 @@ urlpatterns = [
     path('login/', views.UserLoginView.as_view(), name='login'),
     path('logout/', views.logout, name='logout'),
     path('register/customer/', views.CustomerRegistrationView.as_view(), name='register_customer'),
-    path('register/restaurant_admin/', views.RestaurantAdminRegistrationView.as_view(), name='register_restaurant_admin'),
+    path('register/restaurant_admin/', views.RestaurantAdminRegistrationView.as_view(),
+         name='register_restaurant_admin'),
     path('register/courier/', views.CourierRegistrationView.as_view(), name='register_courier'),
     path('profile/', views.UserProfileView.as_view(), name='profile'),
     path('profile/preferences/', views.preferences_view, name='preferences'),
+    path('order/<int:order_id>/rate/', views.rate_order, name='rate_order')
     # path('dashboard/customer/', views.customer_dashboard, name='customer_dashboard'),
     # path('dashboard/courier/', views.courier_dashboard, name='courier_dashboard'),
 ]

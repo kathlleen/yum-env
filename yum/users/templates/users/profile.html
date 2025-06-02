@@ -131,22 +131,25 @@
                 </div>
                 {% if order.status == 'delivered' %}
                 <!-- Рейтинг курьера -->
-                <div class="order-header">
-                    <div class="rating-block">
-                        <label>Оценка курьеру:</label>
-                        <div class="star-rating" data-input-name="courier_rating"></div>
-                    </div>
+                <form method="post" action="{% url 'users:rate_order' order.id %}">
+                    {% csrf_token %}
+                    <div class="order-header">
+                        <div class="rating-block">
+                            <label>Оценка курьеру:</label>
+                            <div class="star-rating" data-input-name="courier_rating"></div>
+                        </div>
 
-                    <!-- Рейтинг ресторану -->
-                    <div class="rating-block">
-                        <label>Оценка ресторану:</label>
-                        <div class="star-rating" data-input-name="restaurant_rating"></div>
-                    </div>
+                        <!-- Рейтинг ресторану -->
+                        <div class="rating-block">
+                            <label>Оценка ресторану:</label>
+                            <div class="star-rating" data-input-name="restaurant_rating"></div>
+                        </div>
 
-                    <input type="hidden" name="courier_rating" value="">
-                    <input type="hidden" name="restaurant_rating" value="">
-                    <button type="submit" class="submit-rating-btn">Оценить</button>
-                </div>
+                        <input type="hidden" name="courier_rating" value="">
+                        <input type="hidden" name="restaurant_rating" value="">
+                        <button type="submit" class="submit-rating-btn">Оценить</button>
+                    </div>
+                </form>
                 {% endif %}
 
             </div>
@@ -207,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
 </script>

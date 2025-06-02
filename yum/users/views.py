@@ -2,9 +2,10 @@ from django.contrib import auth
 from django.contrib.auth import authenticate,  login as auth_login
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, UpdateView
 from users.forms import UserLoginForm, CustomerRegistrationForm, \
     RestaurantAdminRegistrationForm,CourierRegistrationForm, ProfileForm
@@ -22,6 +23,8 @@ from django.conf import settings
 
 from menu.models import LabelPreference
 from users.forms import UserPreferenceForm
+
+from orders.models import OrderRating
 
 
 # Create your views here.
@@ -93,11 +96,14 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Profile'
 
-        orders = Order.objects.filter(customer=self.request.user).prefetch_related(
-            Prefetch(
-                "orderitem_set",
-                queryset=OrderItem.objects.select_related("dish"),
-            )
+        # Исключаем уже оценённые
+        rated_order_ids = OrderRating.objects.filter(order__customer=self.request.user).values_list('order_id',
+                                                                                                    flat=True)
+
+        orders = Order.objects.filter(customer=self.request.user) \
+            .exclude(id__in=rated_order_ids) \
+            .prefetch_related(
+            Prefetch("orderitem_set", queryset=OrderItem.objects.select_related("dish"))
         ).order_by("-id")
 
         # Получаем список изображений из папки media/avatars/
@@ -115,6 +121,28 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
         context['profile'] = True
         context['orders'] = self.set_get_cache(orders, f"user_{self.request.user.id}_orders", 60 * 2)
         return context
+
+@require_POST
+@login_required
+def rate_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, customer=request.user, status='delivered')
+
+    # Не даём оценивать повторно
+    if OrderRating.objects.filter(order=order).exists():
+        return redirect('users:profile')
+
+    courier_rating = int(request.POST.get('courier_rating'))
+    restaurant_rating = int(request.POST.get('restaurant_rating'))
+
+    OrderRating.objects.create(
+        order=order,
+        courier=order.courier,
+        restaurant=order.restaurant,
+        courier_rating=courier_rating,
+        restaurant_rating=restaurant_rating
+    )
+
+    return redirect('users:profile')
 
 
 class CustomerRegistrationView(CreateView):

@@ -96,3 +96,23 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"Блюдо {self.name} | Заказ № {self.order.pk}"
+
+
+# models.py
+
+class OrderRating(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    courier = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="courier_ratings")
+    restaurant = models.ForeignKey(Restaurans, on_delete=models.CASCADE, related_name="restaurant_ratings")
+
+    courier_rating = models.PositiveSmallIntegerField()
+    restaurant_rating = models.PositiveSmallIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Отзыв заказа"
+        verbose_name_plural = "Отзывы заказов"
+        ordering = ['-created_at']  # последние первыми
+
+    def __str__(self):
+        return f"Оценка заказа #{self.order.id}"
