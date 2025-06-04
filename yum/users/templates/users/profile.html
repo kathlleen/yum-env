@@ -108,7 +108,6 @@
 
     <!-- Блок заказов -->
 
-    <!--    {% cache 60 user_orders user.id %}-->
     <div class="profile-container orders-container">
         <div class="orders">
             <h3>Заказы</h3>
@@ -136,13 +135,13 @@
                     <div class="order-header">
                         <div class="rating-block">
                             <label>Оценка курьеру:</label>
-                            <div class="star-rating" data-input-name="courier_rating"></div>
+                            <div class="star-rating" data-input-name="courier_rating" min="1" max="5" required></div>
                         </div>
 
                         <!-- Рейтинг ресторану -->
                         <div class="rating-block">
                             <label>Оценка ресторану:</label>
-                            <div class="star-rating" data-input-name="restaurant_rating"></div>
+                            <div class="star-rating" data-input-name="restaurant_rating" min="1" max="5" required></div>
                         </div>
 
                         <input type="hidden" name="courier_rating" value="">
@@ -160,7 +159,6 @@
 
         </div>
     </div>
-    <!--    {% endcache %}-->
 </div>
 
 
@@ -170,12 +168,12 @@
 <script src="{% static 'js/jquery-ajax.js' %}"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const starRatingBlocks = document.querySelectorAll('.star-rating');
+document.querySelectorAll('form').forEach(form => {
+    const starRatingBlocks = form.querySelectorAll('.star-rating');
 
     starRatingBlocks.forEach(block => {
         const inputName = block.getAttribute('data-input-name');
-        const hiddenInput = document.querySelector(`input[name="${inputName}"]`);
+        const hiddenInput = form.querySelector(`input[name="${inputName}"]`);
 
         for (let i = 1; i <= 5; i++) {
             const star = document.createElement('span');
@@ -210,8 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-
 
 </script>
 

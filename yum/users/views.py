@@ -25,7 +25,7 @@ from menu.models import LabelPreference
 from users.forms import UserPreferenceForm
 
 from orders.models import OrderRating
-
+from django.core.cache import cache
 
 # Create your views here.
 class UserLoginView(FormView):
@@ -97,12 +97,15 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
         context['title'] = 'Profile'
 
         # Исключаем уже оценённые
-        rated_order_ids = OrderRating.objects.filter(order__customer=self.request.user).values_list('order_id',
-                                                                                                    flat=True)
+        rated_order_ids = OrderRating.objects.filter(
+            order__customer=self.request.user
+        ).values_list('order_id', flat=True)
 
-        orders = Order.objects.filter(customer=self.request.user) \
-            .exclude(id__in=rated_order_ids) \
-            .prefetch_related(
+        orders = Order.objects.filter(
+            customer=self.request.user
+        ).exclude(
+            id__in=rated_order_ids
+        ).prefetch_related(
             Prefetch("orderitem_set", queryset=OrderItem.objects.select_related("dish"))
         ).order_by("-id")
 
@@ -119,7 +122,7 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
         context['avatar_files'] = avatar_files
         context['MEDIA_URL'] = settings.MEDIA_URL
         context['profile'] = True
-        context['orders'] = self.set_get_cache(orders, f"user_{self.request.user.id}_orders", 60 * 2)
+        context['orders'] = orders
         return context
 
 @require_POST
@@ -131,8 +134,12 @@ def rate_order(request, order_id):
     if OrderRating.objects.filter(order=order).exists():
         return redirect('users:profile')
 
-    courier_rating = int(request.POST.get('courier_rating'))
-    restaurant_rating = int(request.POST.get('restaurant_rating'))
+    try:
+        courier_rating = int(request.POST.get('courier_rating', 0))
+        restaurant_rating = int(request.POST.get('restaurant_rating', 0))
+    except (ValueError, TypeError):
+        print("ОШИБКА С ОЦЕНКОЙ!!")
+        return redirect('users:profile')  # Или верни ошибку / сообщение
 
     OrderRating.objects.create(
         order=order,
