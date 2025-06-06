@@ -5,13 +5,15 @@
 {% endblock %}
 
 {% block content %}
-{% if active_shift %}
+<div class="orders-section">
+
+    {% if active_shift %}
     <p>Смена началась: {{ active_shift.start_time|date:"H:i d.m.Y" }}</p>
 
     {% if not active_shift.end_time %}
-        <p>Прошло времени: <span id="shift-duration"></span></p>
+    <p>Прошло времени: <span id="shift-duration"></span></p>
 
-        <script>
+    <script>
         function updateShiftTimer(startTime) {
             let start = new Date(startTime);
             setInterval(function() {
@@ -25,12 +27,14 @@
         }
 
         updateShiftTimer("{{ active_shift.start_time|date:'Y-m-d H:i:s' }}");
-        </script>
-    {% else %}
-        <p>Смена завершена в {{ active_shift.end_time|date:"H:i d.m.Y" }}</p>
-    {% endif %}
-{% endif %}
 
+    </script>
+    {% else %}
+    <p>Смена завершена в {{ active_shift.end_time|date:"H:i d.m.Y" }}</p>
+    {% endif %}
+    {% endif %}
+
+</div>
 
 <form method="post" action="{% url 'couriers:toggle-shift' %}">
     {% csrf_token %}
@@ -161,6 +165,7 @@ courierSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     alert("Новый заказ: " + data.order_id + " (" + data.address + ")");
 };
+
 
 
 </script>
