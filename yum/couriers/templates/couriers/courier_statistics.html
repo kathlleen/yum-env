@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block static_css %}
-<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+<link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css">
 <style>
     .stat-page {
@@ -53,6 +53,10 @@
         padding: 20px;
         color: black;
     }
+
+
+
+
 </style>
 {% endblock %}
 
@@ -88,36 +92,63 @@
         </div>
     </div>
 
-    <h2 style="margin-top: 40px;">📅 Календарь смен</h2>
-    <div id="calendar"></div>
+    <div class="stat-page">
+        <canvas id="shiftChart" width="400" height="200"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+    const ctx = document.getElementById('shiftChart').getContext('2d');
+    const shiftChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ shift_labels|safe }},
+            datasets: [{
+                label: 'Часы на смене',
+                data: {{ shift_data|safe }},
+                backgroundColor: '#64FF8F',
+                borderColor: '#3CE578',
+                borderWidth: 1,
+                borderRadius: 5,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Часы'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Дата'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                }
+            }
+        }
+    });
+
+    </script>
+
+
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            locale: 'ru',
-            height: 600,
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: ''
-            },
-            events: [
-                {% for shift_date in shift_dates %}
-                {
-                    title: 'Смена',
-                    start: '{{ shift_date|date:"Y-m-d" }}',
-                    color: '#64FF8F'
-                },
-                {% endfor %}
-            ]
-        });
-        calendar.render();
-    });
-</script>
+
+
 {% endblock %}

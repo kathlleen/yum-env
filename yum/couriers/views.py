@@ -1,7 +1,4 @@
 import os
-from datetime import timedelta
-from django.utils import timezone
-from decimal import Decimal
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,14 +12,21 @@ from django.http import JsonResponse
 from django.utils import timezone
 from common.mixins import CacheMixin
 from couriers.forms import CourierProfileForm
-
 from orders.models import OrderRating
-
 from couriers.models import Shift
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render
+from django.utils import timezone
+from datetime import timedelta
+from decimal import Decimal
+from collections import defaultdict
+
+from orders.models import Order, OrderRating
 
 
 def is_courier(user):
     return user.is_authenticated and user.is_courier()
+
 
 @login_required
 @user_passes_test(is_courier, login_url='main:index')
@@ -55,10 +59,14 @@ def mark_order_delivered(request, order_id):
     order = get_object_or_404(Order, id=order_id, courier=request.user)
 
     if request.method == 'POST':
-        order.status = 'delivered'
+        if order.status == 'awaiting_delivery':
+            order.status = 'on_the_way'
+        elif order.status == 'on_the_way':
+            order.status = 'delivered'
         order.save()
 
     return redirect('couriers:courier-dashboard')  # Или куда надо
+
 
 class CourierProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
     template_name = 'couriers/courier_profile.html'
@@ -107,24 +115,48 @@ class CourierProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
 def courier_statistics(request):
     courier = request.user
     now = timezone.now()
-
-    # Временные промежутки
     today = now.date()
-    start_week = today - timedelta(days=today.weekday())  # понедельник
+
+    # 7 последних дней
+    last_7_days = [today - timedelta(days=i) for i in range(6, -1, -1)]
+    labels = [day.strftime('%d.%m') for day in last_7_days]
+    shift_hours = []
+    daily_earnings = []
+
+    COMMISSION_COURIER = Decimal('0.05')
+
+    for day in last_7_days:
+        # Смены за день
+        shifts = courier.shifts.filter(start_time__date=day)
+        total_seconds = sum([
+            (shift.end_time or now) - shift.start_time
+            for shift in shifts
+        ], timedelta()).total_seconds()
+        shift_hours.append(round(total_seconds / 3600, 2))
+
+        # Заказы за день
+        orders = Order.objects.filter(
+            courier=courier,
+            status='delivered',
+            created_timestamp__date=day
+        )
+
+        total = Decimal('0.00')
+        for order in orders:
+            items = order.orderitem_set.all()
+            order_sum = sum(item.price * item.quantity for item in items)
+            total += order_sum * COMMISSION_COURIER
+        daily_earnings.append(float(total.quantize(Decimal('0.01'))))
+
+    # Общая статистика
+    start_week = today - timedelta(days=today.weekday())
     start_month = today.replace(day=1)
-
-    # Все доставленные заказы
     delivered_orders = Order.objects.filter(courier=courier, status='delivered')
-
-    # Фильтры по времени
     today_orders = delivered_orders.filter(created_timestamp__date=today)
     week_orders = delivered_orders.filter(created_timestamp__date__gte=start_week)
     month_orders = delivered_orders.filter(created_timestamp__date__gte=start_month)
 
-    # Деньги (предположим 5% получает курьер)
-    COMMISSION_COURIER = Decimal('0.05')
-    COMMISSION_SERVICE = Decimal('0.10')
-
+    # Заработок
     def calc_total_earned(orders):
         total = Decimal('0.00')
         for order in orders:
@@ -133,27 +165,23 @@ def courier_statistics(request):
             total += order_sum * COMMISSION_COURIER
         return total.quantize(Decimal('0.01'))
 
-    def get_avg_rating(model_queryset, field_name):
-        ratings = model_queryset.values_list(field_name, flat=True)[:100]
+    # Средняя оценка
+    def get_avg_rating(qs, field):
+        ratings = qs.values_list(field, flat=True)[:100]
         if not ratings:
             return None
         return round(sum(ratings) / len(ratings), 2)
 
-    shifts = courier.shifts.all()
+    # Общее время смен
     total_shift_time = timedelta()
+    for shift in courier.shifts.all():
+        total_shift_time += (shift.end_time or now) - shift.start_time
 
-    for shift in shifts:
-        if shift.end_time:
-            total_shift_time += shift.end_time - shift.start_time
-        else:
-            total_shift_time += timezone.now() - shift.start_time
-
-    # Рейтинг
     ratings = OrderRating.objects.filter(courier=courier).order_by('-created_at')
     avg_rating = get_avg_rating(ratings, 'courier_rating')
 
     context = {
-        'title': 'Статистика курьера',
+        # 📊 Базовая статистика
         'orders_today': today_orders.count(),
         'orders_week': week_orders.count(),
         'orders_month': month_orders.count(),
@@ -161,12 +189,18 @@ def courier_statistics(request):
         'earned_week': calc_total_earned(week_orders),
         'earned_month': calc_total_earned(month_orders),
         'avg_rating': avg_rating,
-        'total_shift_time': total_shift_time,  # timedelta
+        'total_shift_time': total_shift_time,
         'days_worked_week': week_orders.values('created_timestamp__date').distinct().count(),
         'days_worked_month': month_orders.values('created_timestamp__date').distinct().count(),
+
+        # 📈 Данные для графиков
+        'shift_labels': labels,
+        'shift_data': shift_hours,  # [5.5, 6.0, ...]
+        'daily_earnings': daily_earnings,  # [450.0, 520.0, ...]
     }
 
     return render(request, 'couriers/courier_statistics.html', context)
+
 
 @login_required
 @user_passes_test(is_courier, login_url='main:index')
@@ -176,13 +210,22 @@ def toggle_shift(request):
         # Завершение смены
         user.on_shift = False
         shift = Shift.objects.filter(courier=user, end_time__isnull=True).last()
+        print("Завершили смену")
         if shift:
+            print(f"Закрываем смену ID={shift.id}, текущий end_time={shift.end_time}")
             shift.end_time = timezone.now()
             shift.save()
+            print("Сохранили смену. Новый end_time:", shift.end_time)
+
     else:
         # Начало новой смены
         user.on_shift = True
-        Shift.objects.create(courier=user)
+        # Начало новой смены
+        existing = Shift.objects.filter(courier=user, end_time__isnull=True).exists()
+        if not existing:
+            Shift.objects.create(courier=user)
+        else:
+            print("Уже есть незавершённая смена!")
 
     user.save()
     return redirect('couriers:courier-dashboard')
