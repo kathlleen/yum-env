@@ -1,15 +1,22 @@
 from collections import defaultdict
+from datetime import timedelta
 
+from _decimal import Decimal
 from django.conf import settings
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import View
 from orders.models import Order
 from menu.models import Label
 from django.views.generic.edit import FormView
+from menu.models import Dish
+from django.utils.timezone import now, timedelta
+from django.db.models import Sum, Avg, Count, F
+from orders.models import Order, OrderItem, OrderRating
 from menu.models import Dish
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -17,6 +24,8 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from common.mixins import CacheMixin
 
 from restaurans.forms import DishForm, CategoryForm, RestProfileForm
+
+from orders.models import OrderItem
 
 
 def is_restaurant_admin(user):
@@ -42,6 +51,73 @@ def restaurant_dashboard(request):
     }
 
     return render(request, 'restaurans/restaurant_dashboard.html', context)
+
+
+
+
+@login_required
+@user_passes_test(is_restaurant_admin, login_url='main:index')
+def restaurant_statistics(request):
+    user = request.user
+    restaurant = user.restaurant
+
+    today = timezone.now().date()
+    start_of_week = today - timedelta(days=today.weekday())
+    start_of_month = today.replace(day=1)
+
+    orders = Order.objects.filter(restaurant=restaurant)
+
+    # Заказы
+    orders_today = orders.filter(created_timestamp__date=today).count()
+    orders_week = orders.filter(created_timestamp__date__gte=start_of_week).count()
+    orders_month = orders.filter(created_timestamp__date__gte=start_of_month).count()
+
+    # Прибыль
+    items = OrderItem.objects.filter(order__restaurant=restaurant)
+    earned_today = items.filter(created_timestamp__date=today).aggregate(total=Sum(F('price') * F('quantity')))['total'] or 0
+    earned_week = items.filter(created_timestamp__date__gte=start_of_week).aggregate(total=Sum(F('price') * F('quantity')))['total'] or 0
+    earned_month = items.filter(created_timestamp__date__gte=start_of_month).aggregate(total=Sum(F('price') * F('quantity')))['total'] or 0
+
+    # Рейтинг
+    avg_rating = OrderRating.objects.filter(restaurant=restaurant).aggregate(avg=Avg('restaurant_rating'))['avg']
+
+    # Популярные блюда
+    top_dishes = (
+        items.values('dish__name')
+        .annotate(total_qty=Sum('quantity'))
+        .order_by('-total_qty')[:5]
+    )
+
+    # Данные для графиков
+    last_7_days = [today - timedelta(days=i) for i in range(6, -1, -1)]
+    orders_labels = [d.strftime("%d.%m") for d in last_7_days]
+    orders_data = [orders.filter(created_timestamp__date=d).count() for d in last_7_days]
+    revenue_data = [
+        float(items.filter(created_timestamp__date=day).aggregate(
+            total=Sum(F('price') * F('quantity'))
+        )['total'] or 0)
+        for day in last_7_days
+    ]
+
+    context = {
+        'restaurant': restaurant,
+        'orders_today': orders_today,
+        'orders_week': orders_week,
+        'orders_month': orders_month,
+
+        'earned_today': round(earned_today, 2),
+        'earned_week': round(earned_week, 2),
+        'earned_month': round(earned_month, 2),
+
+        'avg_rating': round(avg_rating, 1) if avg_rating else None,
+        'top_dishes': top_dishes,
+
+        'orders_labels': orders_labels,
+        'orders_data': orders_data,
+        'revenue_data': revenue_data,
+    }
+
+    return render(request, 'restaurans/restaurant_statistics.html', context)
 
 @login_required
 @user_passes_test(is_restaurant_admin, login_url='main:index')
