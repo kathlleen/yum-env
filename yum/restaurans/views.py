@@ -24,7 +24,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from common.mixins import CacheMixin
 
 from restaurans.forms import DishForm, CategoryForm, RestProfileForm
-
+from django.db.models import FloatField
 from orders.models import OrderItem
 
 
@@ -98,6 +98,20 @@ def restaurant_statistics(request):
         )['total'] or 0)
         for day in last_7_days
     ]
+    # Уникальные клиенты
+    unique_clients_month = Order.objects.filter(
+        restaurant=restaurant,
+        created_timestamp__date__gte=start_of_month
+    ).values('customer').distinct().count()
+
+    # Средний чек
+    orders_month_qs = orders.filter(created_timestamp__date__gte=start_of_month)
+
+    order_totals = orders_month_qs.annotate(
+        total=Sum(F('orderitem__price') * F('orderitem__quantity'), output_field=FloatField())
+    ).aggregate(avg_price=Avg('total'))
+
+    avg_order_price = round(order_totals['avg_price'] or 0, 2)
 
     context = {
         'restaurant': restaurant,
@@ -115,6 +129,9 @@ def restaurant_statistics(request):
         'orders_labels': orders_labels,
         'orders_data': orders_data,
         'revenue_data': revenue_data,
+
+        'unique_clients_month': unique_clients_month,
+        'avg_order_price': avg_order_price,
     }
 
     return render(request, 'restaurans/restaurant_statistics.html', context)

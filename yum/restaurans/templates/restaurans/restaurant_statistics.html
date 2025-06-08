@@ -63,6 +63,7 @@
 
 
 
+
 </style>
 {% endblock %}
 
@@ -87,11 +88,6 @@
         </div>
 
         <div class="stat-block">
-            <h4>⭐ Рейтинг</h4>
-            <p>Средняя оценка: {{ avg_rating|default:"Нет данных" }}</p>
-        </div>
-
-        <div class="stat-block">
             <h4>🔥 Популярные блюда</h4>
             {% for dish in top_dishes %}
             <p>{{ forloop.counter }}. {{ dish.dish__name }} — {{ dish.total_qty }} шт.</p>
@@ -99,6 +95,22 @@
             <p>Нет данных</p>
             {% endfor %}
         </div>
+
+        <div class="stat-block">
+            <h4>⭐ Рейтинг</h4>
+            <p>Средняя оценка: {{ avg_rating|default:"Нет данных" }}</p>
+        </div>
+
+        <div class="stat-block">
+            <h4>👥 Клиенты</h4>
+            <p>Уникальные за месяц: {{ unique_clients_month }}</p>
+        </div>
+
+        <div class="stat-block">
+            <h4>💳 Средний чек</h4>
+            <p>Ср. стоимость заказа: {{ avg_order_price }} BYN</p>
+        </div>
+
 
     </div>
 
@@ -200,6 +212,7 @@ const revenueChart = new Chart(revenueCtx, {
         }
     }
 });
+
 
 
 
