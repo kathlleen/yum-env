@@ -79,7 +79,7 @@ def restaurant_statistics(request):
     earned_month = items.filter(created_timestamp__date__gte=start_of_month).aggregate(total=Sum(F('price') * F('quantity')))['total'] or 0
 
     # Рейтинг
-    avg_rating = OrderRating.objects.filter(restaurant=restaurant).aggregate(avg=Avg('restaurant_rating'))['avg']
+    avg_rating = restaurant.rating
 
     # Популярные блюда
     top_dishes = (

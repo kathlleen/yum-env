@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, UpdateView
 from users.forms import UserLoginForm, CustomerRegistrationForm, \
@@ -16,7 +17,7 @@ from django.views.generic.edit import FormView
 from carts.models import Cart
 from common.mixins import CacheMixin
 from orders.models import Order, OrderItem
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Avg
 
 import os
 from django.conf import settings
@@ -141,6 +142,7 @@ def rate_order(request, order_id):
         print("ОШИБКА С ОЦЕНКОЙ!!")
         return redirect('users:profile')  # Или верни ошибку / сообщение
 
+    # Создаём оценку
     OrderRating.objects.create(
         order=order,
         courier=order.courier,
@@ -148,6 +150,17 @@ def rate_order(request, order_id):
         courier_rating=courier_rating,
         restaurant_rating=restaurant_rating
     )
+
+    # ⏱ Пересчёт рейтинга ресторана (за последний месяц)
+    start_of_month = timezone.now().replace(day=1)
+
+    avg_rating = OrderRating.objects.filter(
+        restaurant=order.restaurant,
+        created_at__date__gte=start_of_month
+    ).aggregate(avg=Avg('restaurant_rating'))['avg']
+
+    order.restaurant.rating = round(avg_rating or 0, 1)
+    order.restaurant.save(update_fields=['rating'])
 
     return redirect('users:profile')
 
